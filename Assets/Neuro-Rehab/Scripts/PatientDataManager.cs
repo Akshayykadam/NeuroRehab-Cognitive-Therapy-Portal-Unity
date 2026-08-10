@@ -63,9 +63,9 @@ namespace NeuroRehab
                         PatientProfile loadedDisk = JsonUtility.FromJson<PatientProfile>(json);
                         if (loadedDisk != null && !string.IsNullOrEmpty(loadedDisk.userId))
                         {
-                            if (loadedDisk.patientName == "Akshay" || string.IsNullOrEmpty(loadedDisk.patientName))
+                            if (string.IsNullOrEmpty(loadedDisk.patientName))
                             {
-                                loadedDisk.patientName = "Akshay Kadam";
+                                loadedDisk.patientName = userName;
                             }
 
                             if (profile != null)
@@ -207,7 +207,7 @@ namespace NeuroRehab
             PatientProfile profile = patientProfiles.Find(p => p.userId == userId);
             if (profile == null)
             {
-                profile = GetOrCreateProfile(userId, "Akshay Kadam");
+                profile = GetOrCreateProfile(userId, $"Patient {userId}");
             }
 
             if (profile != null)

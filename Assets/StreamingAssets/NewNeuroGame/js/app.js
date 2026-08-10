@@ -189,6 +189,9 @@ class AppManager {
         this.userId = urlParams.get('userId') || '10114';
         this.stateKey = "neurorehab_state_" + this.patientName;
 
+        // Clear any old local storage state to guarantee pure JSON data flow
+        try { localStorage.removeItem(this.stateKey); } catch(e) {}
+
         const patientEl = document.getElementById("patient-name-display");
         if (patientEl) {
             patientEl.innerText = `Patient: ${this.patientName}`;
@@ -203,41 +206,51 @@ class AppManager {
         }
         this.loadState();
 
+        const parseJsonParam = (raw) => {
+            if (!raw) return null;
+            try { return JSON.parse(raw); } catch(e) {}
+            try { return JSON.parse(decodeURIComponent(raw)); } catch(e) {}
+            return null;
+        };
+
+        // Parse initial XP passed from Unity
+        const xpParam = urlParams.get('xp');
+        if (xpParam !== null && xpParam !== undefined) {
+            const parsedXp = parseInt(xpParam);
+            if (!isNaN(parsedXp)) {
+                this.gameState.xp = parsedXp;
+            }
+        }
+
         // Parse saved highScores passed from Unity via URL query parameters
-        const highScoresParam = urlParams.get('highScores');
-        if (highScoresParam) {
-            try {
-                const hs = JSON.parse(decodeURIComponent(highScoresParam));
-                if (hs && typeof hs === 'object') {
-                    this.gameState.highScores = Object.assign({}, this.gameState.highScores, hs);
-                }
-            } catch(e) { console.warn("Could not parse highScores query param", e); }
+        const hs = parseJsonParam(urlParams.get('highScores'));
+        if (hs && typeof hs === 'object') {
+            Object.keys(hs).forEach(gId => {
+                this.gameState.highScores[gId] = hs[gId];
+            });
         }
 
         // Parse saved progress passed from Unity via URL query parameters
-        const progressParam = urlParams.get('progressData');
-        if (progressParam) {
-            try {
-                const prog = JSON.parse(decodeURIComponent(progressParam));
-                if (prog && typeof prog === 'object') {
-                    this.gameState.progress = Object.assign({}, this.gameState.progress, prog);
-                }
-            } catch(e) { console.warn("Could not parse progress query param", e); }
+        const prog = parseJsonParam(urlParams.get('progressData'));
+        if (prog && typeof prog === 'object') {
+            Object.keys(prog).forEach(gId => {
+                this.gameState.progress[gId] = prog[gId];
+            });
         }
 
         // Parse saved highAccuracies passed from Unity via URL query parameters
-        const highAccuraciesParam = urlParams.get('highAccuracies');
-        if (highAccuraciesParam) {
-            try {
-                const ha = JSON.parse(decodeURIComponent(highAccuraciesParam));
-                if (ha && typeof ha === 'object') {
-                    this.gameState.highAccuracies = Object.assign({}, this.gameState.highAccuracies, ha);
-                }
-            } catch(e) { console.warn("Could not parse highAccuracies query param", e); }
+        const ha = parseJsonParam(urlParams.get('highAccuracies'));
+        if (ha && typeof ha === 'object') {
+            Object.keys(ha).forEach(gId => {
+                this.gameState.highAccuracies[gId] = ha[gId];
+            });
         }
 
+        // Ensure defaults for any missing game structures
+        this.ensureGameStateDefaults();
+
         // If query parameters were not provided (standalone desktop browser load), fetch JSON from Unity HTTP Bridge
-        if (!highScoresParam && !progressParam && window.location && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+        if (!urlParams.get('highScores') && !urlParams.get('progressData') && window.location && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
             try {
                 fetch("http://localhost:8080/get_patient_data?userId=" + encodeURIComponent(this.userId))
                     .then(res => res.json())
@@ -245,14 +258,18 @@ class AppManager {
                         if (data && typeof data === 'object') {
                             if (typeof data.totalXP === 'number') this.gameState.xp = data.totalXP;
                             if (data.highScoresJson) {
-                                try { this.gameState.highScores = JSON.parse(data.highScoresJson); } catch(e) {}
+                                const parsedHs = parseJsonParam(data.highScoresJson);
+                                if (parsedHs) Object.keys(parsedHs).forEach(gId => { this.gameState.highScores[gId] = parsedHs[gId]; });
                             }
                             if (data.progressJson) {
-                                try { this.gameState.progress = JSON.parse(data.progressJson); } catch(e) {}
+                                const parsedProg = parseJsonParam(data.progressJson);
+                                if (parsedProg) Object.keys(parsedProg).forEach(gId => { this.gameState.progress[gId] = parsedProg[gId]; });
                             }
                             if (data.highAccuraciesJson) {
-                                try { this.gameState.highAccuracies = JSON.parse(data.highAccuraciesJson); } catch(e) {}
+                                const parsedHa = parseJsonParam(data.highAccuraciesJson);
+                                if (parsedHa) Object.keys(parsedHa).forEach(gId => { this.gameState.highAccuracies[gId] = parsedHa[gId]; });
                             }
+                            this.ensureGameStateDefaults();
                             this.renderLobby();
                             this.updatePlayerHUD();
                         }
@@ -287,16 +304,7 @@ class AppManager {
         }
     }
 
-    loadState() {
-        const saved = localStorage.getItem(this.stateKey);
-        if (saved) {
-            try {
-                this.gameState = JSON.parse(saved);
-            } catch (e) {
-                console.error("Failed to parse state", e);
-            }
-        }
-
+    ensureGameStateDefaults() {
         if (!this.gameState || typeof this.gameState !== "object") {
             this.gameState = {};
         }
@@ -314,7 +322,7 @@ class AppManager {
         }
 
         GAME_DEFS.forEach(g => {
-            if (!this.gameState.progress[g.id]) {
+            if (!this.gameState.progress[g.id] || typeof this.gameState.progress[g.id] !== "number") {
                 this.gameState.progress[g.id] = 1;
             }
             if (!this.gameState.highScores[g.id] || typeof this.gameState.highScores[g.id] !== "object") {
@@ -331,6 +339,13 @@ class AppManager {
         if (typeof this.gameState.xp !== "number") {
             this.gameState.xp = 0;
         }
+    }
+
+    loadState() {
+        // Do NOT load state from localStorage - all state is initialized strictly from Unity JSON profile
+        try { localStorage.removeItem(this.stateKey); } catch(e) {}
+
+        this.ensureGameStateDefaults();
 
         if (!this.gameState.sessionHistory) {
             this.gameState.sessionHistory = [];
@@ -419,7 +434,7 @@ class AppManager {
     }
 
     saveState() {
-        localStorage.setItem(this.stateKey, JSON.stringify(this.gameState));
+        try { localStorage.removeItem(this.stateKey); } catch(e) {}
         localStorage.setItem("neurorehab_muted", Sound.muted ? "true" : "false");
         this.updatePlayerHUD();
         this.syncScoreToUnity();

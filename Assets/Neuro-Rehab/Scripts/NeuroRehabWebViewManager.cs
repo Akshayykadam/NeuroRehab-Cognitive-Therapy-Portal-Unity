@@ -86,18 +86,14 @@ namespace NeuroRehab
 
             if (profile != null)
             {
-                if (!string.IsNullOrEmpty(profile.highScoresJson) && profile.highScoresJson != "{}")
-                {
-                    finalUrl += "&highScores=" + Uri.EscapeDataString(profile.highScoresJson);
-                }
-                if (!string.IsNullOrEmpty(profile.progressJson) && profile.progressJson != "{}")
-                {
-                    finalUrl += "&progressData=" + Uri.EscapeDataString(profile.progressJson);
-                }
-                if (!string.IsNullOrEmpty(profile.highAccuraciesJson) && profile.highAccuraciesJson != "{}")
-                {
-                    finalUrl += "&highAccuracies=" + Uri.EscapeDataString(profile.highAccuraciesJson);
-                }
+                string hsJson = !string.IsNullOrEmpty(profile.highScoresJson) ? profile.highScoresJson : "{}";
+                finalUrl += "&highScores=" + Uri.EscapeDataString(hsJson);
+
+                string progJson = !string.IsNullOrEmpty(profile.progressJson) ? profile.progressJson : "{}";
+                finalUrl += "&progressData=" + Uri.EscapeDataString(progJson);
+
+                string haJson = !string.IsNullOrEmpty(profile.highAccuraciesJson) ? profile.highAccuraciesJson : "{}";
+                finalUrl += "&highAccuracies=" + Uri.EscapeDataString(haJson);
             }
 
             Debug.Log($"[NeuroRehab] Launching Session for Patient '{patientName}' (ID: {userId}, XP: {xpToPass}) at URL: {finalUrl}");
@@ -158,12 +154,18 @@ namespace NeuroRehab
 
         private void OnWebMessageReceived(UniWebView view, UniWebViewMessage message)
         {
-            Debug.Log($"[NeuroRehab] Incoming WebMessage -> Scheme: {message.Scheme}, Path: {message.Path}, Raw: {message.RawMessage}");
+            Debug.Log($"[NeuroRehab] Incoming WebMessage -> Scheme: '{message.Scheme}', Path: '{message.Path}', Raw: '{message.RawMessage}'");
 
-            if (message.Path == "score_sync" || message.Path == "game_complete")
+            string action = message.Path;
+            if (string.IsNullOrEmpty(action) && message.Args != null && message.Args.ContainsKey("action"))
+            {
+                action = message.Args["action"];
+            }
+
+            if (action == "score_sync" || action == "game_complete" || (message.RawMessage != null && (message.RawMessage.Contains("score_sync") || message.RawMessage.Contains("game_complete"))))
             {
                 string userId = message.Args.ContainsKey("userId") ? message.Args["userId"] : "10114";
-                string patientName = message.Args.ContainsKey("patient") ? message.Args["patient"] : "Akshay Kadam";
+                string patientName = message.Args.ContainsKey("patientName") ? message.Args["patientName"] : (message.Args.ContainsKey("patient") ? message.Args["patient"] : "Akshay Kadam");
                 int xp = message.Args.ContainsKey("xp") ? int.Parse(message.Args["xp"]) : 0;
                 int completedCount = message.Args.ContainsKey("completedCount") ? int.Parse(message.Args["completedCount"]) : 0;
                 int totalSessions = message.Args.ContainsKey("totalSessions") ? int.Parse(message.Args["totalSessions"]) : 0;
@@ -172,12 +174,14 @@ namespace NeuroRehab
                 string progressJson = message.Args.ContainsKey("progress") ? message.Args["progress"] : null;
                 string highAccuraciesJson = message.Args.ContainsKey("highAccuracies") ? message.Args["highAccuracies"] : null;
 
+                Debug.Log($"[NeuroRehab] Score Sync Received for {patientName} (ID: {userId}) -> XP: {xp}, Accuracy: {accuracy}%, Cleared: {completedCount}");
+
                 if (PatientDataManager.Instance != null)
                 {
                     PatientDataManager.Instance.UpdatePatientProgress(userId, xp, completedCount, totalSessions, highScoresJson, progressJson, accuracy, highAccuraciesJson);
                 }
             }
-            else if (message.Path == "close" || message.Path == "close_webview" || message.Path == "exit" || string.IsNullOrEmpty(message.Path) || message.RawMessage.Contains("close") || message.RawMessage.Contains("exit"))
+            else if (action == "close" || action == "close_webview" || action == "exit" || (message.RawMessage != null && (message.RawMessage.Contains("action=close") || message.RawMessage.Contains("action=exit"))))
             {
                 CloseWebView();
             }

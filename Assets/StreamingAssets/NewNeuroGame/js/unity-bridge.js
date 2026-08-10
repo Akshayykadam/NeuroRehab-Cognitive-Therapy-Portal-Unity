@@ -51,16 +51,27 @@ const UnityBridge = {
         };
 
         const jsonString = JSON.stringify(payload);
-        console.log("Sending event to Unity:", payload);
+        console.log("Sending event to Unity:", action, payload);
+
+        // Build query parameters for UniWebView URL scheme
+        const queryParams = new URLSearchParams();
+        queryParams.set("action", action);
+        Object.keys(data).forEach(key => {
+            if (data[key] !== null && data[key] !== undefined) {
+                queryParams.set(key, typeof data[key] === 'object' ? JSON.stringify(data[key]) : String(data[key]));
+            }
+        });
+
+        const schemeUrl = "uniwebview://" + action + "?" + queryParams.toString();
 
         // 1. Vuplex 3D WebView
         if (window.vuplex) {
             window.vuplex.postMessage(payload);
         }
         
-        // 2. UniWebView (using window.Unity.call)
+        // 2. UniWebView (using schemeUrl so UniWebView parses message.Path & message.Args)
         if (window.Unity && typeof window.Unity.call === 'function') {
-            window.Unity.call(jsonString);
+            window.Unity.call(schemeUrl);
         }
 
         // 3. Unity WebGL (using SendMessage to a target object)
@@ -78,11 +89,10 @@ const UnityBridge = {
             window.webkit.messageHandlers.unityBridge.postMessage(jsonString);
         }
 
-        // 6. Console log for debugging
-        console.log("unity-bridge:" + jsonString);
-
-        // 7. Hash-based URL navigation for WebViewBridgePro (Clean & 0ms latency)
-        window.location.hash = "unity-bridge:" + encodeURIComponent(jsonString);
+        // 6. Direct UniWebView navigation scheme fallback
+        try {
+            window.location.href = schemeUrl;
+        } catch(e) {}
     },
 
     // Handle messages received FROM Unity
