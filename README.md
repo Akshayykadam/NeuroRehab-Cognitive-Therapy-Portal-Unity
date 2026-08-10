@@ -125,10 +125,10 @@ You can attach this code directly inside your Play Button listener script:
 using NeuroRehab;
 
 // Attach this directly inside your Play Button listener:
-public void OnPlayButtonClicked()
+public void OnPlayButtonClicked(string targetUserId, string targetUserName)
 {
     // 1. Loads or creates 10114.json on disk
-    PatientProfile profile = PatientDataManager.Instance.GetOrCreateProfile("10114", "Akshay Kadam");
+    PatientProfile profile = PatientDataManager.Instance.GetOrCreateProfile(targetUserId, targetUserName);
     
     // 2. Sets active profile
     PatientDataManager.Instance.SetActiveProfile(profile);
@@ -136,20 +136,9 @@ public void OnPlayButtonClicked()
     // 3. Launches WebView and auto-passes profile metrics to HTML
     NeuroRehabWebViewManager.Instance.OpenWebView(profile);
 }
-```
-
-Or define a reusable helper method:
-
-```csharp
-public void PlayGameForUser(string targetUserId, string targetUserName)
-{
-    PatientProfile profile = PatientDataManager.Instance.GetOrCreateProfile(targetUserId, targetUserName);
-    PatientDataManager.Instance.SetActiveProfile(profile);
-    NeuroRehabWebViewManager.Instance.OpenWebView(profile);
-}
 
 // Single-line call:
-PlayGameForUser("10114", "Akshay Kadam"); // Loads & saves to: .../PatientData/10114.json
+OnPlayButtonClicked("10114", "Akshay Kadam"); // Loads & saves to: .../PatientData/10114.json
 ```
 
 ---
