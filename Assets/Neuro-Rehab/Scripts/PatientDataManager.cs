@@ -189,37 +189,14 @@ namespace NeuroRehab
             string filePath = GetPatientJsonPath(profile.userId);
             string firebaseJson = profile.ToFirebaseJson();
 
-            lock (fileLock)
+            try
             {
-                for (int attempt = 0; attempt < 5; attempt++)
-                {
-                    try
-                    {
-                        using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
-                        using (StreamWriter writer = new StreamWriter(fs))
-                        {
-                            writer.Write(firebaseJson);
-                        }
-                        Debug.Log($"[PatientDataManager] Automatically Created/Updated JSON on disk for Firebase -> {filePath}");
-                        break;
-                    }
-                    catch (IOException)
-                    {
-                        if (attempt == 4)
-                        {
-                            Debug.LogWarning($"[PatientDataManager] Lock timeout writing JSON file for {profile.userId}");
-                        }
-                        else
-                        {
-                            System.Threading.Thread.Sleep(30);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError($"[PatientDataManager] Failed to write JSON file for {profile.userId}: {ex.Message}");
-                        break;
-                    }
-                }
+                File.WriteAllText(filePath, firebaseJson);
+                Debug.Log($"[PatientDataManager] Saved JSON to disk -> {filePath}");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[PatientDataManager] Failed to write JSON file for {profile.userId}: {ex.Message}");
             }
 
             OnPatientDataUpdated?.Invoke(profile);

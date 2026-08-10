@@ -15,10 +15,6 @@ namespace NeuroRehab
 
         private UniWebView webView;
 
-#if UNITY_EDITOR
-        private System.Net.HttpListener httpListener;
-#endif
-
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -28,92 +24,8 @@ namespace NeuroRehab
             }
             Instance = this;
             DontDestroyOnLoad(gameObject);
-
-#if UNITY_EDITOR
-            StartEditorHttpBridge();
-#endif
         }
 
-#if UNITY_EDITOR
-        private void StartEditorHttpBridge()
-        {
-            try
-            {
-                httpListener = new System.Net.HttpListener();
-                httpListener.Prefixes.Add("http://localhost:8080/");
-                httpListener.Start();
-                httpListener.BeginGetContext(OnHttpContextReceived, httpListener);
-                Debug.Log("[NeuroRehab] Editor HTTP Score Bridge running at http://localhost:8080/");
-            }
-            catch (Exception ex)
-            {
-                Debug.LogWarning($"[NeuroRehab] Editor HTTP Bridge notice: {ex.Message}");
-            }
-        }
-
-        private void OnHttpContextReceived(IAsyncResult result)
-        {
-            if (httpListener == null || !httpListener.IsListening) return;
-            try
-            {
-                var context = httpListener.EndGetContext(result);
-                httpListener.BeginGetContext(OnHttpContextReceived, httpListener);
-
-                var query = context.Request.QueryString;
-
-                if (context.Request.Url != null && context.Request.Url.AbsolutePath.Contains("get_patient_data"))
-                {
-                    string reqUserId = query["userId"] ?? "10114";
-                    string jsonContent = "{}";
-                    if (PatientDataManager.Instance != null)
-                    {
-                        PatientProfile prof = PatientDataManager.Instance.GetOrCreateProfile(reqUserId, "Akshay Kadam");
-                        if (prof != null) jsonContent = prof.ToFirebaseJson();
-                    }
-                    byte[] jsonBuf = System.Text.Encoding.UTF8.GetBytes(jsonContent);
-                    context.Response.ContentType = "application/json";
-                    context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-                    context.Response.OutputStream.Write(jsonBuf, 0, jsonBuf.Length);
-                    context.Response.Close();
-                    return;
-                }
-
-                string userId = query["userId"] ?? "10114";
-                string patientName = query["patientName"] ?? query["patient"] ?? "Akshay Kadam";
-                int xp = int.TryParse(query["xp"], out int x) ? x : 0;
-                int completedCount = int.TryParse(query["completedCount"], out int c) ? c : 0;
-                int totalSessions = int.TryParse(query["totalSessions"], out int s) ? s : 0;
-                int accuracy = int.TryParse(query["accuracy"], out int acc) ? acc : 100;
-                string highScores = query["highScores"];
-                string progress = query["progress"];
-                string highAccuracies = query["highAccuracies"];
-
-                if (PatientDataManager.Instance != null)
-                {
-                    PatientDataManager.Instance.UpdatePatientProgress(userId, xp, completedCount, totalSessions, highScores, progress, accuracy, highAccuracies);
-                }
-
-                byte[] buf = System.Text.Encoding.UTF8.GetBytes("{\"status\":\"ok\"}");
-                context.Response.ContentType = "application/json";
-                context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-                context.Response.OutputStream.Write(buf, 0, buf.Length);
-                context.Response.Close();
-            }
-            catch (Exception ex)
-            {
-                Debug.LogWarning($"[NeuroRehab] HTTP context handling error: {ex.Message}");
-            }
-        }
-
-        private void OnDestroy()
-        {
-            if (httpListener != null)
-            {
-                try { httpListener.Stop(); httpListener.Close(); } catch {}
-                httpListener = null;
-            }
-        }
-#endif
 
         public void OpenWebView(PatientProfile profile)
         {
