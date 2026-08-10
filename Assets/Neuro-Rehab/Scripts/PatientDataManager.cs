@@ -7,7 +7,23 @@ namespace NeuroRehab
 {
     public class PatientDataManager : MonoBehaviour
     {
-        public static PatientDataManager Instance { get; private set; }
+        private static PatientDataManager instance;
+        public static PatientDataManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = FindObjectOfType<PatientDataManager>();
+                    if (instance == null)
+                    {
+                        GameObject dataObj = new GameObject("PatientDataManager");
+                        instance = dataObj.AddComponent<PatientDataManager>();
+                    }
+                }
+                return instance;
+            }
+        }
 
         public event Action<PatientProfile> OnPatientDataUpdated;
 
@@ -18,12 +34,12 @@ namespace NeuroRehab
 
         private void Awake()
         {
-            if (Instance != null && Instance != this)
+            if (instance != null && instance != this)
             {
                 Destroy(gameObject);
                 return;
             }
-            Instance = this;
+            instance = this;
             DontDestroyOnLoad(gameObject);
 
             // Establish dedicated JSON storage directory for Firebase pushing

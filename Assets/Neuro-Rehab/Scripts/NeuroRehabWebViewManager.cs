@@ -5,7 +5,23 @@ namespace NeuroRehab
 {
     public class NeuroRehabWebViewManager : MonoBehaviour
     {
-        public static NeuroRehabWebViewManager Instance { get; private set; }
+        private static NeuroRehabWebViewManager instance;
+        public static NeuroRehabWebViewManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = FindObjectOfType<NeuroRehabWebViewManager>();
+                    if (instance == null)
+                    {
+                        GameObject webObj = new GameObject("NeuroRehabWebViewManager");
+                        instance = webObj.AddComponent<NeuroRehabWebViewManager>();
+                    }
+                }
+                return instance;
+            }
+        }
 
         [Header("WebView Options")]
         public bool useLocalBuild = true;
@@ -17,12 +33,12 @@ namespace NeuroRehab
 
         private void Awake()
         {
-            if (Instance != null && Instance != this)
+            if (instance != null && instance != this)
             {
                 Destroy(gameObject);
                 return;
             }
-            Instance = this;
+            instance = this;
             DontDestroyOnLoad(gameObject);
         }
 
