@@ -2,7 +2,7 @@
 
 [![Unity](https://img.shields.io/badge/Unity-6000.3.9f1-blue.svg?logo=unity)](https://unity.com/)
 [![Platform](https://img.shields.io/badge/Platform-Android-green.svg?logo=android)](https://developer.android.com/)
-[![UniWebView](https://img.shields.io/badge/UniWebView-5.x-purple.svg)](https://uniwebview.com/)
+[![UniWebView](https://img.shields.io/badge/UniWebView-6.x-purple.svg)](https://uniwebview.com/)
 [![License](https://img.shields.io/badge/License-Proprietary-red.svg)]()
 
 > A modern, interactive mobile therapy suite built in **Unity 6** featuring an embedded **HTML5/JavaScript cognitive rehabilitation platform**. Designed for neurological patients to practice motor control, visual search, memory recall, and executive function exercises with real-time patient progress tracking.
@@ -11,10 +11,10 @@
 
 ## 🌟 Key Features
 
-- **🧩 Embedded HTML5/JS Therapy Suite**: Lightweight, responsive web games running locally via **UniWebView 5** inside Unity for ultra-smooth UI performance.
+- **🧩 Embedded HTML5/JS Therapy Suite**: Lightweight, responsive web games running locally via **UniWebView 6** inside Unity for ultra-smooth UI performance.
 - **📊 Real-Time Patient Analytics**: Dynamically tracks accuracy rates, high scores, activity completion counts (`0/16`), and progress statistics across therapy sessions.
 - **⚡ Native C# to JS Bridge**: Two-way communication protocol between Unity (`NeuroRehabWebViewManager.cs`) and JavaScript (`unity-bridge.js`).
-- **🛡️ Fault-Tolerant State Persistence**: Robust local storage state management that gracefully handles incomplete patient sessions, offline play, and session resumption.
+- **💾 100% Pure JSON Per-User Storage**: Multi-user disk storage model where each patient's data is isolated into `<userId>.json` files without relying on browser `localStorage`.
 - **📱 One-Click Android Build Pipeline**: Custom editor batch script (`BuildScript.cs`) for automated APK generation and deployment.
 
 ---
@@ -43,24 +43,24 @@ flowchart TD
     subgraph Unity ["Unity 6 Native Environment"]
         A[NeuroRehabScene] --> B[NeuroRehabWebViewManager.cs]
         B --> C[PatientDataManager.cs]
-        C <--> D[PlayerPrefs / JSON State]
+        C <--> D["Application.persistentDataPath/PatientData/<userId>.json"]
     end
 
-    subgraph WebView ["UniWebView 5 (StreamingAssets)"]
+    subgraph WebView ["UniWebView 6 (StreamingAssets)"]
         E[index.html] --> F[app.js - AppManager]
         F --> G[Exercise Modules / JS Suite]
         G <--> H[unity-bridge.js]
     end
 
     B <--"UniWebView Bridge (uniwebview://)"--> H
-    B --"EvaluateJavaScript(urlParams)"--> F
+    B --"URL Query Params (?userId=&xp=&highScores=)"--> F
 ```
 
 ### Protocol & Message Passing
-1. **Unity Initialization**: `PatientDataManager` retrieves patient info, high scores, and progress statistics.
-2. **WebView Load**: `NeuroRehabWebViewManager` opens local `index.html` from `StreamingAssets/NewNeuroGame` passing JSON encoded patient data in the query string.
-3. **App Startup**: `app.js` initializes `AppManager`, safely parses query parameters & local storage, and renders the therapy lobby cards.
-4. **Session Sync**: Completing an exercise sends progress updates back to Unity via `uniwebview://` payload schemes for persistent logging.
+1. **Unity Initialization**: `PatientDataManager` retrieves or creates the user's dedicated JSON file at `Application.persistentDataPath/PatientData/<userId>.json`.
+2. **WebView Launch**: `NeuroRehabWebViewManager` opens local `index.html` from `StreamingAssets/NewNeuroGame` passing JSON-encoded patient data (`userId`, `patient`, `xp`, `highScores`, `progressData`, `highAccuracies`) in the query string.
+3. **App Startup**: `app.js` initializes `AppManager`, parses URL parameters directly into `gameState` (bypassing browser `localStorage`), and renders the therapy lobby cards.
+4. **Session Sync**: Completing an exercise sends progress updates back to Unity via `uniwebview://score_sync?...` payload schemes, updating `PatientProfile` and saving directly back to disk in `<userId>.json`.
 
 ---
 
@@ -75,40 +75,76 @@ NeuroRehab Cognitive Therapy Portal/
 │   │   ├── Scenes/
 │   │   │   └── NeuroRehabScene.unity     # Main application scene
 │   │   └── Scripts/
+│   │       ├── NeuroRehabLauncher.cs     # Native UI & Launcher script
 │   │       ├── NeuroRehabWebViewManager.cs # UniWebView controller & JS bridge
-│   │       └── PatientDataManager.cs     # Patient state & score persistence
+│   │       ├── PatientDataManager.cs     # Per-user JSON persistence manager
+│   │       └── PatientProfile.cs         # Patient profile & JSON data model
 │   ├── StreamingAssets/
 │   │   └── NewNeuroGame/                 # Embedded HTML5/JS therapy app
 │   │       ├── css/                      # Responsive stylesheets
 │   │       ├── js/                       # Core AppManager & 16+ game modules
 │   │       └── index.html                # Main entry point
-│   └── UniWebView/                       # UniWebView 5 SDK component
+│   └── UniWebView/                       # UniWebView SDK component
 ├── Builds/                               # Output APK build destination
 ├── ProjectSettings/                      # Unity project configuration
-├── README.md
-└── .gitignore                            # Standard Unity git ignore rules
+└── README.md
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🛠️ How to Integrate & Reuse in a New Unity Project
 
-### Prerequisites
-- **Unity Editor**: `6000.3.9f1` (or compatible Unity 6 release)
-- **Android SDK & NDK**: Installed via Unity Hub Android Build Support
-- **ADB (Android Debug Bridge)**: For physical device deployment and logs
+When adding this therapy portal architecture to a new Unity project, follow these steps:
 
-### Opening in Unity
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Akshayykadam/NeuroRehab-Cognitive-Therapy-Portal-Unity.git
-   ```
-2. Launch **Unity Hub**, click **Add**, and select the project directory.
-3. Open the main scene: `Assets/Neuro-Rehab/Scenes/NeuroRehabScene.unity`.
+### Step 1: Copy Core C# Scripts
+Copy the 4 core scripts into your project's `Assets/Scripts/` directory:
+- `PatientProfile.cs` (Data model for `userId`, `patientName`, `totalXP`, `highScoresJson`, `progressJson`, `highAccuraciesJson`)
+- `PatientDataManager.cs` (Per-user JSON file reader/writer at `PatientData/<userId>.json`)
+- `NeuroRehabWebViewManager.cs` (UniWebView controller launching `index.html` with URL query parameters and receiving `score_sync`)
+- `NeuroRehabLauncher.cs` (UI controller connecting native buttons and profile launches)
+
+### Step 2: Copy HTML Web App
+Copy the `NewNeuroGame` directory into your project's `StreamingAssets`:
+```text
+Assets/StreamingAssets/NewNeuroGame/
+  ├── index.html
+  ├── css/
+  └── js/
+      ├── app.js
+      └── unity-bridge.js
+```
+
+### Step 3: Install UniWebView
+Ensure the **UniWebView 6** package is installed in your project.
+
+### Step 4: Launch Session for Any User (Code Example)
+Call this snippet from any script when a user clicks **Play** or opens a therapy session:
+
+```csharp
+using NeuroRehab;
+
+public void PlayGameForUser(string targetUserId, string targetUserName)
+{
+    // 1. Get or create the user's profile (automatically loads <targetUserId>.json from disk)
+    PatientProfile profile = PatientDataManager.Instance.GetOrCreateProfile(targetUserId, targetUserName);
+    
+    // 2. Set as active profile
+    PatientDataManager.Instance.SetActiveProfile(profile);
+
+    // 3. Launch Web View (automatically passes profile JSON metrics into HTML)
+    NeuroRehabWebViewManager.Instance.OpenWebView(profile);
+}
+```
+
+```csharp
+// Example Usage:
+PlayGameForUser("user_101", "John Doe");   // Loads & saves to: .../PatientData/user_101.json
+PlayGameForUser("user_202", "Jane Smith"); // Loads & saves to: .../PatientData/user_202.json
+```
 
 ---
 
-## 🛠️ Building & Deploying to Android
+## 📱 Building & Deploying to Android
 
 ### Automated Command-Line Build
 You can trigger a batchmode build directly from the terminal:
@@ -129,8 +165,8 @@ Deploy the compiled APK to a connected Android target using ADB:
 # Install APK
 adb install -r Builds/NeuroRehab.apk
 
-# Launch Main Unity Player Activity
-adb shell am start -n com.Wizio.com/com.unity3d.player.UnityPlayerGameActivity
+# Launch Main Unity Activity
+adb shell monkey -p com.Wizio.com -c android.intent.category.LAUNCHER 1
 ```
 
 ---
