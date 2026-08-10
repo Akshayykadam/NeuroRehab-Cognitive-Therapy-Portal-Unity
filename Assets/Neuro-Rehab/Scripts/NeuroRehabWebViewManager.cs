@@ -35,19 +35,27 @@ namespace NeuroRehab
             }
             else
             {
-                OpenWebView("10114", "Akshay Kadam", 0);
+                PatientProfile active = PatientDataManager.Instance != null ? PatientDataManager.Instance.GetActiveProfile() : null;
+                string uid = active != null ? active.userId : "1001";
+                string name = active != null ? active.patientName : "Patient Name";
+                int xp = active != null ? active.totalXP : 0;
+                OpenWebView(uid, name, xp);
             }
         }
 
-        public void OpenWebView(string patientName = "Akshay Kadam")
+        public void OpenWebView()
         {
-            OpenWebView("10114", patientName, 0);
+            PatientProfile active = PatientDataManager.Instance != null ? PatientDataManager.Instance.GetActiveProfile() : null;
+            string uid = active != null ? active.userId : "1001";
+            string name = active != null ? active.patientName : "Patient Name";
+            int xp = active != null ? active.totalXP : 0;
+            OpenWebView(uid, name, xp);
         }
 
         public void OpenWebView(string userId, string patientName, int initialXp)
         {
-            if (string.IsNullOrEmpty(patientName)) patientName = "Akshay Kadam";
-            if (string.IsNullOrEmpty(userId)) userId = "10114";
+            if (string.IsNullOrEmpty(userId)) userId = "1001";
+            if (string.IsNullOrEmpty(patientName)) patientName = "Patient Name";
 
             PatientProfile profile = PatientDataManager.Instance != null 
                 ? PatientDataManager.Instance.GetOrCreateProfile(userId, patientName, initialXp)
@@ -164,8 +172,8 @@ namespace NeuroRehab
 
             if (action == "score_sync" || action == "game_complete" || (message.RawMessage != null && (message.RawMessage.Contains("score_sync") || message.RawMessage.Contains("game_complete"))))
             {
-                string userId = message.Args.ContainsKey("userId") ? message.Args["userId"] : "10114";
-                string patientName = message.Args.ContainsKey("patientName") ? message.Args["patientName"] : (message.Args.ContainsKey("patient") ? message.Args["patient"] : "Akshay Kadam");
+                string userId = message.Args.ContainsKey("userId") ? message.Args["userId"] : "1001";
+                string patientName = message.Args.ContainsKey("patientName") ? message.Args["patientName"] : (message.Args.ContainsKey("patient") ? message.Args["patient"] : "Patient Name");
                 int xp = message.Args.ContainsKey("xp") ? int.Parse(message.Args["xp"]) : 0;
                 int completedCount = message.Args.ContainsKey("completedCount") ? int.Parse(message.Args["completedCount"]) : 0;
                 int totalSessions = message.Args.ContainsKey("totalSessions") ? int.Parse(message.Args["totalSessions"]) : 0;
@@ -201,11 +209,13 @@ namespace NeuroRehab
             if (PatientDataManager.Instance != null)
             {
                 PatientProfile activeProfile = PatientDataManager.Instance.GetActiveProfile();
-                string targetUserId = activeProfile != null ? activeProfile.userId : "10114";
-                PatientProfile freshProfile = PatientDataManager.Instance.GetOrCreateProfile(targetUserId, "Akshay Kadam");
-                if (freshProfile != null)
+                if (activeProfile != null)
                 {
-                    PatientDataManager.Instance.SaveProfile(freshProfile);
+                    PatientProfile freshProfile = PatientDataManager.Instance.GetOrCreateProfile(activeProfile.userId, activeProfile.patientName);
+                    if (freshProfile != null)
+                    {
+                        PatientDataManager.Instance.SaveProfile(freshProfile);
+                    }
                 }
             }
         }

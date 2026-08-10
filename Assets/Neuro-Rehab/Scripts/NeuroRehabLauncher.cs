@@ -5,12 +5,16 @@ namespace NeuroRehab
 {
     public class NeuroRehabLauncher : MonoBehaviour
     {
-        [Header("Patient Profile Configuration (Replace in real project)")]
+        [Header("Patient Profile Configuration")]
         [Tooltip("Patient's full name")]
-        public string userName = "Akshay Kadam";
+        public string targetUserName = "Patient Name";
 
         [Tooltip("Patient's unique ID")]
-        public string userId = "10114";
+        public string targetUserId = "1001";
+
+        // Property backwards-compatibility getters/setters
+        public string userName { get => targetUserName; set => targetUserName = value; }
+        public string userId { get => targetUserId; set => targetUserId = value; }
 
         [Tooltip("Initial Score / XP")]
         public int initialXP = 0;
@@ -19,32 +23,33 @@ namespace NeuroRehab
         [Tooltip("Drag & drop your Play Button here")]
         public Button playButton;
 
-        [Tooltip("Text component to display Username (e.g. 'Akshay Kadam')")]
+        [Tooltip("Text component to display Username")]
         public Text usernameText;
 
-        [Tooltip("Text component to display User ID (e.g. 'ID: 10114')")]
+        [Tooltip("Text component to display User ID")]
         public Text idText;
 
-        [Tooltip("Text component to display Total Score / XP (e.g. '⭐ 450 Score')")]
+        [Tooltip("Text component to display Total Score / XP")]
         public Text scoreText;
 
-        [Tooltip("Text component to display Completed Exercises (e.g. '✅ 3 / 16 Completed')")]
+        [Tooltip("Text component to display Completed Exercises")]
         public Text completedText;
 
-        [Tooltip("Text component to display Average Accuracy % (e.g. '🎯 88% Accuracy')")]
+        [Tooltip("Text component to display Average Accuracy %")]
         public Text accuracyText;
 
-        [Tooltip("Text component to display Progress % (e.g. '📊 19% Progress')")]
+        [Tooltip("Text component to display Progress %")]
         public Text progressText;
 
-        [Tooltip("Text component to display Last Active Date (e.g. '📅 2026-08-07')")]
+        [Tooltip("Text component to display Last Active Date")]
         public Text lastActiveText;
 
         private NeuroRehabWebViewManager webViewManager;
 
         private void Start()
         {
-            if (userName == "Akshay" || string.IsNullOrEmpty(userName)) userName = "Akshay Kadam";
+            if (string.IsNullOrEmpty(targetUserName)) targetUserName = "Patient Name";
+            if (string.IsNullOrEmpty(targetUserId)) targetUserId = "1001";
 
             // 1. Ensure Managers exist
             if (PatientDataManager.Instance == null)
@@ -79,12 +84,23 @@ namespace NeuroRehab
 
         public void UpdateUI()
         {
-            if (userName == "Akshay" || string.IsNullOrEmpty(userName)) userName = "Akshay Kadam";
+            if (string.IsNullOrEmpty(targetUserName)) targetUserName = "Patient Name";
+            if (string.IsNullOrEmpty(targetUserId)) targetUserId = "1001";
 
-            // Load saved profile directly from disk / memory
-            PatientProfile profile = PatientDataManager.Instance != null 
-                ? PatientDataManager.Instance.GetOrCreateProfile(userId, userName, initialXP)
-                : new PatientProfile(userId, userName, initialXP);
+            // Load active profile set by previous scene/login, or fallback to Inspector settings
+            PatientProfile profile = null;
+            if (PatientDataManager.Instance != null)
+            {
+                profile = PatientDataManager.Instance.GetActiveProfile();
+                if (profile == null)
+                {
+                    profile = PatientDataManager.Instance.GetOrCreateProfile(targetUserId, targetUserName, initialXP);
+                }
+            }
+            else
+            {
+                profile = new PatientProfile(targetUserId, targetUserName, initialXP);
+            }
 
             // Auto-find UserName Text component if not linked in Inspector
             if (usernameText == null)
@@ -114,7 +130,9 @@ namespace NeuroRehab
 
         private void OnDataUpdated(PatientProfile updatedProfile)
         {
-            if (updatedProfile != null && updatedProfile.userId == userId)
+            PatientProfile activeProfile = PatientDataManager.Instance != null ? PatientDataManager.Instance.GetActiveProfile() : null;
+            string currentId = activeProfile != null ? activeProfile.userId : targetUserId;
+            if (updatedProfile != null && updatedProfile.userId == currentId)
             {
                 UpdateUI();
             }
@@ -122,24 +140,28 @@ namespace NeuroRehab
 
         public void LaunchSession()
         {
-            if (userName == "Akshay" || string.IsNullOrEmpty(userName)) userName = "Akshay Kadam";
-
-            Debug.Log($"[NeuroRehabLauncher] Launching Session for {userName} (ID: {userId})...");
+            if (string.IsNullOrEmpty(targetUserName)) targetUserName = "Patient Name";
+            if (string.IsNullOrEmpty(targetUserId)) targetUserId = "1001";
 
             PatientProfile profile = null;
             if (PatientDataManager.Instance != null)
             {
-                profile = PatientDataManager.Instance.GetOrCreateProfile(userId, userName, initialXP);
-                if (profile != null) profile.patientName = "Akshay Kadam";
-                PatientDataManager.Instance.SetActiveProfile(profile);
+                profile = PatientDataManager.Instance.GetActiveProfile();
+                if (profile == null)
+                {
+                    profile = PatientDataManager.Instance.GetOrCreateProfile(targetUserId, targetUserName, initialXP);
+                    PatientDataManager.Instance.SetActiveProfile(profile);
+                }
 
                 // Automatically save / create JSON on disk at Application.persistentDataPath/PatientData/<userId>.json
                 PatientDataManager.Instance.SaveProfile(profile);
             }
             else
             {
-                profile = new PatientProfile(userId, userName, initialXP);
+                profile = new PatientProfile(targetUserId, targetUserName, initialXP);
             }
+
+            Debug.Log($"[NeuroRehabLauncher] Launching Session for {profile.patientName} (ID: {profile.userId})...");
 
             // Launch Web Portal with User ID and Name
             if (webViewManager != null)

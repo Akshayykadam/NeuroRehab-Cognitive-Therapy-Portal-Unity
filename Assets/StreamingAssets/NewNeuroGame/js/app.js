@@ -173,9 +173,9 @@ class AppManager {
         this.activeGameId = null;
         this.activeLevel = 1;
         this.activeGameInstance = null;
-        this.patientName = 'Akshay Kadam';
-        this.userId = '10114';
-        this.stateKey = 'neurorehab_state_Akshay Kadam';
+        this.patientName = '';
+        this.userId = '';
+        this.stateKey = 'neurorehab_state';
 
         window.Games = window.Games || {};
         window.appManagerInstance = this;
@@ -185,8 +185,8 @@ class AppManager {
     init() {
         this.initialized = true;
         const urlParams = new URLSearchParams(window.location.search);
-        this.patientName = urlParams.get('patient') || 'Akshay Kadam';
-        this.userId = urlParams.get('userId') || '10114';
+        this.patientName = urlParams.get('patient') || 'Patient';
+        this.userId = urlParams.get('userId') || '1001';
         this.stateKey = "neurorehab_state_" + this.patientName;
 
         // Clear any old local storage state to guarantee pure JSON data flow

@@ -1414,8 +1414,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66c04726a8c2f4fd386febc27634b7b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NeuroRehab.NeuroRehabLauncher
-  userName: Akshay Kadam
-  userId: 10114
+  targetUserName: Patient Name
+  targetUserId: 1001
+  userName: Patient Name
+  userId: 1001
   initialXP: 0
   playButton: {fileID: 829747057}
   usernameText: {fileID: 471261821}

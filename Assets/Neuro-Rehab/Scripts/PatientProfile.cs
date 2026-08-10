@@ -22,8 +22,8 @@ namespace NeuroRehab
 
         public PatientProfile()
         {
-            userId = "10114";
-            patientName = "Akshay Kadam";
+            userId = "";
+            patientName = "";
             totalXP = 0;
             totalCompletedExercises = 0;
             averageAccuracy = 100;

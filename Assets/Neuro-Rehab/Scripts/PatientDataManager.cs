@@ -40,8 +40,8 @@ namespace NeuroRehab
 
         public PatientProfile GetOrCreateProfile(string userId, string userName, int defaultXp = 0)
         {
-            if (string.IsNullOrEmpty(userId)) userId = "10114";
-            if (string.IsNullOrEmpty(userName)) userName = "Akshay Kadam";
+            if (string.IsNullOrEmpty(userId)) userId = "1001";
+            if (string.IsNullOrEmpty(userName)) userName = "Patient Name";
 
             string filePath = GetPatientJsonPath(userId);
             PatientProfile profile = patientProfiles.Find(p => p.userId == userId);
@@ -106,7 +106,7 @@ namespace NeuroRehab
                     PatientProfile resProfile = JsonUtility.FromJson<PatientProfile>(resourceJson.text);
                     if (resProfile != null && !string.IsNullOrEmpty(resProfile.userId))
                     {
-                        if (resProfile.patientName == "Akshay" || string.IsNullOrEmpty(resProfile.patientName))
+                        if (string.IsNullOrEmpty(resProfile.patientName))
                         {
                             resProfile.patientName = userName;
                         }
@@ -165,9 +165,9 @@ namespace NeuroRehab
             return activeProfile;
         }
 
-        public void SetActivePatient(string userId)
+        public void SetActivePatient(string userId, string userName = "Patient Name")
         {
-            activeProfile = GetOrCreateProfile(userId, "Akshay Kadam");
+            activeProfile = GetOrCreateProfile(userId, userName);
             Debug.Log($"[PatientDataManager] Active Patient set to: {activeProfile.patientName} (ID: {activeProfile.userId})");
             SaveProfile(activeProfile);
         }
