@@ -102,12 +102,14 @@ namespace NeuroRehab
                 profile = new PatientProfile(targetUserId, targetUserName, initialXP);
             }
 
-            // Auto-find UserName Text component if not linked in Inspector
-            if (usernameText == null)
-            {
-                GameObject userObj = GameObject.Find("UserName");
-                if (userObj != null) usernameText = userObj.GetComponent<Text>();
-            }
+            // Auto-find Text components by name if not linked in Inspector
+            if (usernameText == null) { GameObject obj = GameObject.Find("UserName"); if (obj != null) usernameText = obj.GetComponent<Text>(); }
+            if (idText == null) { GameObject obj = GameObject.Find("UserID"); if (obj != null) idText = obj.GetComponent<Text>(); }
+            if (scoreText == null) { GameObject obj = GameObject.Find("Score"); if (obj != null) scoreText = obj.GetComponent<Text>(); }
+            if (completedText == null) { GameObject obj = GameObject.Find("Completed"); if (obj != null) completedText = obj.GetComponent<Text>(); }
+            if (accuracyText == null) { GameObject obj = GameObject.Find("Accuracy"); if (obj != null) accuracyText = obj.GetComponent<Text>(); }
+            if (progressText == null) { GameObject obj = GameObject.Find("Progress"); if (obj != null) progressText = obj.GetComponent<Text>(); }
+            if (lastActiveText == null) { GameObject obj = GameObject.Find("Last Active"); if (obj != null) lastActiveText = obj.GetComponent<Text>(); }
 
             if (usernameText != null) usernameText.text = profile.patientName;
             if (idText != null) idText.text = $"ID: {profile.userId}";
