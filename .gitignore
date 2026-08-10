@@ -51,3 +51,11 @@ unity_build.log
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Screenshots & Device Captures
+*.png
+*.jpg
+*.jpeg
+*.webp
+device_screenshot*.png
+
