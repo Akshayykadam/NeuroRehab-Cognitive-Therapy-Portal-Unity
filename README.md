@@ -118,28 +118,32 @@ Assets/StreamingAssets/NewNeuroGame/
 Ensure the **UniWebView 6** package is installed in your project.
 
 ### Step 4: Launch Session for Any User (Code Example)
-Call this snippet from any script when a user clicks **Play** or opens a therapy session:
+
+Define a helper method in your manager or button script:
 
 ```csharp
 using NeuroRehab;
 
+// 1. Define this helper method in your UI / Game Manager script
 public void PlayGameForUser(string targetUserId, string targetUserName)
 {
-    // 1. Get or create the user's profile (automatically loads <targetUserId>.json from disk)
+    // Loads or creates <targetUserId>.json from disk
     PatientProfile profile = PatientDataManager.Instance.GetOrCreateProfile(targetUserId, targetUserName);
     
-    // 2. Set as active profile
+    // Sets active profile
     PatientDataManager.Instance.SetActiveProfile(profile);
 
-    // 3. Launch Web View (automatically passes profile JSON metrics into HTML)
+    // Launches WebView and auto-passes profile metrics to HTML
     NeuroRehabWebViewManager.Instance.OpenWebView(profile);
 }
 ```
 
+Then, whenever a patient logs in or clicks **Play**, you call it in **1 line**:
+
 ```csharp
-// Example Usage:
-PlayGameForUser("user_101", "John Doe");   // Loads & saves to: .../PatientData/user_101.json
-PlayGameForUser("user_202", "Jane Smith"); // Loads & saves to: .../PatientData/user_202.json
+// Call this 1 line anywhere in your project to launch a session for any user:
+PlayGameForUser("john_102", "John Doe");   // Loads & saves to: .../PatientData/john_102.json
+PlayGameForUser("sarah_505", "Sarah Connor"); // Loads & saves to: .../PatientData/sarah_505.json
 ```
 
 ---
