@@ -141,9 +141,8 @@ public void PlayGameForUser(string targetUserId, string targetUserName)
 Then, whenever a patient logs in or clicks **Play**, you call it in **1 line**:
 
 ```csharp
-// Call this 1 line anywhere in your project to launch a session for any user:
-PlayGameForUser("john_102", "John Doe");   // Loads & saves to: .../PatientData/john_102.json
-PlayGameForUser("sarah_505", "Sarah Connor"); // Loads & saves to: .../PatientData/sarah_505.json
+// Call this 1 line anywhere in your project to launch a session for your user:
+PlayGameForUser("10114", "Akshay Kadam");   // Loads & saves to: .../PatientData/10114.json
 ```
 
 ---
