@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroRehab - Cognitive Therapy Portal</title>
+    <!-- Fonts - Inter for subtle clinical readability -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for clinical/therapy icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css?v=16">
+</head>
+<body>
+    <!-- Portrait Mode Overlay -->
+    <div id="portrait-overlay" class="overlay-msg">
+        <div class="overlay-msg-content">
+            <i class="fa-solid fa-rotate"></i>
+            <h2>Rotate Your Screen</h2>
+            <p>This therapy application is designed for landscape screens. Please rotate your device to begin.</p>
+        </div>
+    </div>
+
+    <!-- Phone Screen Blocker Overlay -->
+    <div id="phone-blocker-overlay" class="overlay-msg">
+        <div class="overlay-msg-content">
+            <i class="fa-solid fa-tablet-screen-button"></i>
+            <h2>Tablet or Desktop Required</h2>
+            <p>This cognitive rehabilitation portal is designed for clinical use on tablet (iPad/Android Tablet) or desktop screens only. Mobile phone screens are too small to support these exercises.</p>
+        </div>
+    </div>
+
+    <!-- Main Landscape Viewport -->
+    <div id="app-viewport">
+        <!-- Dashboard/Lobby View -->
+        <div id="lobby-view" class="view active">
+            <header class="lobby-header">
+                <div class="logo">
+                    <img src="assets/wizio_logo.png" alt="Wizio Logo" class="wizio-header-logo">
+                    <span>WIZIO <span>NEUROREHAB</span></span>
+                </div>
+                <div class="patient-badge">
+                    <i class="fa-solid fa-hospital-user patient-badge-icon"></i>
+                    <span id="patient-name-display">Patient: Akshay Kadam</span>
+                    <span id="patient-id-display" class="id-tag">ID: 10114</span>
+                </div>
+                <!-- Lobby navigation tabs hidden as only exercise screen is active -->
+                <div class="lobby-tabs" style="display: none;">
+                    <button id="tab-exercises" class="tab-btn active">
+                        <i class="fa-solid fa-shapes"></i> Exercises
+                    </button>
+                    <!-- Progress Dashboard tab hidden as requested -->
+                    <button id="tab-dashboard" class="tab-btn" style="display: none;">
+                        <i class="fa-solid fa-chart-line"></i> Progress Dashboard
+                    </button>
+                </div>
+                <div class="player-hud">
+                    <div class="hud-stat" title="Exercises Practiced">
+                        <i class="fa-solid fa-circle-check icon-green"></i>
+                        <div>
+                            <span class="stat-label">Practiced</span>
+                            <span id="player-completed" class="stat-value">0/16</span>
+                        </div>
+                    </div>
+                    <!-- Progress stat hidden as requested -->
+                    <div class="hud-stat" title="Overall Progress" style="display: none;">
+                        <i class="fa-solid fa-chart-line icon-blue"></i>
+                        <div>
+                            <span class="stat-label">Progress</span>
+                            <span id="player-progress" class="stat-value">0%</span>
+                        </div>
+                    </div>
+                    <div class="hud-stat" title="Average Accuracy">
+                        <i class="fa-solid fa-bullseye icon-orange"></i>
+                        <div>
+                            <span class="stat-label">Accuracy</span>
+                            <span id="player-accuracy" class="stat-value">100%</span>
+                        </div>
+                    </div>
+                    <button id="reset-progress-btn" class="icon-btn" title="Reset History">
+                        <i class="fa-solid fa-arrow-rotate-left"></i>
+                    </button>
+                    <button id="sound-toggle-btn" class="icon-btn" title="Toggle Sound">
+                        <i id="sound-icon" class="fa-solid fa-volume-high"></i>
+                    </button>
+                    <button id="exit-app-btn" class="hud-exit-btn" title="Exit to Unity Menu">
+                        <i class="fa-solid fa-right-from-bracket"></i> Exit
+                    </button>
+                </div>
+            </header>
+
+            <main class="lobby-main">
+                <!-- Today's Session Workout Card hidden as requested -->
+                <div id="session-card-container" style="display: none;"></div>
+
+                <!-- Exercises Tab Content -->
+                <div id="tab-content-exercises">
+                    <div class="lobby-welcome">
+                        <h1>Your Supportive Mind Gym</h1>
+                        <p>Every single exercise you play helps nourish, build, and strengthen neural connections. Take your time, focus gently, and remember: consistency is your superpower!</p>
+                    </div>
+                    <!-- Game Grid -->
+                    <div class="game-grid" id="game-grid">
+                        <!-- Cards will be populated dynamically by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Progress Dashboard Tab Content -->
+                <div id="tab-content-dashboard" style="display: none;">
+                    <!-- Dashboard content is dynamically populated by JS -->
+                </div>
+            </main>
+        </div>
+
+        <!-- Game Screen View -->
+        <div id="game-view" class="view">
+            <!-- Game HUD (Top Bar) -->
+            <div class="game-hud">
+                <button id="game-back-btn" class="game-nav-btn">
+                    <i class="fa-solid fa-arrow-left"></i> Return to Lobby
+                </button>
+                <div class="game-title-container">
+                    <span id="game-current-name">Exercise Title</span>
+                    <span id="game-current-level" class="badge">Level 1</span>
+                </div>
+                <div class="game-live-stats">
+                    <div class="live-stat-item" id="hud-score-container">
+                        <span class="live-label">ACCURACY</span>
+                        <span id="hud-score" class="live-val">100%</span>
+                    </div>
+                    <div class="live-stat-item" id="hud-timer-container">
+                        <span class="live-label">TIME</span>
+                        <span id="hud-timer" class="live-val">00:00</span>
+                    </div>
+                    <div class="live-stat-item" id="hud-lives-container">
+                        <span class="live-label">CHANCES</span>
+                        <span id="hud-lives" class="live-val">3</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Arena (Play Zone) -->
+            <div class="game-arena" id="game-arena">
+                <!-- Individual game content templates will inject here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Instructions Overlay Modal -->
+    <div id="instructions-modal" class="modal">
+        <div class="modal-content glassmorphism" style="position: relative;">
+            <button id="modal-close-btn" class="close-modal-btn" aria-label="Close modal">&times;</button>
+            <div class="modal-header">
+                <h2 id="modal-game-title">Exercise Title</h2>
+                <span class="cognitive-tag" id="modal-game-cognitive">Focus Skill</span>
+            </div>
+            <div class="modal-body">
+                <h3>Objective</h3>
+                <p id="modal-game-desc">Instruction description goes here.</p>
+                
+                <div class="modal-level-selector">
+                    <h3>Therapy Difficulty Level</h3>
+                    <div class="clinical-level-stepper">
+                        <button id="level-dec-btn" class="stepper-btn" aria-label="Decrease level">&minus;</button>
+                        <span id="level-display-val">1</span>
+                        <button id="level-inc-btn" class="stepper-btn" aria-label="Increase level">&plus;</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-start-btn" class="primary-btn">START EXERCISE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game End / Result Modal -->
+    <div id="result-modal" class="modal">
+        <div class="modal-content glassmorphism result-content">
+            <div id="result-header-icon" class="result-icon-success">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h2 id="result-title">EXERCISE COMPLETE</h2>
+            <p id="result-message">Great job! You completed this exercise level.</p>
+            
+            <div class="result-stats">
+                <div class="result-stat-box">
+                    <span class="stat-box-label">SESSION ACCURACY</span>
+                    <span id="result-score" class="stat-box-val">100%</span>
+                </div>
+                <div class="result-stat-box">
+                    <span class="stat-box-label">PROGRESS</span>
+                    <span id="result-xp" class="stat-box-val">Level Cleared!</span>
+                </div>
+            </div>
+            
+            <div class="result-actions">
+                <button id="result-lobby-btn" class="secondary-btn">LOBBY</button>
+                <button id="result-retry-btn" class="secondary-btn">PRACTICE AGAIN</button>
+                <button id="result-next-btn" class="primary-btn">NEXT LEVEL</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/unity-bridge.js?v=3"></script>
+    <script src="js/sound.js?v=8"></script>
+    <!-- Games modules list loaded sequentially -->
+    <script src="js/games/colour_fill_data.js"></script>
+    <script src="js/games/trace_letter.js?v=9"></script>
+    <script src="js/games/colour_fill.js?v=9"></script>
+    <script src="js/games/tap_object.js?v=9"></script>
+    <script src="js/games/memory.js?v=8"></script>
+    <script src="js/games/object_recall.js?v=8"></script>
+    <script src="js/games/odd_one_out.js?v=8"></script>
+    <script src="js/games/task_switching.js?v=8"></script>
+    <script src="js/games/sorting.js?v=8"></script>
+    <script src="js/games/falling_catcher.js?v=9"></script>
+    <script src="js/games/word_association.js?v=9"></script>
+    <script src="js/games/color_confusion.js?v=8"></script>
+    <script src="js/games/quick_switch.js?v=8"></script>
+    <script src="js/games/eagle_eye.js?v=9"></script>
+    <script src="js/games/turnabout.js?v=10"></script>
+    <script src="js/games/turning_tables.js?v=10"></script>
+    <script src="js/games/quick_count.js?v=10"></script>
+    <!-- Main controller script -->
+    <script src="js/app.js?v=16"></script>
+</body>
+</html>

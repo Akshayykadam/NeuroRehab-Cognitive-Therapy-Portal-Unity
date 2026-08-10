@@ -1,0 +1,1530 @@
+/**
+ * NeuroRehab Core Application Manager
+ */
+
+// Define Therapy Exercises Metadata
+// Define Therapy Exercises Metadata
+const GAME_DEFS = [
+    {
+        id: "trace_letter",
+        name: "Trace the Shape",
+        skill: "Motor Control",
+        theme: "theme-blue",
+        icon: "fa-solid fa-bezier-curve",
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><path d="M15,30 Q35,10 50,30 T85,30" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="4" stroke-dasharray="4 4" /><path d="M15,30 Q35,10 50,30" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="4" stroke-linecap="round" /><circle cx="50" cy="30" r="6" fill="#fff" /><path d="M50,30 L55,42 L45,38 Z" fill="#fff" /></svg>`,
+        desc: "Slowly trace pathways and shapes with your pointer. Focuses on motor planning, hand-eye tracking, and precise spatial movement control."
+    },
+    {
+        id: "colour_fill",
+        name: "Colour Fill exercise",
+        skill: "Spatial Logic",
+        theme: "theme-green",
+        icon: "fa-solid fa-fill-drip",
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><line x1="25" y1="30" x2="50" y2="15" stroke="rgba(255,255,255,0.5)" stroke-width="2" /><line x1="25" y1="30" x2="50" y2="45" stroke="rgba(255,255,255,0.5)" stroke-width="2" /><line x1="50" y1="15" x2="75" y2="30" stroke="rgba(255,255,255,0.5)" stroke-width="2" /><line x1="50" y1="45" x2="75" y2="30" stroke="rgba(255,255,255,0.5)" stroke-width="2" /><line x1="50" y1="15" x2="50" y2="45" stroke="rgba(255,255,255,0.5)" stroke-width="2" /><circle cx="25" cy="30" r="7" fill="#fff" /><circle cx="50" cy="15" r="7" fill="rgba(255,255,255,0.7)" /><circle cx="50" cy="45" r="7" fill="rgba(255,255,255,0.7)" /><circle cx="75" cy="30" r="7" fill="#fff" /></svg>`,
+        desc: "Color connected circles so that no two connected items share the same color. Encourages logical planning, visual inspection, and puzzle sorting."
+    },
+    {
+        id: "tap_object",
+        name: "Selective Focus",
+        skill: "Visual Attention",
+        theme: "theme-gold",
+        icon: "fa-solid fa-bullseye",
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="50" cy="30" r="20" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" /><circle cx="50" cy="30" r="10" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" /><line x1="50" y1="5" x2="50" y2="55" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" /><line x1="20" y1="30" x2="80" y2="30" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" /><polygon points="50,22 53,28 59,29 55,33 56,39 50,36 44,39 45,33 41,29 47,28" fill="#fff" /></svg>`,
+        desc: "Identify and tap moving shapes that match the active target description (e.g., 'Green Star'). Exercises visual search and selective attention."
+    },
+    {
+        id: "memory",
+        name: "Memory Cards",
+        skill: "Working Memory",
+        theme: "theme-purple",
+        icon: "fa-solid fa-clone",
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><rect x="18" y="14" width="22" height="32" rx="4" fill="rgba(255,255,255,0.5)" stroke="rgba(255,255,255,0.8)" stroke-width="1.5" transform="rotate(-8, 29, 30)" /><rect x="60" y="14" width="22" height="32" rx="4" fill="rgba(255,255,255,0.5)" stroke="rgba(255,255,255,0.8)" stroke-width="1.5" transform="rotate(8, 71, 30)" /><rect x="38" y="12" width="24" height="36" rx="4" fill="#fff" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" /><circle cx="50" cy="30" r="5" fill="var(--clinical-blue)" /></svg>`,
+        desc: "Flip cards to find matching shapes. Levels scale to support associative memory by matching math equations to their solutions."
+    },
+    {
+        id: "object_recall",
+        name: "Recall Practice",
+        skill: "Delayed Recall",
+        theme: "theme-magenta",
+        icon: "fa-solid fa-clock-rotate-left",
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="28" cy="22" r="6" fill="rgba(255,255,255,0.6)" /><rect x="60" y="16" width="12" height="12" rx="2" fill="rgba(255,255,255,0.6)" /><polygon points="48,42 53,50 43,50" fill="rgba(255,255,255,0.6)" /><path d="M50,15 A15,15 0 0,1 65,30 A15,15 0 0,1 50,45 A15,15 0 0,1 35,30 A15,15 0 0,1 50,15 Z" fill="none" stroke="#fff" stroke-width="2" /><circle cx="50" cy="30" r="5" fill="#fff" /></svg>`,
+        desc: "Study a group of symbols, then spot which new object is added after they shuffle. Supports short-term visual retention and recall speed."
+    },
+    {
+        id: "odd_one_out",
+        name: "Spot the Difference",
+        skill: "Visual Logic",
+        theme: "theme-orange",
+        icon: "fa-solid fa-binoculars",
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="25" cy="30" r="8" fill="rgba(255,255,255,0.7)" /><circle cx="50" cy="30" r="8" fill="rgba(255,255,255,0.7)" /><rect x="71" y="26" width="8" height="8" fill="#fff" rx="1" transform="rotate(45, 75, 30)" /></svg>`,
+        desc: "Find the single shape that has a rotational, color-shade, or edge count discrepancy. Exercises fine visual detail comparison."
+    },
+    {
+        id: "task_switching",
+        name: "Cognitive Flex",
+        skill: "Cognitive Shifting",
+        theme: "theme-teal",
+        icon: "fa-solid fa-arrows-spin",
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><path d="M30,30 A15,15 0 1,1 70,30" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="3" /><path d="M70,30 A15,15 0 1,1 30,30" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="25 10" /><polygon points="70,25 78,30 70,35" fill="#fff" /><polygon points="30,35 22,30 30,25" fill="rgba(255,255,255,0.4)" /><circle cx="50" cy="30" r="6" fill="#fff" /></svg>`,
+        desc: "Match objects by shifting your focus between Shape, Color, or Number. Supports mental agility and cognitive switching capacity."
+    },
+    {
+        id: "sorting",
+        name: "Sorting Practice",
+        skill: "Categorisation",
+        theme: "theme-indigo",
+        icon: "fa-solid fa-filter",
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><path d="M50,12 L30,45 L15,45" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="3" /><path d="M50,12 L70,45 L85,45" fill="none" stroke="#fff" stroke-width="3" /><circle cx="50" cy="17" r="5" fill="#fff" /><rect x="20" y="40" width="10" height="10" fill="rgba(255,255,255,0.5)" rx="1" /><circle cx="78" cy="45" r="5" fill="#fff" /></svg>`,
+        desc: "Sort incoming cards into left and right bins according to categories (Even/Odd, Living/Non-living). Trains categorization and quick sorting."
+    },
+    {
+        id: "falling_catcher",
+        name: "Catching Exercise",
+        skill: "Coordination",
+        theme: "theme-red",
+        icon: "fa-solid fa-basket-shopping",
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><rect x="35" y="45" width="30" height="8" rx="4" fill="#fff" /><polygon points="50,15 53,21 60,21 55,25 57,31 50,27 43,31 45,25 40,21 47,21" fill="rgba(255,255,255,0.8)" /><polygon points="25,20 27,25 33,25 29,29 31,34 25,30 19,34 21,29 17,25 23,25" fill="rgba(255,255,255,0.4)" /><polygon points="75,25 77,30 83,30 79,34 81,39 75,35 69,39 71,34 67,30 73,30" fill="rgba(255,255,255,0.4)" /></svg>`,
+        desc: "Move a slider at the bottom to catch positive green gems while avoiding red obstacles. Promotes hand-eye reaction and spatial forecasting."
+    },
+    {
+        id: "word_association",
+        name: "Word Association",
+        skill: "Semantic Memory",
+        theme: "theme-violet",
+        icon: "fa-solid fa-network-wired",
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="50" cy="30" r="12" fill="#fff" opacity="0.9" /><circle cx="26" cy="20" r="8" fill="rgba(255,255,255,0.5)" /><circle cx="74" cy="24" r="8" fill="rgba(255,255,255,0.5)" /><circle cx="36" cy="44" r="7" fill="rgba(255,255,255,0.5)" /><line x1="50" y1="30" x2="26" y2="20" stroke="rgba(255,255,255,0.6)" stroke-width="2" /><line x1="50" y1="30" x2="74" y2="24" stroke="rgba(255,255,255,0.6)" stroke-width="2" /><line x1="50" y1="30" x2="36" y2="44" stroke="rgba(255,255,255,0.6)" stroke-width="2" /></svg>`,
+        desc: "Tap the floating words that belong to the active core topic. Strengthens vocabulary connection speed and semantic recall."
+    },
+    {
+        id: "color_confusion",
+        name: "Color Confusion",
+        skill: "Inhibition",
+        theme: "theme-orange",
+        icon: "fa-solid fa-palette",
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><rect x="25" y="10" width="50" height="22" rx="4" fill="rgba(255,255,255,0.9)" /><text x="50" y="25" font-family="'Outfit', sans-serif" font-weight="800" font-size="10" fill="#f97316" text-anchor="middle">GREEN</text><rect x="20" y="38" width="16" height="10" rx="2" fill="#ef4444" /><rect x="42" y="38" width="16" height="10" rx="2" fill="#3b82f6" /><rect x="64" y="38" width="16" height="10" rx="2" fill="#10b981" /></svg>`,
+        desc: "Tap the correct button based on font color or word meaning. Exercises mental focus, cognitive inhibition, and Stroop processing."
+    },
+    {
+        id: "quick_switch",
+        name: "Quick Switch",
+        skill: "Cognitive Shifting",
+        theme: "theme-teal",
+        icon: "fa-solid fa-shuffle",
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="22" cy="18" r="7" fill="#fff" /><text x="22" y="22" font-family="'Outfit', sans-serif" font-weight="800" font-size="10" fill="#0d9488" text-anchor="middle">1</text><circle cx="50" cy="40" r="7" fill="#fff" /><text x="50" y="44" font-family="'Outfit', sans-serif" font-weight="800" font-size="10" fill="#0d9488" text-anchor="middle">A</text><circle cx="78" cy="18" r="7" fill="rgba(255,255,255,0.5)" /><text x="78" y="22" font-family="'Outfit', sans-serif" font-weight="800" font-size="10" fill="#fff" text-anchor="middle">2</text><line x1="28" y1="21" x2="44" y2="35" stroke="#fff" stroke-width="2" /><line x1="56" y1="35" x2="72" y2="21" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-dasharray="2 2" /></svg>`,
+        desc: "Connect numbers and letters in alternating sequence (1-A-2-B-3-C...). Promotes cognitive flexibility, sequencing speed, and executive control."
+    },
+    {
+        id: "eagle_eye",
+        name: "Eagle Eye",
+        skill: "Visual Attention",
+        theme: "theme-blue",
+        icon: "fa-solid fa-eye",
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="30" cy="18" r="8" fill="#fff" /><text x="30" y="22" font-family="'Outfit', sans-serif" font-weight="800" font-size="10" fill="#1b52a4" text-anchor="middle">1</text><circle cx="70" cy="22" r="7" fill="rgba(255,255,255,0.7)" /><text x="70" y="26" font-family="'Outfit', sans-serif" font-weight="800" font-size="8" fill="#1b52a4" text-anchor="middle">2</text><circle cx="45" cy="44" r="9" fill="rgba(255,255,255,0.5)" /><text x="45" y="48" font-family="'Outfit', sans-serif" font-weight="800" font-size="11" fill="#fff" text-anchor="middle">3</text><circle cx="15" cy="42" r="5" fill="rgba(255,255,255,0.2)" /><circle cx="85" cy="45" r="4" fill="rgba(255,255,255,0.1)" /></svg>`,
+        desc: "Quickly locate and select numbers in ascending order (1, 2, 3...). Enhances rapid visual scanning, attention span, and field of view."
+    },
+    {
+        id: "turnabout",
+        name: "Turnabout",
+        skill: "Mental Rotation",
+        theme: "theme-indigo",
+        icon: "fa-solid fa-arrows-turn-to-dots",
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><rect x="20" y="10" width="36" height="36" rx="6" fill="rgba(255,255,255,0.85)" /><path d="M 75,22 A 16,16 0 1,1 72,36" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" /><path d="M 72,36 L 66,32 M 72,36 L 77,31" stroke="#fff" stroke-width="4" stroke-linecap="round" /><circle cx="28" cy="18" r="4" fill="#6366f1" /><circle cx="48" cy="38" r="4" fill="#6366f1" /><circle cx="44" cy="24" r="4" fill="#ef4444" /></svg>`,
+        desc: "Identify the correctly rotated version of a shape grid. Strengthens mental rotation capabilities, spatial awareness, and visual reasoning."
+    },
+    {
+        id: "turning_tables",
+        name: "Turning Tables",
+        skill: "Spatial Memory",
+        theme: "theme-green",
+        icon: "fa-solid fa-arrows-spin",
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="50" cy="30" r="22" fill="rgba(255,255,255,0.3)" stroke="#fff" stroke-width="2" /><circle cx="50" cy="30" r="10" fill="rgba(255,255,255,0.5)" /><circle cx="50" cy="14" r="4.5" fill="#fff" /><circle cx="50" cy="46" r="4.5" fill="#10b981" /><circle cx="34" cy="30" r="4.5" fill="#fff" opacity="0.6" /><circle cx="66" cy="30" r="4.5" fill="#10b981" /><path d="M 78,22 A 28,28 0 0,0 72,12" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" /><path d="M 72,12 L 67,16 M 72,12 L 75,7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" /></svg>`,
+        desc: "Memorize target slots on a round table, track them as the table spins, and identify their new positions. Exercises dynamic spatial tracking and recall."
+    },
+    {
+        id: "quick_count",
+        name: "Quick Count",
+        skill: "Visual Attention",
+        theme: "theme-magenta",
+        icon: "fa-solid fa-table-cells-large",
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><rect x="24" y="10" width="10" height="10" rx="2" fill="#ec4899" /><rect x="38" y="10" width="10" height="10" rx="2" fill="rgba(255,255,255,0.4)" /><rect x="52" y="10" width="10" height="10" rx="2" fill="#ec4899" /><rect x="66" y="10" width="10" height="10" rx="2" fill="rgba(255,255,255,0.4)" /><rect x="24" y="24" width="10" height="10" rx="2" fill="rgba(255,255,255,0.4)" /><rect x="38" y="24" width="10" height="10" rx="2" fill="#ec4899" /><rect x="52" y="24" width="10" height="10" rx="2" fill="rgba(255,255,255,0.4)" /><rect x="66" y="24" width="10" height="10" rx="2" fill="#ec4899" /><rect x="24" y="38" width="10" height="10" rx="2" fill="#ec4899" /><rect x="38" y="38" width="10" height="10" rx="2" fill="rgba(255,255,255,0.4)" /><rect x="52" y="38" width="10" height="10" rx="2" fill="#ec4899" /><rect x="66" y="38" width="10" height="10" rx="2" fill="rgba(255,255,255,0.4)" /></svg>`,
+        desc: "Instantly subitize or count blocks of a specific color in a randomized grid against a swift countdown. Strengthens scanning speed and visual quantity estimation."
+    }
+];
+
+function getFormattedDate(d = new Date()) {
+    try {
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    } catch (e) {
+        return "2026-08-10";
+    }
+}
+
+class AppManager {
+    constructor() {
+        this.gameState = {
+            xp: 0,
+            progress: {}, // kept for tracking cleared stats
+            highScores: {} // { gameId: { level: score } }
+        };
+        
+        this.activeGameId = null;
+        this.activeLevel = 1;
+        this.activeGameInstance = null;
+        this.patientName = 'Akshay Kadam';
+        this.userId = '10114';
+        this.stateKey = 'neurorehab_state_Akshay Kadam';
+
+        window.Games = window.Games || {};
+        window.appManagerInstance = this;
+        this.initialized = false;
+    }
+
+    init() {
+        this.initialized = true;
+        const urlParams = new URLSearchParams(window.location.search);
+        this.patientName = urlParams.get('patient') || 'Akshay Kadam';
+        this.userId = urlParams.get('userId') || '10114';
+        this.stateKey = "neurorehab_state_" + this.patientName;
+
+        const patientEl = document.getElementById("patient-name-display");
+        if (patientEl) {
+            patientEl.innerText = `Patient: ${this.patientName}`;
+        }
+        const userIdEl = document.getElementById("patient-id-display");
+        if (userIdEl) {
+            userIdEl.innerText = `ID: ${this.userId}`;
+        }
+
+        if (window.UnityBridge) {
+            window.UnityBridge.init();
+        }
+        this.loadState();
+
+        // Parse saved highScores passed from Unity via URL query parameters
+        const highScoresParam = urlParams.get('highScores');
+        if (highScoresParam) {
+            try {
+                const hs = JSON.parse(decodeURIComponent(highScoresParam));
+                if (hs && typeof hs === 'object') {
+                    this.gameState.highScores = Object.assign({}, this.gameState.highScores, hs);
+                }
+            } catch(e) { console.warn("Could not parse highScores query param", e); }
+        }
+
+        // Parse saved progress passed from Unity via URL query parameters
+        const progressParam = urlParams.get('progressData');
+        if (progressParam) {
+            try {
+                const prog = JSON.parse(decodeURIComponent(progressParam));
+                if (prog && typeof prog === 'object') {
+                    this.gameState.progress = Object.assign({}, this.gameState.progress, prog);
+                }
+            } catch(e) { console.warn("Could not parse progress query param", e); }
+        }
+
+        // Parse saved highAccuracies passed from Unity via URL query parameters
+        const highAccuraciesParam = urlParams.get('highAccuracies');
+        if (highAccuraciesParam) {
+            try {
+                const ha = JSON.parse(decodeURIComponent(highAccuraciesParam));
+                if (ha && typeof ha === 'object') {
+                    this.gameState.highAccuracies = Object.assign({}, this.gameState.highAccuracies, ha);
+                }
+            } catch(e) { console.warn("Could not parse highAccuracies query param", e); }
+        }
+
+        // If query parameters were not provided (standalone desktop browser load), fetch JSON from Unity HTTP Bridge
+        if (!highScoresParam && !progressParam && window.location && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+            try {
+                fetch("http://localhost:8080/get_patient_data?userId=" + encodeURIComponent(this.userId))
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data && typeof data === 'object') {
+                            if (typeof data.totalXP === 'number') this.gameState.xp = data.totalXP;
+                            if (data.highScoresJson) {
+                                try { this.gameState.highScores = JSON.parse(data.highScoresJson); } catch(e) {}
+                            }
+                            if (data.progressJson) {
+                                try { this.gameState.progress = JSON.parse(data.progressJson); } catch(e) {}
+                            }
+                            if (data.highAccuraciesJson) {
+                                try { this.gameState.highAccuracies = JSON.parse(data.highAccuraciesJson); } catch(e) {}
+                            }
+                            this.renderLobby();
+                            this.updatePlayerHUD();
+                        }
+                    })
+                    .catch(() => {});
+            } catch(e) {}
+        }
+
+        this.renderLobby();
+        this.renderSessionCard();
+        this.renderDashboard();
+        this.bindEvents();
+        this.updatePlayerHUD();
+        this.setupTabs();
+
+        // Expose global callback for Unity JS evaluation
+        if (window.UnityBridge) {
+            window.UnityBridge.setPatientData = (data) => {
+                if (data && typeof data === 'object') {
+                    if (data.xp !== undefined && typeof data.xp === 'number') {
+                        this.gameState.xp = Math.max(this.gameState.xp, data.xp);
+                    }
+                    if (data.userId) this.userId = data.userId;
+                    if (data.patientName) this.patientName = data.patientName;
+                    if (data.highScores) this.gameState.highScores = Object.assign({}, this.gameState.highScores, data.highScores);
+                    if (data.progress) this.gameState.progress = Object.assign({}, this.gameState.progress, data.progress);
+                    this.saveState();
+                    this.renderLobby();
+                    this.renderDashboard();
+                }
+            };
+        }
+    }
+
+    loadState() {
+        const saved = localStorage.getItem(this.stateKey);
+        if (saved) {
+            try {
+                this.gameState = JSON.parse(saved);
+            } catch (e) {
+                console.error("Failed to parse state", e);
+            }
+        }
+
+        if (!this.gameState || typeof this.gameState !== "object") {
+            this.gameState = {};
+        }
+        if (!this.gameState.progress || typeof this.gameState.progress !== "object") {
+            this.gameState.progress = {};
+        }
+        if (!this.gameState.highScores || typeof this.gameState.highScores !== "object") {
+            this.gameState.highScores = {};
+        }
+        if (!this.gameState.highAccuracies || typeof this.gameState.highAccuracies !== "object") {
+            this.gameState.highAccuracies = {};
+        }
+        if (!this.gameState.accuracies || typeof this.gameState.accuracies !== "object") {
+            this.gameState.accuracies = {};
+        }
+
+        GAME_DEFS.forEach(g => {
+            if (!this.gameState.progress[g.id]) {
+                this.gameState.progress[g.id] = 1;
+            }
+            if (!this.gameState.highScores[g.id] || typeof this.gameState.highScores[g.id] !== "object") {
+                this.gameState.highScores[g.id] = {};
+            }
+            if (!this.gameState.highAccuracies[g.id] || typeof this.gameState.highAccuracies[g.id] !== "object") {
+                this.gameState.highAccuracies[g.id] = {};
+            }
+            if (!this.gameState.accuracies[g.id] || typeof this.gameState.accuracies[g.id] !== "object") {
+                this.gameState.accuracies[g.id] = {};
+            }
+        });
+        
+        if (typeof this.gameState.xp !== "number") {
+            this.gameState.xp = 0;
+        }
+
+        if (!this.gameState.sessionHistory) {
+            this.gameState.sessionHistory = [];
+            let tempSessions = [];
+            GAME_DEFS.forEach(g => {
+                const accs = this.gameState.highAccuracies[g.id] || {};
+                const scores = this.gameState.highScores[g.id] || {};
+                Object.keys(accs).forEach(lvl => {
+                    const acc = accs[lvl] || 0;
+                    if (acc > 0) {
+                        tempSessions.push({
+                            accuracy: acc,
+                            xp: scores[lvl] || 200
+                        });
+                    }
+                });
+            });
+
+            // Reconstruct up to last 7 real entries
+            let accumulatedXp = 0;
+            tempSessions.slice(-7).forEach((rec, idx) => {
+                accumulatedXp += rec.xp;
+                const cpiVal = Math.min(1000, 100 + Math.round(accumulatedXp * 0.4));
+                this.gameState.sessionHistory.push({
+                    session: "S" + (idx + 1),
+                    accuracy: rec.accuracy,
+                    cpi: cpiVal
+                });
+            });
+
+            this.gameState.totalSessions = tempSessions.length;
+        }
+
+        // Migration: If sessionHistory has xp instead of cpi, convert it
+        if (this.gameState.sessionHistory) {
+            this.gameState.sessionHistory.forEach(h => {
+                if (h.xp !== undefined && h.cpi === undefined) {
+                    h.cpi = Math.min(1000, 100 + Math.round(h.xp * 0.4));
+                    delete h.xp;
+                }
+            });
+        }
+
+        if (typeof this.gameState.totalSessions !== "number") {
+            this.gameState.totalSessions = this.gameState.sessionHistory.length;
+        }
+
+        // Initialize Daily & Streak Tracking
+        const todayStr = getFormattedDate();
+        if (!this.gameState.daily) {
+            this.gameState.daily = {
+                date: todayStr,
+                played: [],
+                streak: 0,
+                lastPlayed: ""
+            };
+        }
+        
+        if (this.gameState.daily.date !== todayStr) {
+            const lastPlayed = this.gameState.daily.lastPlayed;
+            
+            // Check if streak was continued yesterday
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayStr = getFormattedDate(yesterday);
+            
+            let newStreak = this.gameState.daily.streak || 0;
+            if (lastPlayed !== yesterdayStr && lastPlayed !== todayStr) {
+                // Streak broken because they skipped a day
+                newStreak = 0;
+            }
+            
+            this.gameState.daily = {
+                date: todayStr,
+                played: [],
+                streak: newStreak,
+                lastPlayed: lastPlayed
+            };
+        }
+
+        const soundMuted = localStorage.getItem("neurorehab_muted") === "true";
+        if (soundMuted) {
+            Sound.muted = true;
+            this.updateSoundIcon();
+        }
+    }
+
+    saveState() {
+        localStorage.setItem(this.stateKey, JSON.stringify(this.gameState));
+        localStorage.setItem("neurorehab_muted", Sound.muted ? "true" : "false");
+        this.updatePlayerHUD();
+        this.syncScoreToUnity();
+    }
+
+    syncScoreToUnity() {
+        const avgAcc = this.getAverageAccuracy ? this.getAverageAccuracy() : 100;
+        const payload = {
+            userId: this.userId,
+            patientName: this.patientName,
+            xp: this.gameState.xp,
+            accuracy: avgAcc,
+            highScores: JSON.stringify(this.gameState.highScores || {}),
+            progress: JSON.stringify(this.gameState.progress || {}),
+            highAccuracies: JSON.stringify(this.gameState.highAccuracies || {}),
+            totalSessions: this.gameState.totalSessions || 0,
+            completedCount: this.getCompletedCount ? this.getCompletedCount() : 0
+        };
+
+        if (window.UnityBridge) {
+            window.UnityBridge.sendEvent("score_sync", payload);
+        }
+
+        // Fallback for Mac Browser testing outside native UniWebView overlay
+        if (location.protocol.startsWith('http') || location.protocol.startsWith('file')) {
+            try {
+                const query = new URLSearchParams(payload).toString();
+                fetch("http://localhost:8080/score_sync?" + query, { mode: 'no-cors' }).catch(e => {});
+            } catch(e) {}
+        }
+    }
+
+    getCompletedCount() {
+        let count = 0;
+        GAME_DEFS.forEach(g => {
+            if (this.isGamePracticed(g.id)) count++;
+        });
+        return count;
+    }
+
+    getAverageAccuracy() {
+        let totalAcc = 0;
+        let countAcc = 0;
+        GAME_DEFS.forEach(g => {
+            const accs = (this.gameState.highAccuracies && this.gameState.highAccuracies[g.id]) || {};
+            let maxAcc = 0;
+            Object.keys(accs).forEach(lvl => {
+                if (accs[lvl] > 0) maxAcc = Math.max(maxAcc, accs[lvl]);
+            });
+            if (maxAcc > 0) {
+                totalAcc += maxAcc;
+                countAcc++;
+            }
+        });
+        return countAcc > 0 ? Math.round(totalAcc / countAcc) : 100;
+    }
+
+    isGamePracticed(gameId) {
+        // 1. Check if they have reached a level higher than 1
+        const progress = this.gameState.progress[gameId] || 1;
+        if (progress > 1) return true;
+        
+        // 2. Check if they have any high score
+        const scores = this.gameState.highScores[gameId] || {};
+        for (const lvl in scores) {
+            if (scores[lvl] > 0) return true;
+        }
+        
+        // 3. Check if they have any accuracy stats
+        const accs = this.gameState.highAccuracies[gameId] || {};
+        for (const lvl in accs) {
+            if (accs[lvl] > 0) return true;
+        }
+        
+        // 4. Check if played today
+        if (this.gameState.daily && this.gameState.daily.played && this.gameState.daily.played.includes(gameId)) {
+            return true;
+        }
+        
+        return false;
+    }
+
+    updatePlayerHUD() {
+        // 1. Exercises Completed Count
+        let completedCount = 0;
+        GAME_DEFS.forEach(g => {
+            if (this.isGamePracticed(g.id)) completedCount++;
+        });
+
+        // 2. Overall Progress Percentage
+        let totalLevelsCleared = 0;
+        GAME_DEFS.forEach(g => {
+            let maxCleared = 0;
+            const scores = this.gameState.highScores[g.id] || {};
+            Object.keys(scores).forEach(lvl => {
+                if (scores[lvl] > 0) {
+                    maxCleared = Math.max(maxCleared, parseInt(lvl));
+                }
+            });
+            
+            // Fallback checking progress or accuracy
+            if (maxCleared === 0) {
+                const currentProg = this.gameState.progress[g.id] || 1;
+                if (currentProg > 1) {
+                    maxCleared = currentProg - 1;
+                } else {
+                    const accs = this.gameState.highAccuracies[g.id] || {};
+                    Object.keys(accs).forEach(lvl => {
+                        if (accs[lvl] > 0) {
+                            maxCleared = Math.max(maxCleared, parseInt(lvl));
+                        }
+                    });
+                }
+            }
+            totalLevelsCleared += maxCleared;
+        });
+        const avgLevel = GAME_DEFS.length > 0 ? (totalLevelsCleared / GAME_DEFS.length) : 0;
+        const progressPercentage = Math.round((avgLevel / 50) * 100);
+
+        // 3. Average Accuracy Percentage
+        let totalAcc = 0;
+        let countAcc = 0;
+        GAME_DEFS.forEach(g => {
+            const accs = this.gameState.highAccuracies[g.id] || {};
+            Object.keys(accs).forEach(lvl => {
+                if (accs[lvl] > 0) {
+                    totalAcc += accs[lvl];
+                    countAcc++;
+                }
+            });
+        });
+        const avgAccuracy = countAcc > 0 ? Math.round(totalAcc / countAcc) : 100;
+
+        // Render to header HUD elements
+        const completedEl = document.getElementById("player-completed");
+        const progressEl = document.getElementById("player-progress");
+        const accuracyEl = document.getElementById("player-accuracy");
+
+        if (completedEl) completedEl.innerText = `${completedCount} / ${GAME_DEFS.length}`;
+        if (progressEl) progressEl.innerText = `${progressPercentage}%`;
+        if (accuracyEl) accuracyEl.innerText = `${avgAccuracy}%`;
+    }
+
+    renderLobby() {
+        const grid = document.getElementById("game-grid");
+        if (!grid) return;
+        grid.innerHTML = "";
+
+        GAME_DEFS.forEach(game => {
+            // Find highest level played/cleared
+            let highestLevel = 0;
+            const levels = Object.keys(this.gameState.highScores[game.id] || {});
+            levels.forEach(lvl => {
+                if (this.gameState.highScores[game.id][lvl] > 0) {
+                    highestLevel = Math.max(highestLevel, parseInt(lvl));
+                }
+            });
+            
+            // Fallback checking progress or accuracy
+            if (highestLevel === 0) {
+                const currentProg = this.gameState.progress[game.id] || 1;
+                if (currentProg > 1) {
+                    highestLevel = currentProg - 1;
+                } else {
+                    const accs = this.gameState.highAccuracies[game.id] || {};
+                    Object.keys(accs).forEach(lvl => {
+                        if (accs[lvl] > 0) {
+                            highestLevel = Math.max(highestLevel, parseInt(lvl));
+                        }
+                    });
+                }
+            }
+
+            const isPracticed = highestLevel > 0 || this.isGamePracticed(game.id);
+            const displayLevelText = isPracticed ? (highestLevel > 0 ? `Max Level: L${highestLevel}` : "Practiced") : "Not Practiced";
+            const progressPercent = highestLevel > 0 ? Math.min(100, (highestLevel / 50) * 100) : (isPracticed ? 2 : 0);
+
+            const card = document.createElement("div");
+            card.className = `game-card ${game.theme}`;
+            card.dataset.id = game.id;
+            
+            card.innerHTML = `
+                <div class="game-card-thumbnail">
+                    ${game.svg || ''}
+                    <div class="game-card-icon-wrapper">
+                        <i class="${game.icon}"></i>
+                    </div>
+                </div>
+                <div class="game-card-body">
+                    <div>
+                        <span class="game-card-title">${game.name}</span>
+                        <div class="game-card-skill">${game.skill}</div>
+                    </div>
+                    <div class="game-card-progress">
+                        <div class="game-progress-bar">
+                            <div class="game-progress-fill" style="width: ${progressPercent}%"></div>
+                        </div>
+                        <span class="game-level-text">${displayLevelText}</span>
+                    </div>
+                </div>
+            `;
+            
+            card.addEventListener("click", () => {
+                Sound.playClick();
+                this.showInstructions(game.id);
+            });
+
+            grid.appendChild(card);
+        });
+    }
+
+    bindEvents() {
+        // Sound toggle
+        document.getElementById("sound-toggle-btn").addEventListener("click", (e) => {
+            e.stopPropagation();
+            Sound.playClick();
+            Sound.toggleMute();
+            this.updateSoundIcon();
+            this.saveState();
+            if (window.UnityBridge) {
+                window.UnityBridge.sendEvent("sound_toggled", { muted: Sound.muted });
+            }
+        });
+
+        // Exit App button
+        const exitBtn = document.getElementById("exit-app-btn");
+        if (exitBtn) {
+            exitBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                Sound.playClick();
+                this.syncScoreToUnity();
+                if (window.UnityBridge) {
+                    window.UnityBridge.sendEvent("close");
+                }
+                setTimeout(() => {
+                    try {
+                        window.location.href = "uniwebview://close";
+                    } catch(err) {}
+                }, 50);
+            });
+        }
+
+        // Reset Data
+        document.getElementById("reset-progress-btn").addEventListener("click", (e) => {
+            e.stopPropagation();
+            Sound.playClick();
+            if (confirm("Reset exercise history and scores?")) {
+                localStorage.removeItem(this.stateKey);
+                this.gameState = { xp: 0, progress: {}, highScores: {} };
+                this.loadState();
+                this.renderLobby();
+                this.renderSessionCard();
+                this.renderDashboard();
+                this.updatePlayerHUD();
+                
+                // Show exercises tab by default
+                const exTab = document.getElementById("tab-exercises");
+                if (exTab) exTab.click();
+            }
+        });
+
+        // Back to Lobby
+        document.getElementById("game-back-btn").addEventListener("click", () => {
+            Sound.playClick();
+            this.exitToLobby();
+        });
+
+        // Start button
+        document.getElementById("modal-start-btn").addEventListener("click", () => {
+            Sound.playClick();
+            this.startActiveGame();
+        });
+
+        // Result controls
+        document.getElementById("result-lobby-btn").addEventListener("click", () => {
+            Sound.playClick();
+            this.closeModal("result-modal");
+            this.exitToLobby();
+        });
+
+        document.getElementById("result-retry-btn").addEventListener("click", () => {
+            Sound.playClick();
+            this.closeModal("result-modal");
+            this.setupGame(this.activeGameId, this.activeLevel);
+        });
+
+        document.getElementById("result-next-btn").addEventListener("click", () => {
+            Sound.playClick();
+            this.closeModal("result-modal");
+            this.setupGame(this.activeGameId, Math.min(50, this.activeLevel + 1));
+        });
+
+        // Close modal triggers
+        document.getElementById("modal-close-btn").addEventListener("click", () => {
+            Sound.playClick();
+            this.closeModal("instructions-modal");
+        });
+
+        // Stepper adjusters
+        document.getElementById("level-dec-btn").addEventListener("click", () => {
+            Sound.playClick();
+            this.activeLevel = Math.max(1, this.activeLevel - 1);
+            document.getElementById("level-display-val").innerText = this.activeLevel;
+        });
+
+        document.getElementById("level-inc-btn").addEventListener("click", () => {
+            Sound.playClick();
+            this.activeLevel = Math.min(50, this.activeLevel + 1);
+            document.getElementById("level-display-val").innerText = this.activeLevel;
+        });
+
+        document.getElementById("instructions-modal").addEventListener("click", (e) => {
+            if (e.target.id === "instructions-modal") {
+                this.closeModal("instructions-modal");
+            }
+        });
+
+        // Tab selection events
+        const exTab = document.getElementById("tab-exercises");
+        const dbTab = document.getElementById("tab-dashboard");
+        if (exTab && dbTab) {
+            exTab.addEventListener("click", () => {
+                Sound.playClick();
+                this.switchTab("exercises");
+            });
+            dbTab.addEventListener("click", () => {
+                Sound.playClick();
+                this.switchTab("dashboard");
+            });
+        }
+    }
+
+    updateSoundIcon() {
+        const icon = document.getElementById("sound-icon");
+        if (Sound.muted) {
+            icon.className = "fa-solid fa-volume-xmark";
+        } else {
+            icon.className = "fa-solid fa-volume-high";
+        }
+    }
+
+    showInstructions(gameId) {
+        const game = GAME_DEFS.find(g => g.id === gameId);
+        if (!game) return;
+
+        this.activeGameId = gameId;
+
+        document.getElementById("modal-game-title").innerText = game.name;
+        document.getElementById("modal-game-cognitive").innerText = game.skill;
+        document.getElementById("modal-game-desc").innerText = game.desc;
+
+        // Start on current progress level, default to 1
+        this.activeLevel = this.gameState.progress[gameId] || 1;
+        document.getElementById("level-display-val").innerText = this.activeLevel;
+
+        this.openModal("instructions-modal");
+
+        if (window.UnityBridge) {
+            window.UnityBridge.sendEvent("exercise_instructions_opened", {
+                gameId: gameId,
+                name: game.name,
+                level: this.activeLevel
+            });
+        }
+    }
+
+    openModal(modalId) {
+        document.getElementById(modalId).classList.add("active");
+    }
+
+    closeModal(modalId) {
+        document.getElementById(modalId).classList.remove("active");
+    }
+
+    startActiveGame() {
+        this.closeModal("instructions-modal");
+        this.setupGame(this.activeGameId, this.activeLevel);
+    }
+
+    setupGame(gameId, level) {
+        this.activeGameId = gameId;
+        this.activeLevel = level;
+        this.activeGameScore = 0;
+        this.activeGameLives = 3;
+
+        document.getElementById("lobby-view").classList.remove("active");
+        document.getElementById("game-view").classList.add("active");
+
+        const game = GAME_DEFS.find(g => g.id === gameId);
+        document.getElementById("game-current-name").innerText = game ? game.name : "Exercise";
+        document.getElementById("game-current-level").innerText = `Level ${level}`;
+
+        if (window.UnityBridge) {
+            window.UnityBridge.sendEvent("exercise_started", {
+                gameId: gameId,
+                name: game ? game.name : "",
+                level: level
+            });
+        }
+
+        document.getElementById("hud-score").innerText = "100%";
+        document.getElementById("hud-timer").innerText = "00:00";
+        // Call it 'Chances' instead of 'Lives' for friendly clinical guidance
+        document.getElementById("hud-lives").innerText = "3";
+
+        const arena = document.getElementById("game-arena");
+        arena.innerHTML = "";
+        
+        this.cleanupActiveGame();
+
+        const impl = window.Games[gameId];
+        if (!impl) {
+            arena.innerHTML = `<div style="padding:2rem; text-align:center;">Exercise module [${gameId}] loaded incorrectly. Please contact administrator.</div>`;
+            return;
+        }
+
+        const gameCtx = {
+            level: level,
+            setScore: (score) => {
+                this.activeGameScore = score;
+                let liveAccuracy = 100;
+                if (typeof this.activeGameLives === "number") {
+                    const mistakes = 3 - this.activeGameLives;
+                    liveAccuracy = Math.max(50, 100 - mistakes * 15);
+                }
+                document.getElementById("hud-score").innerText = `${liveAccuracy}%`;
+            },
+            setTimer: (txt) => {
+                document.getElementById("hud-timer").innerText = txt;
+            },
+            setLives: (lives) => {
+                this.activeGameLives = lives;
+                let liveAccuracy = 100;
+                if (typeof lives === "number") {
+                    const mistakes = 3 - lives;
+                    liveAccuracy = Math.max(50, 100 - mistakes * 15);
+                }
+                document.getElementById("hud-score").innerText = `${liveAccuracy}%`;
+                document.getElementById("hud-lives").innerText = lives;
+            },
+            playSound: (name) => {
+                if (name === 'success') Sound.playSuccess();
+                else if (name === 'error') Sound.playError();
+                else if (name === 'match') Sound.playMatch();
+                else if (name === 'click') Sound.playClick();
+                else if (name === 'tick') Sound.playTick();
+            },
+            onWin: (score, xp) => {
+                this.handleGameComplete(true, score, xp);
+            },
+            onLose: (score) => {
+                this.handleGameComplete(false, score, 0);
+            }
+        };
+
+        this.activeGameInstance = impl;
+        impl.init(arena, gameCtx);
+    }
+
+    cleanupActiveGame() {
+        if (this.activeGameInstance && typeof this.activeGameInstance.destroy === "function") {
+            try {
+                this.activeGameInstance.destroy();
+            } catch (e) {
+                console.error("Error destroying game instance:", e);
+            }
+        }
+        this.activeGameInstance = null;
+    }
+
+    exitToLobby() {
+        this.cleanupActiveGame();
+        document.getElementById("game-view").classList.remove("active");
+        document.getElementById("lobby-view").classList.add("active");
+        this.renderLobby();
+        this.renderSessionCard();
+        this.renderDashboard();
+        if (window.UnityBridge) {
+            window.UnityBridge.sendEvent("lobby_returned", {});
+        }
+    }
+
+    handleGameComplete(success, score, xp) {
+        const getFormattedDate = (d = new Date()) => d.toISOString().split('T')[0];
+        this.cleanupActiveGame();
+        
+        // Record Daily Progress
+        const todayStr = getFormattedDate();
+        if (!this.gameState.daily.played.includes(this.activeGameId)) {
+            this.gameState.daily.played.push(this.activeGameId);
+        }
+        
+        if (this.gameState.daily.lastPlayed !== todayStr) {
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayStr = getFormattedDate(yesterday);
+            
+            if (this.gameState.daily.lastPlayed === yesterdayStr) {
+                this.gameState.daily.streak = (this.gameState.daily.streak || 0) + 1;
+            } else {
+                this.gameState.daily.streak = 1;
+            }
+            this.gameState.daily.lastPlayed = todayStr;
+        }
+
+        const resultIcon = document.getElementById("result-header-icon");
+        const resultTitle = document.getElementById("result-title");
+        const resultMessage = document.getElementById("result-message");
+        const nextBtn = document.getElementById("result-next-btn");
+
+        // Calculate session accuracy
+        let sessionAccuracy = 100;
+        if (this.activeGameLives !== "---" && typeof this.activeGameLives === "number") {
+            const mistakes = 3 - this.activeGameLives;
+            sessionAccuracy = Math.max(50, 100 - mistakes * 15);
+        } else {
+            sessionAccuracy = success ? 95 : 60;
+        }
+
+        // Persist accuracy stats
+        this.gameState.accuracies = this.gameState.accuracies || {};
+        this.gameState.accuracies[this.activeGameId] = this.gameState.accuracies[this.activeGameId] || {};
+        this.gameState.accuracies[this.activeGameId][this.activeLevel] = sessionAccuracy;
+
+        this.gameState.highAccuracies = this.gameState.highAccuracies || {};
+        this.gameState.highAccuracies[this.activeGameId] = this.gameState.highAccuracies[this.activeGameId] || {};
+        const oldHighAccuracy = this.gameState.highAccuracies[this.activeGameId][this.activeLevel] || 0;
+        if (sessionAccuracy > oldHighAccuracy) {
+            this.gameState.highAccuracies[this.activeGameId][this.activeLevel] = sessionAccuracy;
+        }
+
+        // Render result stats
+        document.getElementById("result-score").innerText = `${sessionAccuracy}%`;
+        document.getElementById("result-xp").innerText = success ? "Level Cleared!" : "Practice Completed";
+
+        this.updateSessionHistory(sessionAccuracy, success ? xp : 20);
+
+        if (success) {
+            Sound.playWin();
+            resultIcon.className = "result-icon-success";
+            resultIcon.innerHTML = `<i class="fa-solid fa-heart" style="color: var(--clinical-red)"></i>`;
+            resultTitle.innerText = "FABULOUS WORK!";
+            resultMessage.innerText = `Congratulations on completing Level ${this.activeLevel}! Every exercise you do nourishes and strengthens your mind. You are doing amazing!`;
+            
+            // Record High Score for progression checking
+            const oldHighScore = this.gameState.highScores[this.activeGameId][this.activeLevel] || 0;
+            if (score > oldHighScore) {
+                this.gameState.highScores[this.activeGameId][this.activeLevel] = score;
+            }
+            
+            this.gameState.xp += xp;
+            this.saveState();
+
+            const currentProg = this.gameState.progress[this.activeGameId] || 1;
+            if (this.activeLevel === currentProg) {
+                this.gameState.progress[this.activeGameId] = Math.min(50, this.activeLevel + 1);
+            }
+
+            if (this.activeLevel < 50) {
+                nextBtn.style.display = "block";
+                nextBtn.innerText = `NEXT LEVEL (${this.activeLevel + 1})`;
+            } else {
+                nextBtn.style.display = "none";
+            }
+        } else {
+            Sound.playError();
+            resultIcon.className = "result-icon-fail";
+            resultIcon.innerHTML = `<i class="fa-solid fa-circle-check" style="color: var(--clinical-teal)"></i>`;
+            resultTitle.innerText = "GREAT TRY & PRACTICE!";
+            resultMessage.innerText = `Every minute spent practicing is a wonderful step forward for your brain. Be proud of your dedication today!`;
+            nextBtn.style.display = "none";
+            
+            // Supportive progression entry
+            const oldHighScore = this.gameState.highScores[this.activeGameId][this.activeLevel] || 0;
+            if (score > oldHighScore) {
+                this.gameState.highScores[this.activeGameId][this.activeLevel] = score;
+            }
+            this.gameState.xp += 20;
+            this.saveState();
+        }
+
+        if (window.UnityBridge) {
+            const game = GAME_DEFS.find(g => g.id === this.activeGameId);
+            window.UnityBridge.sendEvent("exercise_completed", {
+                gameId: this.activeGameId,
+                name: game ? game.name : "",
+                level: this.activeLevel,
+                success: success,
+                score: score,
+                accuracy: sessionAccuracy,
+                xp: success ? xp : 20
+            });
+        }
+
+        this.openModal("result-modal");
+    }
+
+    setupTabs() {
+        // Render initial view
+        this.switchTab("exercises");
+    }
+
+    switchTab(tabName) {
+        const exTab = document.getElementById("tab-exercises");
+        const dbTab = document.getElementById("tab-dashboard");
+        const exContent = document.getElementById("tab-content-exercises");
+        const dbContent = document.getElementById("tab-content-dashboard");
+        const sessionContainer = document.getElementById("session-card-container");
+        
+        if (tabName === "exercises") {
+            if (exTab) exTab.classList.add("active");
+            if (dbTab) dbTab.classList.remove("active");
+            if (exContent) exContent.style.display = "block";
+            if (dbContent) dbContent.style.display = "none";
+            if (sessionContainer) sessionContainer.style.display = "block";
+            this.renderLobby();
+            this.renderSessionCard();
+        } else {
+            if (exTab) exTab.classList.remove("active");
+            if (dbTab) dbTab.classList.add("active");
+            if (exContent) exContent.style.display = "none";
+            if (dbContent) dbContent.style.display = "block";
+            if (sessionContainer) sessionContainer.style.display = "none";
+            this.renderDashboard();
+        }
+    }
+
+    getRecommendedGame() {
+        const todayPlayed = this.gameState.daily.played || [];
+        // Candidate list: games not played today
+        let candidates = GAME_DEFS.filter(g => !todayPlayed.includes(g.id));
+        if (candidates.length === 0) {
+            candidates = GAME_DEFS; // Fallback to all if all played
+        }
+        
+        // Find candidate with lowest level cleared (or lowest progression)
+        let recommended = null;
+        let minLevel = 999;
+        
+        candidates.forEach(g => {
+            const currentProg = this.gameState.progress[g.id] || 1;
+            if (currentProg < minLevel) {
+                minLevel = currentProg;
+                recommended = g;
+            }
+        });
+        
+        return recommended || GAME_DEFS[0];
+    }
+
+    renderSessionCard() {
+        const container = document.getElementById("session-card-container");
+        if (container) {
+            container.style.display = "none";
+            container.innerHTML = "";
+        }
+    }
+
+    updateSessionHistory(sessionAccuracy, earnedXp) {
+        this.gameState.sessionHistory = this.gameState.sessionHistory || [];
+        this.gameState.totalSessions = (this.gameState.totalSessions || 0) + 1;
+
+        const sessionLabel = "S" + this.gameState.totalSessions;
+        const cpiVal = Math.min(1000, 100 + Math.round(this.gameState.xp * 0.4));
+        
+        this.gameState.sessionHistory.push({
+            session: sessionLabel,
+            accuracy: sessionAccuracy,
+            cpi: cpiVal
+        });
+
+        if (this.gameState.sessionHistory.length > 7) {
+            this.gameState.sessionHistory.shift();
+        }
+    }
+
+    renderDashboard() {
+        const container = document.getElementById("tab-content-dashboard");
+        if (!container) return;
+        
+        // Calculate summary metrics
+        const streak = (this.gameState.daily && this.gameState.daily.streak) || 0;
+        
+        // Sum up completed levels and count games practiced
+        let practicedGamesCount = 0;
+        let totalLevelsCleared = 0;
+        
+        GAME_DEFS.forEach(g => {
+            let maxCleared = 0;
+            const scores = this.gameState.highScores[g.id] || {};
+            Object.keys(scores).forEach(lvl => {
+                if (scores[lvl] > 0) {
+                    maxCleared = Math.max(maxCleared, parseInt(lvl));
+                }
+            });
+            
+            // Fallback checking progress or accuracy
+            if (maxCleared === 0) {
+                const currentProg = this.gameState.progress[g.id] || 1;
+                if (currentProg > 1) {
+                    maxCleared = currentProg - 1;
+                } else {
+                    const accs = this.gameState.highAccuracies[g.id] || {};
+                    Object.keys(accs).forEach(lvl => {
+                        if (accs[lvl] > 0) {
+                            maxCleared = Math.max(maxCleared, parseInt(lvl));
+                        }
+                    });
+                }
+            }
+
+            if (maxCleared > 0 || this.isGamePracticed(g.id)) {
+                practicedGamesCount++;
+                totalLevelsCleared += maxCleared;
+            }
+        });
+        
+        // Progress: average level cleared across all games as a percentage of 50
+        const avgLevel = GAME_DEFS.length > 0 ? (totalLevelsCleared / GAME_DEFS.length) : 0;
+        const masteryPercentage = Math.round((avgLevel / 50) * 100);
+
+        // Accuracy: average accuracy percentage
+        let totalAcc = 0;
+        let countAcc = 0;
+        GAME_DEFS.forEach(g => {
+            const accs = this.gameState.highAccuracies[g.id] || {};
+            Object.keys(accs).forEach(lvl => {
+                if (accs[lvl] > 0) {
+                    totalAcc += accs[lvl];
+                    countAcc++;
+                }
+            });
+        });
+        const avgAccuracy = countAcc > 0 ? Math.round(totalAcc / countAcc) : 100;
+        
+        // Render SVG Line Charts from History (Real Data Only)
+        const history = this.gameState.sessionHistory || [];
+        const totalSessions = this.gameState.totalSessions || 0;
+
+        const svgW = 500;
+        const svgH = 150;
+        const padLeft = 40;
+        const padRight = 20;
+        const padTop = 20;
+        const padBottom = 30;
+        const chartW = svgW - padLeft - padRight;
+        const chartH = svgH - padTop - padBottom;
+
+        let cpiChartSvg = "";
+        let accChartSvg = "";
+
+        if (history.length === 0) {
+            const noDataTemplate = (title) => `
+                <svg viewBox="0 0 ${svgW} ${svgH}" class="db-chart-svg">
+                    <!-- Grids -->
+                    <line x1="${padLeft}" y1="${padTop}" x2="${svgW - padRight}" y2="${padTop}" stroke="rgba(226, 232, 240, 0.4)" stroke-dasharray="4 4" />
+                    <line x1="${padLeft}" y1="${padTop + chartH / 2}" x2="${svgW - padRight}" y2="${padTop + chartH / 2}" stroke="rgba(226, 232, 240, 0.4)" stroke-dasharray="4 4" />
+                    <line x1="${padLeft}" y1="${padTop + chartH}" x2="${svgW - padRight}" y2="${padTop + chartH}" stroke="rgba(226, 232, 240, 0.8)" />
+                    
+                    <!-- Centered Message -->
+                    <text x="${padLeft + chartW / 2}" y="${padTop + chartH / 2 + 4}" font-family="'Outfit', sans-serif" font-size="10" font-weight="600" fill="var(--text-muted)" text-anchor="middle">
+                        Practice exercises to start tracking ${title}
+                    </text>
+                </svg>
+            `;
+            cpiChartSvg = noDataTemplate("Cognitive Index (CPI)");
+            accChartSvg = noDataTemplate("accuracy progression");
+        } else {
+            const accPoints = [];
+            const cpiPoints = [];
+            
+            const maxCPI = 1000;
+
+            history.forEach((h, idx) => {
+                let x;
+                if (history.length === 1) {
+                    x = padLeft + chartW / 2;
+                } else {
+                    x = padLeft + (idx * chartW) / (history.length - 1);
+                }
+                
+                // Accuracy y-coord
+                const yAcc = padTop + chartH - (h.accuracy / 100) * chartH;
+                accPoints.push({ x, y: yAcc, val: h.accuracy, label: h.session });
+
+                // CPI y-coord
+                const yCpi = padTop + chartH - (h.cpi / maxCPI) * chartH;
+                cpiPoints.push({ x, y: yCpi, val: h.cpi, label: h.session });
+            });
+
+            const buildPath = (pts) => pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(" ");
+            const buildAreaPath = (pts) => {
+                if (pts.length === 0) return "";
+                const linePath = buildPath(pts);
+                return `${linePath} L ${pts[pts.length - 1].x} ${padTop + chartH} L ${pts[0].x} ${padTop + chartH} Z`;
+            };
+
+            const accPathStr = buildPath(accPoints);
+            const accAreaStr = buildAreaPath(accPoints);
+            const cpiPathStr = buildPath(cpiPoints);
+            const cpiAreaStr = buildAreaPath(cpiPoints);
+
+            accChartSvg = `
+                <svg viewBox="0 0 ${svgW} ${svgH}" class="db-chart-svg">
+                    <!-- Grids -->
+                    <line x1="${padLeft}" y1="${padTop}" x2="${svgW - padRight}" y2="${padTop}" stroke="rgba(226, 232, 240, 0.4)" stroke-dasharray="4 4" />
+                    <line x1="${padLeft}" y1="${padTop + chartH / 2}" x2="${svgW - padRight}" y2="${padTop + chartH / 2}" stroke="rgba(226, 232, 240, 0.4)" stroke-dasharray="4 4" />
+                    <line x1="${padLeft}" y1="${padTop + chartH}" x2="${svgW - padRight}" y2="${padTop + chartH}" stroke="rgba(226, 232, 240, 0.8)" />
+                    
+                    <!-- Y-Axis Labels -->
+                    <text x="${padLeft - 8}" y="${padTop + 3}" font-family="'Outfit', sans-serif" font-size="8" fill="var(--text-muted)" text-anchor="end">100%</text>
+                    <text x="${padLeft - 8}" y="${padTop + chartH / 2 + 3}" font-family="'Outfit', sans-serif" font-size="8" fill="var(--text-muted)" text-anchor="end">50%</text>
+                    <text x="${padLeft - 8}" y="${padTop + chartH + 3}" font-family="'Outfit', sans-serif" font-size="8" fill="var(--text-muted)" text-anchor="end">0%</text>
+
+                    <!-- Area Gradient Fill -->
+                    ${history.length > 1 ? `<path d="${accAreaStr}" fill="url(#accGrad)" class="db-chart-area" />` : ""}
+
+                    <!-- Line Path -->
+                    ${history.length > 1 ? `<path d="${accPathStr}" stroke="#0d9488" class="db-chart-line" />` : ""}
+
+                    <!-- Dots -->
+                    ${accPoints.map(p => `
+                        <circle cx="${p.x}" cy="${p.y}" r="4.5" fill="#0d9488" stroke="#fff" stroke-width="1.5" class="chart-dot">
+                            <title>Session: ${p.label}\nAccuracy: ${p.val}%</title>
+                        </circle>
+                        <text x="${p.x}" y="${padTop + chartH + 15}" font-family="'Outfit', sans-serif" font-weight="700" font-size="8" fill="var(--text-muted)" text-anchor="middle">${p.label}</text>
+                    `).join("")}
+
+                    <!-- Gradients Definition -->
+                    <defs>
+                        <linearGradient id="accGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#0d9488" stop-opacity="0.25"/>
+                            <stop offset="100%" stop-color="#0d9488" stop-opacity="0.0"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            `;
+
+            cpiChartSvg = `
+                <svg viewBox="0 0 ${svgW} ${svgH}" class="db-chart-svg">
+                    <!-- Grids -->
+                    <line x1="${padLeft}" y1="${padTop}" x2="${svgW - padRight}" y2="${padTop}" stroke="rgba(226, 232, 240, 0.4)" stroke-dasharray="4 4" />
+                    <line x1="${padLeft}" y1="${padTop + chartH / 2}" x2="${svgW - padRight}" y2="${padTop + chartH / 2}" stroke="rgba(226, 232, 240, 0.4)" stroke-dasharray="4 4" />
+                    <line x1="${padLeft}" y1="${padTop + chartH}" x2="${svgW - padRight}" y2="${padTop + chartH}" stroke="rgba(226, 232, 240, 0.8)" />
+                    
+                    <!-- Y-Axis Labels -->
+                    <text x="${padLeft - 8}" y="${padTop + 3}" font-family="'Outfit', sans-serif" font-size="8" fill="var(--text-muted)" text-anchor="end">1000 CPI</text>
+                    <text x="${padLeft - 8}" y="${padTop + chartH / 2 + 3}" font-family="'Outfit', sans-serif" font-size="8" fill="var(--text-muted)" text-anchor="end">500 CPI</text>
+                    <text x="${padLeft - 8}" y="${padTop + chartH + 3}" font-family="'Outfit', sans-serif" font-size="8" fill="var(--text-muted)" text-anchor="end">0 CPI</text>
+
+                    <!-- Area Gradient Fill -->
+                    ${history.length > 1 ? `<path d="${cpiAreaStr}" fill="url(#cpiGrad)" class="db-chart-area" />` : ""}
+
+                    <!-- Line Path -->
+                    ${history.length > 1 ? `<path d="${cpiPathStr}" stroke="#2563eb" class="db-chart-line" />` : ""}
+
+                    <!-- Dots -->
+                    ${cpiPoints.map(p => `
+                        <circle cx="${p.x}" cy="${p.y}" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1.5" class="chart-dot">
+                            <title>Session: ${p.label}\nCognitive Index: ${p.val} CPI</title>
+                        </circle>
+                        <text x="${p.x}" y="${padTop + chartH + 15}" font-family="'Outfit', sans-serif" font-weight="700" font-size="8" fill="var(--text-muted)" text-anchor="middle">${p.label}</text>
+                    `).join("")}
+
+                    <!-- Gradients Definition -->
+                    <defs>
+                        <linearGradient id="cpiGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#2563eb" stop-opacity="0.25"/>
+                            <stop offset="100%" stop-color="#2563eb" stop-opacity="0.0"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            `;
+        }
+
+        // Define cognitive domains structure including all 16 games
+        const domains = [
+            {
+                name: "Memory & Recall",
+                desc: "Working memory, association, and retrieval speed",
+                icon: "fa-solid fa-brain",
+                color: "domain-memory",
+                games: ["memory", "object_recall", "word_association", "turning_tables"]
+            },
+            {
+                name: "Focus & Attention",
+                desc: "Visual search, selection speed, and task switching",
+                icon: "fa-solid fa-crosshairs",
+                color: "domain-focus",
+                games: ["tap_object", "task_switching", "sorting", "color_confusion", "quick_switch", "eagle_eye", "quick_count"]
+            },
+            {
+                name: "Motor & Logic",
+                desc: "Spatial tracking, coordination, and deductive logic",
+                icon: "fa-solid fa-puzzle-piece",
+                color: "domain-motor",
+                games: ["trace_letter", "colour_fill", "odd_one_out", "falling_catcher", "turnabout"]
+            }
+        ];
+        
+        // Build Domain HTML
+        let domainsHtml = "";
+        domains.forEach(domain => {
+            let gamesInDomainHtml = "";
+            
+            domain.games.forEach(gameId => {
+                const game = GAME_DEFS.find(g => g.id === gameId);
+                if (!game) return;
+                
+                // Get highest level cleared and accuracies
+                let highestLevel = 0;
+                let highestAccuracy = 0;
+                const levels = Object.keys(this.gameState.highAccuracies[game.id] || {});
+                levels.forEach(lvl => {
+                    const acc = this.gameState.highAccuracies[game.id][lvl] || 0;
+                    if (acc > 0) {
+                        highestLevel = Math.max(highestLevel, parseInt(lvl));
+                        highestAccuracy = Math.max(highestAccuracy, acc);
+                    }
+                });
+
+                // Fallback for transition
+                if (highestLevel === 0) {
+                    const scores = Object.keys(this.gameState.highScores[game.id] || {});
+                    scores.forEach(lvl => {
+                        if (this.gameState.highScores[game.id][lvl] > 0) {
+                            highestLevel = Math.max(highestLevel, parseInt(lvl));
+                            highestAccuracy = 100;
+                        }
+                    });
+                }
+                
+                const percent = Math.min(100, Math.round((highestLevel / 50) * 100));
+                
+                // Determine proficiency badge
+                let proficiency = "Not Practiced";
+                let proficiencyClass = "badge-muted";
+                if (highestLevel > 30) {
+                    proficiency = "Expert Trainer";
+                    proficiencyClass = "badge-expert";
+                } else if (highestLevel > 15) {
+                    proficiency = "Proficient";
+                    proficiencyClass = "badge-proficient";
+                } else if (highestLevel > 0) {
+                    proficiency = "Explorer";
+                    proficiencyClass = "badge-explorer";
+                }
+                
+                gamesInDomainHtml += `
+                    <div class="dashboard-game-row">
+                        <div class="dash-game-info">
+                            <div class="dash-game-icon-circle ${game.theme}">
+                                <i class="${game.icon}"></i>
+                            </div>
+                            <div>
+                                <div class="dash-game-name">${game.name}</div>
+                                <div class="dash-game-skill">${game.skill}</div>
+                            </div>
+                        </div>
+                        <div class="dash-game-progress-section">
+                            <div class="dash-game-progress-meta">
+                                <span class="dash-level-label">Lvl ${highestLevel || 0} / 50</span>
+                                <span class="dash-badge ${proficiencyClass}">${proficiency}</span>
+                            </div>
+                            <div class="dash-progress-bar">
+                                <div class="dash-progress-fill ${game.theme}" style="width: ${percent}%"></div>
+                            </div>
+                        </div>
+                        <div class="dash-game-stats">
+                            <span class="dash-stat-label">Best Accuracy</span>
+                            <span class="dash-stat-val">${highestAccuracy}%</span>
+                        </div>
+                        <button class="secondary-btn dash-play-btn" data-id="${game.id}">
+                            Practice
+                        </button>
+                    </div>
+                `;
+            });
+            
+            domainsHtml += `
+                <div class="dashboard-domain-card glassmorphism">
+                    <div class="domain-header ${domain.color}">
+                        <div class="domain-header-left">
+                            <div class="domain-icon-wrapper">
+                                <i class="${domain.icon}"></i>
+                            </div>
+                            <div>
+                                <h3>${domain.name}</h3>
+                                <p class="domain-desc">${domain.desc}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="domain-games-list">
+                        ${gamesInDomainHtml}
+                    </div>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = `
+            <div class="dashboard-grid">
+                <!-- Summary Widgets Row (Chips) -->
+                <div class="dashboard-widgets-row">
+                    <div class="dashboard-widget glassmorphism">
+                        <div class="widget-icon-bg bg-blue">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                        <div class="widget-content">
+                            <span class="widget-label">Average Accuracy</span>
+                            <span class="widget-val">${avgAccuracy}%</span>
+                            <span class="widget-sub">Target precision metric</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-widget glassmorphism">
+                        <div class="widget-icon-bg bg-orange">
+                            <i class="fa-solid fa-fire"></i>
+                        </div>
+                        <div class="widget-content">
+                            <span class="widget-label">Daily Training Streak</span>
+                            <span class="widget-val">${streak} Day${streak !== 1 ? 's' : ''}</span>
+                            <span class="widget-sub">Consistency builds connections</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-widget glassmorphism">
+                        <div class="widget-icon-bg bg-green">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div class="widget-content">
+                            <span class="widget-label">Exercises Completed</span>
+                            <span class="widget-val">${practicedGamesCount} / ${GAME_DEFS.length}</span>
+                            <span class="widget-sub">Total active rehab units</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-widget glassmorphism">
+                        <div class="widget-icon-bg bg-purple">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <div class="widget-content">
+                            <span class="widget-label">Rehab Progress</span>
+                            <span class="widget-val">${masteryPercentage}%</span>
+                            <span class="widget-sub">Overall progression index</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Two Line Graphs at the Top -->
+                <div class="dashboard-charts-row">
+                    <div class="dashboard-chart-card glassmorphism">
+                        <div class="chart-header">
+                            <div class="chart-title">Cognitive Performance Index (Total Sessions: ${totalSessions})</div>
+                            <div class="chart-info-trigger">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <div class="chart-info-tooltip glassmorphism">
+                                    <h4>Cognitive Performance Index (CPI)</h4>
+                                    <p><strong>What is it:</strong> A clinical metric (0 - 1000) measuring overall performance across memory, attention, and logic domains.</p>
+                                    <p><strong>How calculated:</strong> Combines execution accuracy, level difficulty multipliers, and speed bonuses from cleared rounds.</p>
+                                </div>
+                            </div>
+                        </div>
+                        ${cpiChartSvg}
+                    </div>
+                    <div class="dashboard-chart-card glassmorphism">
+                        <div class="chart-header">
+                            <div class="chart-title">Accuracy Progression (Total Sessions: ${totalSessions})</div>
+                            <div class="chart-info-trigger">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <div class="chart-info-tooltip glassmorphism">
+                                    <h4>Accuracy Progression</h4>
+                                    <p><strong>What is it:</strong> Tracks performance precision, correct selections, and mistake margins across your last 7 active sessions.</p>
+                                    <p><strong>How calculated:</strong> The average accuracy percentage (50% - 100%) recorded across all cleared training units.</p>
+                                </div>
+                            </div>
+                        </div>
+                        ${accChartSvg}
+                    </div>
+                </div>
+                
+                <!-- Domains List Layout -->
+                <div class="dashboard-domains-section">
+                    ${domainsHtml}
+                </div>
+            </div>
+        `;
+        
+        // Add event listeners to dash play buttons
+        const playBtns = container.querySelectorAll(".dash-play-btn");
+        playBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                const id = btn.getAttribute("data-id");
+                Sound.playClick();
+                this.showInstructions(id);
+            });
+        });
+    }
+}
+
+function initApp() {
+    if (window.appManagerInstance && window.appManagerInstance.initialized) return;
+    const app = new AppManager();
+    app.init();
+    window.app = app;
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initApp);
+} else {
+    initApp();
+}
