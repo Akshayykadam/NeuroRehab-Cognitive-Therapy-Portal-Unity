@@ -140,36 +140,3 @@ public void OnPlayButtonClicked(string targetUserId, string targetUserName)
 // Single-line call:
 OnPlayButtonClicked("10114", "Akshay Kadam"); // Loads & saves to: .../PatientData/10114.json
 ```
-
----
-
-## 📱 Building & Deploying to Android
-
-### Automated Command-Line Build
-You can trigger a batchmode build directly from the terminal:
-
-```bash
-/Applications/Unity/Hub/Editor/6000.3.9f1/Unity.app/Contents/MacOS/Unity \
-  -batchmode \
-  -quit \
-  -projectPath "/path/to/NeuroRehab Cognitive Therapy Portal" \
-  -executeMethod BuildScript.BuildAndroidAPK \
-  -logFile unity_build.log
-```
-
-### Installing on Connected Device
-Deploy the compiled APK to a connected Android target using ADB:
-
-```bash
-# Install APK
-adb install -r Builds/NeuroRehab.apk
-
-# Launch Main Unity Activity
-adb shell monkey -p com.Wizio.com -c android.intent.category.LAUNCHER 1
-```
-
----
-
-## 📝 License & Contact
-
-Developed for **NeuroRehab Cognitive Therapy Portal**. All rights reserved.
