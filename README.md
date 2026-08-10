@@ -119,30 +119,37 @@ Ensure the **UniWebView 6** package is installed in your project.
 
 ### Step 4: Launch Session for Any User (Code Example)
 
-Define a helper method in your manager or button script:
+You can attach this code directly inside your Play Button listener script:
 
 ```csharp
 using NeuroRehab;
 
-// 1. Define this helper method in your UI / Game Manager script
-public void PlayGameForUser(string targetUserId, string targetUserName)
+// Attach this directly inside your Play Button listener:
+public void OnPlayButtonClicked()
 {
-    // Loads or creates <targetUserId>.json from disk
-    PatientProfile profile = PatientDataManager.Instance.GetOrCreateProfile(targetUserId, targetUserName);
+    // 1. Loads or creates 10114.json on disk
+    PatientProfile profile = PatientDataManager.Instance.GetOrCreateProfile("10114", "Akshay Kadam");
     
-    // Sets active profile
+    // 2. Sets active profile
     PatientDataManager.Instance.SetActiveProfile(profile);
 
-    // Launches WebView and auto-passes profile metrics to HTML
+    // 3. Launches WebView and auto-passes profile metrics to HTML
     NeuroRehabWebViewManager.Instance.OpenWebView(profile);
 }
 ```
 
-Then, whenever a patient logs in or clicks **Play**, you call it in **1 line**:
+Or define a reusable helper method:
 
 ```csharp
-// Call this 1 line anywhere in your project to launch a session for your user:
-PlayGameForUser("10114", "Akshay Kadam");   // Loads & saves to: .../PatientData/10114.json
+public void PlayGameForUser(string targetUserId, string targetUserName)
+{
+    PatientProfile profile = PatientDataManager.Instance.GetOrCreateProfile(targetUserId, targetUserName);
+    PatientDataManager.Instance.SetActiveProfile(profile);
+    NeuroRehabWebViewManager.Instance.OpenWebView(profile);
+}
+
+// Single-line call:
+PlayGameForUser("10114", "Akshay Kadam"); // Loads & saves to: .../PatientData/10114.json
 ```
 
 ---
