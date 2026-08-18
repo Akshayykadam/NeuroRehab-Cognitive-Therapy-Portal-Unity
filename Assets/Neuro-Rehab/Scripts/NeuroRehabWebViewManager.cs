@@ -93,19 +93,20 @@ namespace NeuroRehab
             if (string.IsNullOrEmpty(userId)) userId = "1001";
             if (string.IsNullOrEmpty(patientName)) patientName = "Patient Name";
 
-            // Resolve language: argument > profile field > inspector field > "English"
-            string resolvedLanguage = !string.IsNullOrEmpty(userLanguage) ? userLanguage : language;
-
             PatientProfile profile = PatientDataManager.Instance != null 
                 ? PatientDataManager.Instance.GetOrCreateProfile(userId, patientName, initialXp)
                 : null;
 
             int xpToPass = profile != null ? profile.totalXP : initialXp;
 
-            // If the profile has its own stored language, that takes priority
-            if (profile != null && !string.IsNullOrEmpty(profile.language))
+            // Priority: explicitly passed userLanguage > profile field > inspector field > "Arabic"
+            string resolvedLanguage = !string.IsNullOrEmpty(userLanguage) 
+                ? userLanguage 
+                : (profile != null && !string.IsNullOrEmpty(profile.language) ? profile.language : language);
+
+            if (string.IsNullOrEmpty(resolvedLanguage))
             {
-                resolvedLanguage = profile.language;
+                resolvedLanguage = "Arabic";
             }
 
             // Sync the inspector field so it stays consistent
