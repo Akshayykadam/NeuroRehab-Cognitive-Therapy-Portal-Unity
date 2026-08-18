@@ -729,12 +729,25 @@ class AppManager {
                 e.stopPropagation();
                 Sound.playClick();
                 this.syncScoreToUnity();
+                const avgAcc = this.getAverageAccuracy ? this.getAverageAccuracy() : 100;
+                const closePayload = {
+                    userId: this.userId,
+                    patientName: this.patientName,
+                    xp: this.gameState.xp,
+                    accuracy: avgAcc,
+                    highScores: JSON.stringify(this.gameState.highScores || {}),
+                    progress: JSON.stringify(this.gameState.progress || {}),
+                    highAccuracies: JSON.stringify(this.gameState.highAccuracies || {}),
+                    totalSessions: this.gameState.totalSessions || 0,
+                    completedCount: this.getCompletedCount ? this.getCompletedCount() : 0
+                };
                 if (window.UnityBridge) {
-                    window.UnityBridge.sendEvent("close");
+                    window.UnityBridge.sendEvent("close", closePayload);
                 }
                 setTimeout(() => {
                     try {
-                        window.location.href = "uniwebview://close";
+                        const query = new URLSearchParams(closePayload).toString();
+                        window.location.href = "uniwebview://close?" + query;
                     } catch(err) {}
                 }, 50);
             });
@@ -979,6 +992,8 @@ class AppManager {
         this.renderLobby();
         this.renderSessionCard();
         this.renderDashboard();
+        this.updatePlayerHUD();
+        this.syncScoreToUnity();
         if (window.UnityBridge) {
             window.UnityBridge.sendEvent("lobby_returned", {});
         }
@@ -1054,14 +1069,14 @@ class AppManager {
             if (score > oldHighScore) {
                 this.gameState.highScores[this.activeGameId][this.activeLevel] = score;
             }
-            
-            this.gameState.xp += xp;
-            this.saveState();
 
             const currentProg = this.gameState.progress[this.activeGameId] || 1;
             if (this.activeLevel === currentProg) {
                 this.gameState.progress[this.activeGameId] = Math.min(50, this.activeLevel + 1);
             }
+            
+            this.gameState.xp += xp;
+            this.saveState();
 
             if (this.activeLevel < 50) {
                 nextBtn.style.display = "block";
@@ -1088,14 +1103,22 @@ class AppManager {
 
         if (window.UnityBridge) {
             const game = GAME_DEFS.find(g => g.id === this.activeGameId);
+            const avgAcc = this.getAverageAccuracy ? this.getAverageAccuracy() : 100;
             window.UnityBridge.sendEvent("exercise_completed", {
+                userId: this.userId,
+                patientName: this.patientName,
                 gameId: this.activeGameId,
                 name: game ? game.name : "",
                 level: this.activeLevel,
                 success: success,
                 score: score,
-                accuracy: sessionAccuracy,
-                xp: success ? xp : 20
+                accuracy: avgAcc,
+                xp: this.gameState.xp,
+                completedCount: this.getCompletedCount ? this.getCompletedCount() : 0,
+                totalSessions: this.gameState.totalSessions || 0,
+                highScores: JSON.stringify(this.gameState.highScores || {}),
+                progress: JSON.stringify(this.gameState.progress || {}),
+                highAccuracies: JSON.stringify(this.gameState.highAccuracies || {})
             });
         }
 

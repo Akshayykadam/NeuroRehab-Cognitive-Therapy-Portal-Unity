@@ -79,6 +79,10 @@ namespace NeuroRehab
             // 16 games * 50 levels per game = 800 total possible levels
             int totalPossibleLevels = 16 * 50;
             int percent = Mathf.RoundToInt(((float)totalClearedLevels / (float)totalPossibleLevels) * 100f);
+            if (totalClearedLevels > 0 && percent == 0)
+            {
+                percent = 1;
+            }
             return Mathf.Clamp(percent, 0, 100);
         }
 
@@ -91,7 +95,7 @@ namespace NeuroRehab
             int start = idx + searchKey.Length;
             int end = progressJson.IndexOfAny(new char[] { ',', '}' }, start);
             if (end < 0) end = progressJson.Length;
-            string valStr = progressJson.Substring(start, end - start).Trim();
+            string valStr = progressJson.Substring(start, end - start).Trim().Trim('"');
             if (int.TryParse(valStr, out int lvl))
             {
                 return lvl;

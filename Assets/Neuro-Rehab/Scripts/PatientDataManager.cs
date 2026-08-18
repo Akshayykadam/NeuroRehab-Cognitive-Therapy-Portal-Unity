@@ -32,15 +32,24 @@ namespace NeuroRehab
 
         private string storageFolderPath;
 
+        private readonly List<Action> mainThreadActions = new List<Action>();
+        private readonly object actionLock = new object();
+
         private void Awake()
         {
             if (instance != null && instance != this)
             {
-                Destroy(gameObject);
+                Destroy(this);
                 return;
             }
             instance = this;
-            DontDestroyOnLoad(gameObject);
+
+            // Only persist if not attached to a scene GameObject with UI scripts
+            if (GetComponent<NeuroRehabLauncher>() == null)
+            {
+                transform.SetParent(null);
+                DontDestroyOnLoad(gameObject);
+            }
 
             // Establish dedicated JSON storage directory for Firebase pushing
             storageFolderPath = Path.Combine(Application.persistentDataPath, "PatientData");
@@ -50,7 +59,193 @@ namespace NeuroRehab
             }
 
             Debug.Log($"[PatientDataManager] Firebase JSON Storage Directory: {storageFolderPath}");
+
+#if UNITY_EDITOR || UNITY_STANDALONE
+            StartLocalHttpServer();
+#endif
         }
+
+        private void Update()
+        {
+            if (mainThreadActions.Count > 0)
+            {
+                Action[] actionsToRun;
+                lock (actionLock)
+                {
+                    actionsToRun = mainThreadActions.ToArray();
+                    mainThreadActions.Clear();
+                }
+
+                for (int i = 0; i < actionsToRun.Length; i++)
+                {
+                    try
+                    {
+                        actionsToRun[i]?.Invoke();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogError($"[PatientDataManager] MainThreadAction Error: {ex.Message}");
+                    }
+                }
+            }
+        }
+
+        public void EnqueueMainThread(Action action)
+        {
+            if (action == null) return;
+            lock (actionLock)
+            {
+                mainThreadActions.Add(action);
+            }
+        }
+
+#if UNITY_EDITOR || UNITY_STANDALONE
+        private System.Net.HttpListener httpListener;
+        private System.Threading.Thread httpThread;
+        private bool isHttpRunning = false;
+
+        private void StartLocalHttpServer()
+        {
+            if (isHttpRunning) return;
+            try
+            {
+                httpListener = new System.Net.HttpListener();
+                httpListener.Prefixes.Add("http://localhost:8080/");
+                httpListener.Prefixes.Add("http://127.0.0.1:8080/");
+                httpListener.Start();
+                isHttpRunning = true;
+                httpThread = new System.Threading.Thread(HttpServerLoop)
+                {
+                    IsBackground = true
+                };
+                httpThread.Start();
+                Debug.Log("[PatientDataManager] Local Editor HTTP Server running on http://localhost:8080/");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[PatientDataManager] Local HTTP Server not started: {ex.Message}");
+            }
+        }
+
+        private void HttpServerLoop()
+        {
+            while (isHttpRunning && httpListener != null && httpListener.IsListening)
+            {
+                try
+                {
+                    var context = httpListener.GetContext();
+                    ProcessHttpRequest(context);
+                }
+                catch
+                {
+                    // Listener closed or aborted
+                }
+            }
+        }
+
+        private void ProcessHttpRequest(System.Net.HttpListenerContext context)
+        {
+            try
+            {
+                var req = context.Request;
+                var res = context.Response;
+
+                // CORS headers
+                res.AddHeader("Access-Control-Allow-Origin", "*");
+                res.AddHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+                res.AddHeader("Access-Control-Allow-Headers", "Content-Type");
+
+                if (req.HttpMethod == "OPTIONS")
+                {
+                    res.StatusCode = 200;
+                    res.Close();
+                    return;
+                }
+
+                string rawUrl = req.RawUrl ?? "";
+                string path = req.Url.AbsolutePath;
+
+                if (path == "/score_sync" || rawUrl.Contains("score_sync"))
+                {
+                    var query = System.Web.HttpUtility.ParseQueryString(req.Url.Query);
+                    string userId = query["userId"] ?? "1001";
+                    int xp = int.TryParse(query["xp"], out int pXp) ? pXp : 0;
+                    int completedCount = int.TryParse(query["completedCount"], out int pCount) ? pCount : 0;
+                    int totalSessions = int.TryParse(query["totalSessions"], out int pSess) ? pSess : 0;
+                    int accuracy = int.TryParse(query["accuracy"], out int pAcc) ? pAcc : 100;
+                    string highScores = query["highScores"];
+                    string progress = query["progress"];
+                    string highAccuracies = query["highAccuracies"];
+
+                    EnqueueMainThread(() =>
+                    {
+                        UpdatePatientProgress(userId, xp, completedCount, totalSessions, highScores, progress, accuracy, highAccuracies);
+                        if (NeuroRehabLauncher.Instance != null)
+                        {
+                            NeuroRehabLauncher.Instance.UpdateUI();
+                        }
+                    });
+
+                    byte[] buffer = System.Text.Encoding.UTF8.GetBytes("{\"status\":\"ok\"}");
+                    res.ContentType = "application/json";
+                    res.ContentLength64 = buffer.Length;
+                    res.OutputStream.Write(buffer, 0, buffer.Length);
+                    res.Close();
+                    return;
+                }
+                else if (path == "/get_patient_data" || rawUrl.Contains("get_patient_data"))
+                {
+                    var query = System.Web.HttpUtility.ParseQueryString(req.Url.Query);
+                    string userId = query["userId"] ?? "1001";
+                    string filePath = GetPatientJsonPath(userId);
+                    string json = "{}";
+                    if (File.Exists(filePath))
+                    {
+                        json = File.ReadAllText(filePath);
+                    }
+
+                    byte[] buffer = System.Text.Encoding.UTF8.GetBytes(json);
+                    res.ContentType = "application/json";
+                    res.ContentLength64 = buffer.Length;
+                    res.OutputStream.Write(buffer, 0, buffer.Length);
+                    res.Close();
+                    return;
+                }
+
+                res.StatusCode = 404;
+                res.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[PatientDataManager] HTTP Request handling error: {ex.Message}");
+            }
+        }
+
+        private void StopLocalHttpServer()
+        {
+            isHttpRunning = false;
+            if (httpListener != null)
+            {
+                try { httpListener.Stop(); httpListener.Close(); } catch { }
+                httpListener = null;
+            }
+            if (httpThread != null)
+            {
+                try { httpThread.Abort(); } catch { }
+                httpThread = null;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            StopLocalHttpServer();
+        }
+
+        private void OnApplicationQuit()
+        {
+            StopLocalHttpServer();
+        }
+#endif
 
         private static readonly object fileLock = new object();
 
@@ -156,13 +351,96 @@ namespace NeuroRehab
             }
 
             // 3. Otherwise return existing memory profile or create new default profile
-            if (profile != null) return profile;
+            if (profile != null)
+            {
+                if (activeProfile == null || activeProfile.userId == userId)
+                {
+                    activeProfile = profile;
+                }
+                return profile;
+            }
 
             PatientProfile newProfile = new PatientProfile(userId, userName, defaultXp);
             patientProfiles.Add(newProfile);
+            if (activeProfile == null || activeProfile.userId == userId)
+            {
+                activeProfile = newProfile;
+            }
             SaveProfile(newProfile);
 
             return newProfile;
+        }
+
+        /// <summary>
+        /// Explicitly reloads the latest profile data from disk into memory,
+        /// updating the cached patient profile and active profile.
+        /// </summary>
+        public PatientProfile ReloadProfile(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                userId = activeProfile != null ? activeProfile.userId : "1001";
+            }
+
+            string filePath = GetPatientJsonPath(userId);
+            PatientProfile profile = patientProfiles.Find(p => p.userId == userId);
+
+            lock (fileLock)
+            {
+                if (File.Exists(filePath))
+                {
+                    try
+                    {
+                        string json = "";
+                        using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                        using (StreamReader reader = new StreamReader(fs))
+                        {
+                            json = reader.ReadToEnd();
+                        }
+
+                        PatientProfile loadedDisk = JsonUtility.FromJson<PatientProfile>(json);
+                        if (loadedDisk != null && !string.IsNullOrEmpty(loadedDisk.userId))
+                        {
+                            if (profile != null)
+                            {
+                                profile.patientName = loadedDisk.patientName;
+                                profile.totalXP = loadedDisk.totalXP;
+                                profile.totalCompletedExercises = loadedDisk.totalCompletedExercises;
+                                profile.averageAccuracy = loadedDisk.averageAccuracy;
+                                profile.totalSessions = loadedDisk.totalSessions;
+                                profile.highScoresJson = loadedDisk.highScoresJson;
+                                profile.progressJson = loadedDisk.progressJson;
+                                profile.highAccuraciesJson = loadedDisk.highAccuraciesJson;
+                                if (!string.IsNullOrEmpty(loadedDisk.lastActiveDate)) profile.lastActiveDate = loadedDisk.lastActiveDate;
+                                if (!string.IsNullOrEmpty(loadedDisk.updatedAtIso)) profile.updatedAtIso = loadedDisk.updatedAtIso;
+                                string defaultLang = NeuroRehabLauncher.instance != null ? NeuroRehabLauncher.instance.AppLanguage : "";
+                                profile.language = !string.IsNullOrEmpty(loadedDisk.language) ? loadedDisk.language : defaultLang;
+                            }
+                            else
+                            {
+                                profile = loadedDisk;
+                                string defaultLang = NeuroRehabLauncher.instance != null ? NeuroRehabLauncher.instance.AppLanguage : "";
+                                if (string.IsNullOrEmpty(profile.language)) profile.language = defaultLang;
+                                patientProfiles.Add(profile);
+                            }
+
+                            if (activeProfile == null || activeProfile.userId == userId)
+                            {
+                                activeProfile = profile;
+                            }
+
+                            Debug.Log($"[PatientDataManager] ReloadProfile SUCCESS for {profile.patientName} (ID: {profile.userId}) -> XP: {profile.totalXP}, Accuracy: {profile.averageAccuracy}%, Cleared: {profile.totalCompletedExercises}");
+                            return profile;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogWarning($"[PatientDataManager] ReloadProfile error for {userId}: {ex.Message}");
+                    }
+                }
+            }
+
+            return profile ?? GetOrCreateProfile(userId, "Patient");
         }
 
         public string GetPatientJsonPath(string userId)
@@ -187,18 +465,16 @@ namespace NeuroRehab
         {
             activeProfile = GetOrCreateProfile(userId, userName);
             Debug.Log($"[PatientDataManager] Active Patient set to: {activeProfile.patientName} (ID: {activeProfile.userId})");
-            SaveProfile(activeProfile);
         }
 
         public void SetActiveProfile(PatientProfile profile)
         {
+            if (profile == null) return;
             activeProfile = profile;
-            if (activeProfile != null)
-            {
-                Debug.Log($"[PatientDataManager] Active Patient set to: {activeProfile.patientName} (ID: {activeProfile.userId})");
-                SaveProfile(activeProfile);
-            }
+            Debug.Log($"[PatientDataManager] Active Patient set to: {activeProfile.patientName} (ID: {activeProfile.userId})");
         }
+
+        private bool isNotifying = false;
 
         public void SaveProfile(PatientProfile profile)
         {
@@ -217,7 +493,18 @@ namespace NeuroRehab
                 Debug.LogError($"[PatientDataManager] Failed to write JSON file for {profile.userId}: {ex.Message}");
             }
 
-            OnPatientDataUpdated?.Invoke(profile);
+            if (!isNotifying)
+            {
+                try
+                {
+                    isNotifying = true;
+                    OnPatientDataUpdated?.Invoke(profile);
+                }
+                finally
+                {
+                    isNotifying = false;
+                }
+            }
         }
 
         public void UpdatePatientProgress(string userId, int xpGained, int completedCount, int totalSessions = 0, string highScoresJson = null, string progressJson = null, int accuracy = 100, string highAccuraciesJson = null)
@@ -256,6 +543,11 @@ namespace NeuroRehab
                     profile.highAccuraciesJson = highAccuraciesJson;
                 }
                 profile.lastActiveDate = DateTime.Now.ToString("yyyy-MM-dd");
+
+                if (activeProfile == null || activeProfile.userId == userId)
+                {
+                    activeProfile = profile;
+                }
 
                 // Automatically save updated progress to JSON file on disk
                 SaveProfile(profile);

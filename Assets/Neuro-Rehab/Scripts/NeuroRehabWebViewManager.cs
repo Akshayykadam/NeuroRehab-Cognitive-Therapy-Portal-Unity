@@ -227,17 +227,20 @@ namespace NeuroRehab
                 action = message.Args["action"];
             }
 
-            if (action == "score_sync" || action == "game_complete" || (message.RawMessage != null && (message.RawMessage.Contains("score_sync") || message.RawMessage.Contains("game_complete"))))
+            // If payload contains score/progress data, sync it immediately
+            bool hasScoreData = message.Args != null && (message.Args.ContainsKey("xp") || message.Args.ContainsKey("completedCount") || message.Args.ContainsKey("highScores") || message.Args.ContainsKey("progress"));
+
+            if (hasScoreData || action == "score_sync" || action == "game_complete" || action == "exercise_completed" || (message.RawMessage != null && (message.RawMessage.Contains("score_sync") || message.RawMessage.Contains("game_complete") || message.RawMessage.Contains("exercise_completed"))))
             {
-                string userId = message.Args.ContainsKey("userId") ? message.Args["userId"] : "1001";
-                string patientName = message.Args.ContainsKey("patientName") ? message.Args["patientName"] : (message.Args.ContainsKey("patient") ? message.Args["patient"] : "Patient Name");
-                int xp = message.Args.ContainsKey("xp") ? int.Parse(message.Args["xp"]) : 0;
-                int completedCount = message.Args.ContainsKey("completedCount") ? int.Parse(message.Args["completedCount"]) : 0;
-                int totalSessions = message.Args.ContainsKey("totalSessions") ? int.Parse(message.Args["totalSessions"]) : 0;
-                int accuracy = message.Args.ContainsKey("accuracy") ? int.Parse(message.Args["accuracy"]) : 100;
-                string highScoresJson = message.Args.ContainsKey("highScores") ? message.Args["highScores"] : null;
-                string progressJson = message.Args.ContainsKey("progress") ? message.Args["progress"] : null;
-                string highAccuraciesJson = message.Args.ContainsKey("highAccuracies") ? message.Args["highAccuracies"] : null;
+                string userId = message.Args != null && message.Args.ContainsKey("userId") ? message.Args["userId"] : "1001";
+                string patientName = message.Args != null && message.Args.ContainsKey("patientName") ? message.Args["patientName"] : (message.Args != null && message.Args.ContainsKey("patient") ? message.Args["patient"] : "Patient Name");
+                int xp = (message.Args != null && message.Args.ContainsKey("xp") && int.TryParse(message.Args["xp"], out int pXp)) ? pXp : 0;
+                int completedCount = (message.Args != null && message.Args.ContainsKey("completedCount") && int.TryParse(message.Args["completedCount"], out int pCount)) ? pCount : 0;
+                int totalSessions = (message.Args != null && message.Args.ContainsKey("totalSessions") && int.TryParse(message.Args["totalSessions"], out int pSess)) ? pSess : 0;
+                int accuracy = (message.Args != null && message.Args.ContainsKey("accuracy") && int.TryParse(message.Args["accuracy"], out int pAcc)) ? pAcc : 100;
+                string highScoresJson = message.Args != null && message.Args.ContainsKey("highScores") ? message.Args["highScores"] : null;
+                string progressJson = message.Args != null && message.Args.ContainsKey("progress") ? message.Args["progress"] : null;
+                string highAccuraciesJson = message.Args != null && message.Args.ContainsKey("highAccuracies") ? message.Args["highAccuracies"] : null;
 
                 Debug.Log($"[NeuroRehab] Score Sync Received for {patientName} (ID: {userId}) -> XP: {xp}, Accuracy: {accuracy}%, Cleared: {completedCount}");
 
@@ -246,7 +249,8 @@ namespace NeuroRehab
                     PatientDataManager.Instance.UpdatePatientProgress(userId, xp, completedCount, totalSessions, highScoresJson, progressJson, accuracy, highAccuraciesJson);
                 }
             }
-            else if (action == "close" || action == "close_webview" || action == "exit" || (message.RawMessage != null && (message.RawMessage.Contains("action=close") || message.RawMessage.Contains("action=exit"))))
+
+            if (action == "close" || action == "close_webview" || action == "exit" || (message.RawMessage != null && (message.RawMessage.Contains("action=close") || message.RawMessage.Contains("action=exit"))))
             {
                 CloseWebView();
             }
@@ -384,15 +388,27 @@ namespace NeuroRehab
             // Reload fresh JSON profile from disk and notify Unity UI
             if (PatientDataManager.Instance != null)
             {
-                PatientProfile activeProfile = PatientDataManager.Instance.GetActiveProfile();
-                if (activeProfile != null)
+                PatientProfile active = PatientDataManager.Instance.GetActiveProfile();
+                string uid = active != null && !string.IsNullOrEmpty(active.userId) ? active.userId : (NeuroRehabLauncher.Instance != null ? NeuroRehabLauncher.Instance.targetUserId : "1001");
+                string uname = active != null && !string.IsNullOrEmpty(active.patientName) ? active.patientName : (NeuroRehabLauncher.Instance != null ? NeuroRehabLauncher.Instance.targetUserName : "Patient");
+
+                PatientProfile freshProfile = PatientDataManager.Instance.ReloadProfile(uid);
+                if (freshProfile == null)
                 {
-                    PatientProfile freshProfile = PatientDataManager.Instance.GetOrCreateProfile(activeProfile.userId, activeProfile.patientName);
-                    if (freshProfile != null)
-                    {
-                        PatientDataManager.Instance.SaveProfile(freshProfile);
-                    }
+                    freshProfile = PatientDataManager.Instance.GetOrCreateProfile(uid, uname);
                 }
+
+                if (freshProfile != null)
+                {
+                    PatientDataManager.Instance.SetActiveProfile(freshProfile);
+                    PatientDataManager.Instance.SaveProfile(freshProfile);
+                }
+            }
+
+            // Explicitly force Native Unity Launcher UI refresh immediately
+            if (NeuroRehabLauncher.Instance != null)
+            {
+                NeuroRehabLauncher.Instance.UpdateUI();
             }
         }
     }

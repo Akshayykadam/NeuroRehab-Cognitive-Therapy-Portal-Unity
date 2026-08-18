@@ -1,70 +1,60 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace NeuroRehab
 {
     public class NeuroRehabLauncher : MonoBehaviour
     {
-        [Header("Patient Profile Configuration")]
-        [Tooltip("Patient's full name")]
         public string targetUserName = "";
 
-        [Tooltip("Patient's unique ID")]
         public string targetUserId = "";
 
-        // Property backwards-compatibility getters/setters
         public string userName { get => targetUserName; set => targetUserName = value; }
         public string userId { get => targetUserId; set => targetUserId = value; }
 
-        [Tooltip("Initial Score / XP")]
         public int initialXP = 0;
 
         public static NeuroRehabLauncher instance;
         public static NeuroRehabLauncher Instance => instance;
 
-        [Header("Language Configuration")]
-        [Tooltip("App UI Language — Single master variable for the entire app")]
         public string AppLanguage = "";
 
-        // Backwards compatibility alias for targetLanguage
         public string targetLanguage { get => AppLanguage; set => AppLanguage = value; }
 
-        [Header("Unity Native UI References (Drag & Drop)")]
-        [Tooltip("Drag & drop your Play Button here")]
-        public Button playButton;
-
-        [Tooltip("Text component to display Username")]
+        public Button playButton, backButton;
         public Text usernameText;
-
-        [Tooltip("Text component to display User ID")]
         public Text idText;
-
-        [Tooltip("Text component to display Total Score / XP")]
         public Text scoreText;
-
-        [Tooltip("Text component to display Completed Exercises")]
         public Text completedText;
-
-        [Tooltip("Text component to display Average Accuracy %")]
         public Text accuracyText;
-
-        [Tooltip("Text component to display Progress %")]
         public Text progressText;
-
-        [Tooltip("Text component to display Last Active Date")]
         public Text lastActiveText;
 
         private NeuroRehabWebViewManager webViewManager;
 
         private void Awake()
         {
-            if (instance != null && instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
             instance = this;
-            DontDestroyOnLoad(gameObject);
+        }
+
+        private void OnEnable()
+        {
+            BindUIReferences();
+            if (PatientDataManager.Instance != null)
+            {
+                PatientDataManager.Instance.OnPatientDataUpdated -= OnDataUpdated;
+                PatientDataManager.Instance.OnPatientDataUpdated += OnDataUpdated;
+            }
+            UpdateUI();
+        }
+
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            if (hasFocus)
+            {
+                UpdateUI();
+            }
         }
 
         private void Start()
@@ -72,7 +62,7 @@ namespace NeuroRehab
             // 1. Ensure Managers exist
             if (PatientDataManager.Instance == null)
             {
-                GameObject dataObj = new GameObject("PatientDataManager");
+                GameObject dataObj = new GameObject("[PatientDataManager]");
                 dataObj.AddComponent<PatientDataManager>();
             }
 
@@ -83,38 +73,25 @@ namespace NeuroRehab
                 webViewManager = webObj.AddComponent<NeuroRehabWebViewManager>();
             }
 
-            // Listen for data updates from web sessions to refresh Unity UI live
-            if (PatientDataManager.Instance != null)
-            {
-                PatientDataManager.Instance.OnPatientDataUpdated += OnDataUpdated;
-            }
+            // 2. Bind UI & Button listeners
+            BindUIReferences();
 
-            // 2. Refresh Native Unity UI
+            // 3. Refresh Native Unity UI
             UpdateUI();
-
-            // 3. Connect Play Button Listener
-            if (playButton != null)
-            {
-                playButton.onClick.RemoveAllListeners();
-                playButton.onClick.AddListener(LaunchSession);
-            }
         }
 
-        public void UpdateUI()
+        public void BindUIReferences()
         {
-            // Load active profile set by previous scene/login, or fallback to Inspector settings
-            PatientProfile profile = null;
-            if (PatientDataManager.Instance != null)
+            // Auto-find Buttons if references were lost
+            if (playButton == null)
             {
-                profile = PatientDataManager.Instance.GetActiveProfile();
-                if (profile == null)
-                {
-                    profile = PatientDataManager.Instance.GetOrCreateProfile(targetUserId, targetUserName, initialXP);
-                }
+                GameObject obj = GameObject.Find("PlayButton") ?? GameObject.Find("Play") ?? GameObject.Find("Play Button");
+                if (obj != null) playButton = obj.GetComponent<Button>();
             }
-            else
+            if (backButton == null)
             {
-                profile = new PatientProfile(targetUserId, targetUserName, initialXP);
+                GameObject obj = GameObject.Find("BackButton") ?? GameObject.Find("Back") ?? GameObject.Find("Back Button");
+                if (obj != null) backButton = obj.GetComponent<Button>();
             }
 
             // Auto-find Text components by name if not linked in Inspector
@@ -126,30 +103,83 @@ namespace NeuroRehab
             if (progressText == null) { GameObject obj = GameObject.Find("Progress"); if (obj != null) progressText = obj.GetComponent<Text>(); }
             if (lastActiveText == null) { GameObject obj = GameObject.Find("Last Active"); if (obj != null) lastActiveText = obj.GetComponent<Text>(); }
 
-            if (usernameText != null) usernameText.text = profile.patientName;
-            if (idText != null) idText.text = $"ID: {profile.userId}";
-            if (scoreText != null) scoreText.text = $"⭐ {profile.totalXP} Score";
-            if (completedText != null) completedText.text = $"✅ {profile.totalCompletedExercises} / 16 Practiced";
-            if (accuracyText != null) accuracyText.text = $"🎯 {profile.averageAccuracy}% Accuracy";
-
-            if (progressText != null)
+            // Connect button listeners cleanly
+            if (playButton != null)
             {
-                int progressPercent = profile.GetOverallProgressPercentage();
-                progressText.text = $"📊 {progressPercent}% Progress";
+                playButton.onClick.RemoveAllListeners();
+                playButton.onClick.AddListener(LaunchSession);
             }
-
-            if (lastActiveText != null)
+            if (backButton != null)
             {
-                string dateStr = !string.IsNullOrEmpty(profile.lastActiveDate) ? profile.lastActiveDate : System.DateTime.Now.ToString("yyyy-MM-dd");
-                lastActiveText.text = $"📅 {dateStr}";
+                backButton.onClick.RemoveAllListeners();
+                backButton.onClick.AddListener(OnClickBackButton);
+            }
+        }
+
+        public void OnClickBackButton()
+        {
+            SceneManager.LoadScene("NeuroMenu");
+        }
+
+        private bool isUpdatingUI = false;
+
+        public void UpdateUI()
+        {
+            if (isUpdatingUI) return;
+            isUpdatingUI = true;
+
+            try
+            {
+                string uid = !string.IsNullOrEmpty(targetUserId) ? targetUserId : "1001";
+                string uname = !string.IsNullOrEmpty(targetUserName) ? targetUserName : "Patient Name";
+
+                // Always load latest profile from disk or manager
+                PatientProfile profile = null;
+                if (PatientDataManager.Instance != null)
+                {
+                    profile = PatientDataManager.Instance.ReloadProfile(uid);
+                    if (profile == null)
+                    {
+                        profile = PatientDataManager.Instance.GetOrCreateProfile(uid, uname, initialXP);
+                    }
+                }
+                
+                if (profile == null)
+                {
+                    profile = new PatientProfile(uid, uname, initialXP);
+                }
+
+                BindUIReferences();
+
+                if (usernameText != null) usernameText.text = profile.patientName;
+                if (idText != null) idText.text = $"ID: {profile.userId}";
+                if (scoreText != null) scoreText.text = $"{profile.totalXP} Score";
+                if (completedText != null) completedText.text = $"{profile.totalCompletedExercises} / 16 Practiced";
+                if (accuracyText != null) accuracyText.text = $"{profile.averageAccuracy}% Accuracy";
+
+                if (progressText != null)
+                {
+                    int progressPercent = profile.GetOverallProgressPercentage();
+                    progressText.text = $"{progressPercent}% Progress";
+                }
+
+                if (lastActiveText != null)
+                {
+                    string dateStr = !string.IsNullOrEmpty(profile.lastActiveDate) ? profile.lastActiveDate : System.DateTime.Now.ToString("yyyy-MM-dd");
+                    lastActiveText.text = $"{dateStr}";
+                }
+
+                Debug.Log($"[NeuroRehabLauncher] UpdateUI Refreshed for {profile.patientName} (ID: {profile.userId}) -> Score: {profile.totalXP}, Practiced: {profile.totalCompletedExercises}/16, Accuracy: {profile.averageAccuracy}%");
+            }
+            finally
+            {
+                isUpdatingUI = false;
             }
         }
 
         private void OnDataUpdated(PatientProfile updatedProfile)
         {
-            PatientProfile activeProfile = PatientDataManager.Instance != null ? PatientDataManager.Instance.GetActiveProfile() : null;
-            string currentId = activeProfile != null ? activeProfile.userId : targetUserId;
-            if (updatedProfile != null && updatedProfile.userId == currentId)
+            if (!isUpdatingUI)
             {
                 UpdateUI();
             }
@@ -157,43 +187,52 @@ namespace NeuroRehab
 
         public void LaunchSession()
         {
+            string uid = !string.IsNullOrEmpty(targetUserId) ? targetUserId : "1001";
+            string uname = !string.IsNullOrEmpty(targetUserName) ? targetUserName : "Patient Name";
+
             PatientProfile profile = null;
             if (PatientDataManager.Instance != null)
             {
-                profile = PatientDataManager.Instance.GetActiveProfile();
+                profile = PatientDataManager.Instance.ReloadProfile(uid);
                 if (profile == null)
                 {
-                    profile = PatientDataManager.Instance.GetOrCreateProfile(targetUserId, targetUserName, initialXP);
-                    PatientDataManager.Instance.SetActiveProfile(profile);
+                    profile = PatientDataManager.Instance.GetOrCreateProfile(uid, uname, initialXP);
                 }
 
+                PatientDataManager.Instance.SetActiveProfile(profile);
+
                 // Explicitly set language on profile before launching
-                profile.language = AppLanguage;
+                if (!string.IsNullOrEmpty(AppLanguage))
+                {
+                    profile.language = AppLanguage;
+                }
 
                 // Automatically save / create JSON on disk at Application.persistentDataPath/PatientData/<userId>.json
                 PatientDataManager.Instance.SaveProfile(profile);
             }
             else
             {
-                profile = new PatientProfile(targetUserId, targetUserName, initialXP);
-                profile.language = AppLanguage;
+                profile = new PatientProfile(uid, uname, initialXP);
+                if (!string.IsNullOrEmpty(AppLanguage))
+                {
+                    profile.language = AppLanguage;
+                }
             }
 
             Debug.Log($"[NeuroRehabLauncher] Launching Session for {profile.patientName} (ID: {profile.userId}, Language: {profile.language})...");
 
             // Launch Web Portal with User ID, Name, and Language
-            if (webViewManager != null)
+            if (webViewManager == null)
             {
-                webViewManager.OpenWebView(profile);
-            }
-            else
-            {
-                var mgr = FindObjectOfType<NeuroRehabWebViewManager>();
-                if (mgr != null)
+                webViewManager = FindObjectOfType<NeuroRehabWebViewManager>();
+                if (webViewManager == null)
                 {
-                    mgr.OpenWebView(profile);
+                    GameObject webObj = new GameObject("NeuroRehabWebViewManager");
+                    webViewManager = webObj.AddComponent<NeuroRehabWebViewManager>();
                 }
             }
+
+            webViewManager.OpenWebView(profile);
         }
 
         public void SetLanguageAndLaunch(string lang)
@@ -216,10 +255,12 @@ namespace NeuroRehab
             }
         }
 
-
-
         private void OnDestroy()
         {
+            if (instance == this)
+            {
+                instance = null;
+            }
             if (PatientDataManager.Instance != null)
             {
                 PatientDataManager.Instance.OnPatientDataUpdated -= OnDataUpdated;
