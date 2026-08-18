@@ -10,7 +10,7 @@
                 { x: 300, y: 400 },
                 { x: 500, y: 400 }
             ],
-            guideText: "Trace L shape starting from top-left",
+            guideText: window.t('T180'),
             tolerance: 45 // Generous tolerance for clinical rehabilitation
         },
         2: { // U Shape - Curved bottom
@@ -22,7 +22,7 @@
                 { x: 550, y: 350 },
                 { x: 550, y: 120 }
             ],
-            guideText: "Trace U shape starting from top-left",
+            guideText: window.t('T181'),
             tolerance: 40
         },
         3: { // A Shape
@@ -33,7 +33,7 @@
                 { x: 475, y: 250 },
                 { x: 325, y: 250 }
             ],
-            guideText: "Trace A shape starting bottom-left",
+            guideText: window.t('T182'),
             tolerance: 38
         },
         4: { // S Shape - Double curve
@@ -48,7 +48,7 @@
                 { x: 380, y: 420 },
                 { x: 280, y: 380 }
             ],
-            guideText: "Trace S curve starting from top-right",
+            guideText: window.t('T183'),
             tolerance: 35
         },
         5: { // Infinity symbol
@@ -67,7 +67,7 @@
                 { x: 320, y: 330 },
                 { x: 400, y: 250 }
             ],
-            guideText: "Trace Infinity Loop starting from center node",
+            guideText: window.t('T184'),
             tolerance: 30
         }
     };
@@ -81,21 +81,21 @@
         switch (level) {
             case 1: // L Shape
                 points.push({ x: 300, y: 100 }, { x: 300, y: 400 }, { x: 500, y: 400 });
-                guideText = "Trace L shape starting from top-left";
+                guideText = window.t('T180');
                 break;
             case 2: // U Shape
                 points.push(
                     { x: 250, y: 120 }, { x: 250, y: 350 }, { x: 300, y: 400 },
                     { x: 500, y: 400 }, { x: 550, y: 350 }, { x: 550, y: 120 }
                 );
-                guideText = "Trace U shape starting from top-left";
+                guideText = window.t('T181');
                 break;
             case 3: // A Shape
                 points.push(
                     { x: 250, y: 420 }, { x: 400, y: 80 }, { x: 550, y: 420 },
                     { x: 475, y: 250 }, { x: 325, y: 250 }
                 );
-                guideText = "Trace A shape starting bottom-left";
+                guideText = window.t('T182');
                 break;
             case 4: // S Shape
                 points.push(
@@ -103,10 +103,10 @@
                     { x: 300, y: 220 }, { x: 400, y: 270 }, { x: 500, y: 320 },
                     { x: 480, y: 400 }, { x: 380, y: 420 }, { x: 280, y: 380 }
                 );
-                guideText = "Trace S curve starting from top-right";
+                guideText = window.t('T183');
                 break;
             case 5: // Infinity symbol
-                guideText = "Trace Infinity Loop starting from center";
+                guideText = window.t('T184');
                 for (let i = 0; i <= 24; i++) {
                     const t = (i * 2 * Math.PI) / 24;
                     const scale = 200 / (3 - Math.cos(2*t));
@@ -117,49 +117,49 @@
                 }
                 break;
             case 6: // Triangle
-                guideText = "Trace this Triangle";
+                guideText = window.t('T185');
                 for (let i = 0; i <= 3; i++) {
                     const angle = (i * 2 * Math.PI) / 3 - Math.PI / 2;
                     points.push({ x: Math.round(centerX + Math.cos(angle) * 140), y: Math.round(centerY + Math.sin(angle) * 140) });
                 }
                 break;
             case 7: // Square
-                guideText = "Trace this Square";
+                guideText = window.t('T186');
                 for (let i = 0; i <= 4; i++) {
                     const angle = (i * 2 * Math.PI) / 4 - Math.PI / 4;
                     points.push({ x: Math.round(centerX + Math.cos(angle) * 140), y: Math.round(centerY + Math.sin(angle) * 140) });
                 }
                 break;
             case 8: // Pentagon
-                guideText = "Trace this Pentagon";
+                guideText = window.t('T187');
                 for (let i = 0; i <= 5; i++) {
                     const angle = (i * 2 * Math.PI) / 5 - Math.PI / 2;
                     points.push({ x: Math.round(centerX + Math.cos(angle) * 135), y: Math.round(centerY + Math.sin(angle) * 135) });
                 }
                 break;
             case 9: // Hexagon
-                guideText = "Trace this Hexagon";
+                guideText = window.t('T188');
                 for (let i = 0; i <= 6; i++) {
                     const angle = (i * 2 * Math.PI) / 6;
                     points.push({ x: Math.round(centerX + Math.cos(angle) * 130), y: Math.round(centerY + Math.sin(angle) * 130) });
                 }
                 break;
             case 10: // Heptagon
-                guideText = "Trace this Heptagon";
+                guideText = window.t('T189');
                 for (let i = 0; i <= 7; i++) {
                     const angle = (i * 2 * Math.PI) / 7 - Math.PI / 2;
                     points.push({ x: Math.round(centerX + Math.cos(angle) * 130), y: Math.round(centerY + Math.sin(angle) * 130) });
                 }
                 break;
             case 11: // Octagon
-                guideText = "Trace this Octagon";
+                guideText = window.t('T190');
                 for (let i = 0; i <= 8; i++) {
                     const angle = (i * 2 * Math.PI) / 8 - Math.PI / 8;
                     points.push({ x: Math.round(centerX + Math.cos(angle) * 130), y: Math.round(centerY + Math.sin(angle) * 130) });
                 }
                 break;
             case 12: // Heart
-                guideText = "Trace the Heart shape starting from top center";
+                guideText = window.t('T191');
                 for (let i = 0; i <= 32; i++) {
                     const t = (i * 2 * Math.PI) / 32;
                     const x = 16 * Math.pow(Math.sin(t), 3);
@@ -168,7 +168,7 @@
                 }
                 break;
             case 13: // 4-Point Star (Sparkle)
-                guideText = "Trace this 4-Point Sparkle Star";
+                guideText = window.t('T192');
                 for (let i = 0; i <= 8; i++) {
                     const angle = (i * 2 * Math.PI) / 8 - Math.PI / 2;
                     const r = i % 2 === 0 ? 140 : 50;
@@ -176,7 +176,7 @@
                 }
                 break;
             case 14: // 5-Point Star
-                guideText = "Trace this 5-Point Star";
+                guideText = window.t('T193');
                 for (let i = 0; i <= 10; i++) {
                     const angle = (i * 2 * Math.PI) / 10 - Math.PI / 2;
                     const r = i % 2 === 0 ? 140 : 55;
@@ -184,7 +184,7 @@
                 }
                 break;
             case 15: // 6-Point Star (Hexagram)
-                guideText = "Trace this 6-Point Star";
+                guideText = window.t('T194');
                 for (let i = 0; i <= 12; i++) {
                     const angle = (i * 2 * Math.PI) / 12 - Math.PI / 2;
                     const r = i % 2 === 0 ? 140 : 60;
@@ -192,7 +192,7 @@
                 }
                 break;
             case 16: // Crescent Moon
-                guideText = "Trace the Crescent Moon";
+                guideText = window.t('T195');
                 for (let i = 0; i <= 16; i++) {
                     const angle = -Math.PI / 2 + (i / 16) * Math.PI;
                     points.push({ x: Math.round(centerX - 20 + Math.cos(angle) * 130), y: Math.round(centerY + Math.sin(angle) * 130) });
@@ -203,14 +203,14 @@
                 }
                 break;
             case 17: // Diamond Gem
-                guideText = "Trace the Diamond Gem";
+                guideText = window.t('T196');
                 points.push(
                     { x: 400, y: 110 }, { x: 530, y: 190 }, { x: 480, y: 360 },
                     { x: 400, y: 400 }, { x: 320, y: 360 }, { x: 270, y: 190 }, { x: 400, y: 110 }
                 );
                 break;
             case 18: // Cross (Plus Sign)
-                guideText = "Trace this clinical Cross";
+                guideText = window.t('T197');
                 points.push(
                     { x: 360, y: 120 }, { x: 440, y: 120 }, { x: 440, y: 200 },
                     { x: 520, y: 200 }, { x: 520, y: 280 }, { x: 440, y: 280 },
@@ -219,21 +219,21 @@
                 );
                 break;
             case 19: // House outline
-                guideText = "Trace this House outline starting from bottom-left";
+                guideText = window.t('T198');
                 points.push(
                     { x: 280, y: 380 }, { x: 280, y: 240 }, { x: 400, y: 120 },
                     { x: 520, y: 240 }, { x: 520, y: 380 }, { x: 280, y: 380 }
                 );
                 break;
             case 20: // Letter M
-                guideText = "Trace the letter M starting bottom-left";
+                guideText = window.t('T199');
                 points.push(
                     { x: 250, y: 380 }, { x: 250, y: 120 }, { x: 400, y: 280 },
                     { x: 550, y: 120 }, { x: 550, y: 380 }
                 );
                 break;
             case 21: // Teardrop / Raindrop
-                guideText = "Trace the Raindrop outline";
+                guideText = window.t('T200');
                 for (let i = 0; i <= 30; i++) {
                     const t = (i * 2 * Math.PI) / 30;
                     const x = 110 * Math.sin(t);
@@ -242,21 +242,21 @@
                 }
                 break;
             case 22: // Bowtie / Hourglass
-                guideText = "Trace the Bowtie curve";
+                guideText = window.t('T201');
                 points.push(
                     { x: 260, y: 140 }, { x: 540, y: 360 }, { x: 540, y: 140 },
                     { x: 260, y: 360 }, { x: 260, y: 140 }
                 );
                 break;
             case 23: // Envelope
-                guideText = "Trace this Envelope starting from top-left";
+                guideText = window.t('T202');
                 points.push(
                     { x: 260, y: 160 }, { x: 540, y: 160 }, { x: 540, y: 340 },
                     { x: 260, y: 340 }, { x: 260, y: 160 }, { x: 400, y: 250 }, { x: 540, y: 160 }
                 );
                 break;
             case 24: // Wave curve (horizontal)
-                guideText = "Trace the horizontal Sine Wave";
+                guideText = window.t('T203');
                 for (let i = 0; i <= 20; i++) {
                     const pct = i / 20;
                     const x = 200 + pct * 400;
@@ -265,7 +265,7 @@
                 }
                 break;
             case 25: // Spiral (Clockwise)
-                guideText = "Trace the spiral clockwise outward";
+                guideText = window.t('T204');
                 for (let i = 0; i < 24; i++) {
                     const angle = (i / 23) * 1.5 * 2 * Math.PI;
                     const r = 25 + (i / 23) * 130;
@@ -273,7 +273,7 @@
                 }
                 break;
             case 26: // 3-Petal Rose
-                guideText = "Trace this 3-Petal Rose outline";
+                guideText = window.t('T205');
                 for (let i = 0; i <= 36; i++) {
                     const angle = (i * 2 * Math.PI) / 36;
                     const r = 50 + Math.sin(3 * angle) * 105;
@@ -281,7 +281,7 @@
                 }
                 break;
             case 27: // 4-Petal Rose
-                guideText = "Trace this 4-Petal Rose outline";
+                guideText = window.t('T206');
                 for (let i = 0; i <= 40; i++) {
                     const angle = (i * 2 * Math.PI) / 40;
                     const r = 50 + Math.sin(4 * angle) * 105;
@@ -289,7 +289,7 @@
                 }
                 break;
             case 28: // Fish outline
-                guideText = "Trace the fish outline starting from tail";
+                guideText = window.t('T207');
                 for (let i = 0; i <= 28; i++) {
                     const t = (i * 2 * Math.PI) / 28;
                     const x = 140 * Math.cos(t) - 30 * Math.sin(t) * Math.sin(t);
@@ -298,7 +298,7 @@
                 }
                 break;
             case 29: // Arrow Right
-                guideText = "Trace this right-pointing Arrow";
+                guideText = window.t('T208');
                 points.push(
                     { x: 260, y: 210 }, { x: 440, y: 210 }, { x: 440, y: 150 },
                     { x: 540, y: 250 }, { x: 440, y: 350 }, { x: 440, y: 290 },
@@ -306,7 +306,7 @@
                 );
                 break;
             case 30: // Arrow Up
-                guideText = "Trace this upward-pointing Arrow";
+                guideText = window.t('T209');
                 points.push(
                     { x: 360, y: 350 }, { x: 360, y: 230 }, { x: 300, y: 230 },
                     { x: 400, y: 130 }, { x: 500, y: 230 }, { x: 440, y: 230 },
@@ -314,7 +314,7 @@
                 );
                 break;
             case 31: // Crown outline
-                guideText = "Trace the Crown outline starting bottom-left";
+                guideText = window.t('T210');
                 points.push(
                     { x: 280, y: 360 }, { x: 260, y: 200 }, { x: 330, y: 260 },
                     { x: 400, y: 160 }, { x: 470, y: 260 }, { x: 540, y: 200 },
@@ -322,28 +322,28 @@
                 );
                 break;
             case 32: // Lightning Bolt
-                guideText = "Trace this Lightning Bolt";
+                guideText = window.t('T211');
                 points.push(
                     { x: 440, y: 100 }, { x: 320, y: 260 }, { x: 400, y: 260 },
                     { x: 360, y: 400 }, { x: 480, y: 240 }, { x: 400, y: 240 }, { x: 440, y: 100 }
                 );
                 break;
             case 33: // Shield outline
-                guideText = "Trace the Shield outline starting top-left";
+                guideText = window.t('T212');
                 points.push(
                     { x: 280, y: 150 }, { x: 520, y: 150 }, { x: 520, y: 270 },
                     { x: 400, y: 390 }, { x: 280, y: 270 }, { x: 280, y: 150 }
                 );
                 break;
             case 34: // Letter W
-                guideText = "Trace the letter W starting top-left";
+                guideText = window.t('T213');
                 points.push(
                     { x: 250, y: 140 }, { x: 320, y: 380 }, { x: 400, y: 220 },
                     { x: 480, y: 380 }, { x: 550, y: 140 }
                 );
                 break;
             case 35: // 8-sided Star
-                guideText = "Trace this 8-point Star outline";
+                guideText = window.t('T214');
                 for (let i = 0; i <= 16; i++) {
                     const angle = (i * 2 * Math.PI) / 16 - Math.PI / 2;
                     const r = i % 2 === 0 ? 140 : 60;
@@ -351,7 +351,7 @@
                 }
                 break;
             case 36: // Wave curve (vertical)
-                guideText = "Trace the vertical Wave curve";
+                guideText = window.t('T215');
                 for (let i = 0; i <= 20; i++) {
                     const pct = i / 20;
                     const y = 100 + pct * 300;
@@ -360,14 +360,14 @@
                 }
                 break;
             case 37: // Hourglass geometric outline
-                guideText = "Trace the Hourglass outline";
+                guideText = window.t('T216');
                 points.push(
                     { x: 300, y: 140 }, { x: 500, y: 140 }, { x: 380, y: 250 },
                     { x: 500, y: 360 }, { x: 300, y: 360 }, { x: 420, y: 250 }, { x: 300, y: 140 }
                 );
                 break;
             case 38: // Cloud outline
-                guideText = "Trace this Cloud shape outline";
+                guideText = window.t('T217');
                 points.push(
                     { x: 300, y: 320 }, { x: 260, y: 280 }, { x: 260, y: 220 },
                     { x: 320, y: 180 }, { x: 400, y: 160 }, { x: 480, y: 180 },
@@ -375,14 +375,14 @@
                 );
                 break;
             case 39: // Diamond grid path
-                guideText = "Trace the Double Diamond path";
+                guideText = window.t('T218');
                 points.push(
                     { x: 400, y: 120 }, { x: 500, y: 250 }, { x: 400, y: 380 },
                     { x: 300, y: 250 }, { x: 400, y: 120 }, { x: 400, y: 380 }
                 );
                 break;
             case 40: // Trefoil (Three-leaf clover)
-                guideText = "Trace the 3-Leaf Clover outline";
+                guideText = window.t('T219');
                 for (let i = 0; i <= 36; i++) {
                     const angle = (i * 2 * Math.PI) / 36;
                     const r = 40 + Math.sin(3 * angle) * 70 + Math.cos(6 * angle) * 20;
@@ -390,7 +390,7 @@
                 }
                 break;
             case 41: // Moon Crescent (Mirrored)
-                guideText = "Trace this mirrored Crescent Moon";
+                guideText = window.t('T220');
                 for (let i = 0; i <= 16; i++) {
                     const angle = -Math.PI / 2 + (i / 16) * Math.PI;
                     points.push({ x: Math.round(centerX + 20 - Math.cos(angle) * 130), y: Math.round(centerY + Math.sin(angle) * 130) });
@@ -401,7 +401,7 @@
                 }
                 break;
             case 42: // Spiral Inward (Counter-clockwise)
-                guideText = "Trace the counter-clockwise spiral outward";
+                guideText = window.t('T221');
                 for (let i = 0; i < 24; i++) {
                     const angle = (i / 23) * 1.5 * 2 * Math.PI * -1;
                     const r = 25 + (i / 23) * 130;
@@ -409,7 +409,7 @@
                 }
                 break;
             case 43: // 5-Petal Rose flower
-                guideText = "Trace this 5-Petal Flower shape";
+                guideText = window.t('T222');
                 for (let i = 0; i <= 45; i++) {
                     const angle = (i * 2 * Math.PI) / 45;
                     const r = 50 + Math.sin(5 * angle) * 105;
@@ -417,7 +417,7 @@
                 }
                 break;
             case 44: // Quatrefoil (Four-leaf clover)
-                guideText = "Trace this Quatrefoil shape";
+                guideText = window.t('T223');
                 for (let i = 0; i <= 48; i++) {
                     const angle = (i * 2 * Math.PI) / 48;
                     const r = 85 + Math.sin(4 * angle) * 45;
@@ -425,7 +425,7 @@
                 }
                 break;
             case 45: // Yin Yang Separator Curve
-                guideText = "Trace this S-like Yin Yang border";
+                guideText = window.t('T224');
                 for (let i = 0; i <= 24; i++) {
                     const pct = i / 24;
                     const x = Math.sin(pct * Math.PI * 2) * 50;
@@ -434,7 +434,7 @@
                 }
                 break;
             case 46: // Key outline path
-                guideText = "Trace this Key outline";
+                guideText = window.t('T225');
                 points.push(
                     { x: 300, y: 250 }, { x: 300, y: 210 }, { x: 340, y: 170 },
                     { x: 420, y: 170 }, { x: 460, y: 210 }, { x: 460, y: 290 },
@@ -445,7 +445,7 @@
                 );
                 break;
             case 47: // Bell outline
-                guideText = "Trace the Bell outline starting from top";
+                guideText = window.t('T226');
                 points.push(
                     { x: 400, y: 130 }, { x: 440, y: 170 }, { x: 440, y: 290 },
                     { x: 500, y: 340 }, { x: 300, y: 340 }, { x: 360, y: 290 },
@@ -453,7 +453,7 @@
                 );
                 break;
             case 48: // Octagram (8-pointed star)
-                guideText = "Trace this Octagram Star outline";
+                guideText = window.t('T227');
                 for (let i = 0; i <= 16; i++) {
                     const angle = (i * 2 * Math.PI) / 16 - Math.PI / 2;
                     const r = i % 2 === 0 ? 140 : 50;
@@ -461,7 +461,7 @@
                 }
                 break;
             case 49: // Hexagram Star
-                guideText = "Trace this Star outline path";
+                guideText = window.t('T228');
                 for (let i = 0; i <= 12; i++) {
                     const angle = (i * 2 * Math.PI) / 12 - Math.PI / 2;
                     const r = i % 2 === 0 ? 140 : 45;
@@ -469,7 +469,7 @@
                 }
                 break;
             case 50: // Double Loop
-                guideText = "Trace this Double Infinity Rose outline";
+                guideText = window.t('T229');
                 for (let i = 0; i <= 60; i++) {
                     const angle = (i * 2 * Math.PI) / 60;
                     const r = 60 + Math.sin(6 * angle) * 90;
@@ -478,7 +478,7 @@
                 break;
             default:
                 points.push({ x: 300, y: 100 }, { x: 300, y: 400 }, { x: 500, y: 400 });
-                guideText = "Trace L shape starting from top-left";
+                guideText = window.t('T180');
                 break;
         }
         
@@ -595,7 +595,7 @@
                     this.score = 10;
                     this.gameCtx.setScore(this.score);
                 } else {
-                    this.triggerTraceFail("Please start at the green circular target.");
+                    this.triggerTraceFail(window.t('T230'));
                 }
             };
 
@@ -618,7 +618,7 @@
                 }
                 
                 if (deviation > this.tolerance) {
-                    this.triggerTraceFail("Keep your pointer inside the guide lines.");
+                    this.triggerTraceFail(window.t('T231'));
                     return;
                 }
 
@@ -640,7 +640,7 @@
             const onEnd = () => {
                 if (this.isDrawing) {
                     this.isDrawing = false;
-                    this.triggerTraceFail("Try to trace in one continuous movement.");
+                    this.triggerTraceFail(window.t('T232'));
                 }
             };
 
@@ -881,7 +881,7 @@
                     this.ctx2d.shadowColor = "rgba(217, 119, 6, 0.25)";
                     this.ctx2d.shadowBlur = 4;
                     this.ctx2d.textAlign = "center";
-                    this.ctx2d.fillText("START HERE", p.x, p.y - 26);
+                    this.ctx2d.fillText(window.t('T233'), p.x, p.y - 26);
                     this.ctx2d.restore();
                 }
             });

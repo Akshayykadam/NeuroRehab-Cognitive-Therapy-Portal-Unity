@@ -5,87 +5,87 @@
     const WORD_BANK = {
         1: [
             {
-                target: "DOG",
-                connected: ["BARK", "PUPPY", "BONE"],
-                distractors: ["PEN", "CLOCK", "TRAIN"]
+                target: window.t('T279'),
+                connected: [window.t('T280'), window.t('T281'), window.t('T282')],
+                distractors: [window.t('T283'), window.t('T284'), window.t('T285')]
             },
             {
-                target: "TREE",
-                connected: ["LEAF", "BRANCH", "FOREST"],
-                distractors: ["PHONE", "MILK", "SHOE"]
+                target: window.t('T286'),
+                connected: [window.t('T287'), window.t('T288'), window.t('T289')],
+                distractors: [window.t('T290'), window.t('T291'), window.t('T292')]
             },
             {
-                target: "FIRE",
-                connected: ["HOT", "FLAME", "SMOKE"],
-                distractors: ["ICE", "SHOWER", "GLASS"]
+                target: window.t('T293'),
+                connected: [window.t('T294'), window.t('T295'), window.t('T296')],
+                distractors: [window.t('T297'), window.t('T298'), window.t('T299')]
             }
         ],
         2: [
             {
-                target: "SPACE",
-                connected: ["ORBIT", "GRAVITY", "COMET"],
-                distractors: ["BREAD", "TABLE", "CAR"]
+                target: window.t('T300'),
+                connected: [window.t('T301'), window.t('T302'), window.t('T303')],
+                distractors: [window.t('T304'), window.t('T305'), "CAR"]
             },
             {
-                target: "DESERT",
-                connected: ["SAND", "CACTUS", "OASIS"],
-                distractors: ["SNOW", "OCEAN", "METRO"]
+                target: window.t('T307'),
+                connected: [window.t('T308'), window.t('T309'), window.t('T310')],
+                distractors: [window.t('T311'), window.t('T312'), window.t('T313')]
             },
             {
-                target: "MUSIC",
-                connected: ["RHYTHM", "MELODY", "CHORD"],
-                distractors: ["STEEL", "STONE", "FRUIT"]
+                target: window.t('T314'),
+                connected: [window.t('T315'), window.t('T316'), window.t('T317')],
+                distractors: [window.t('T318'), window.t('T319'), window.t('T320')]
             }
         ],
         3: [
             {
-                target: "ANCIENT",
-                connected: ["RUINS", "FOSSIL", "DYNASTY"],
-                distractors: ["CYBER", "MODERN", "LASER"]
+                target: window.t('T321'),
+                connected: [window.t('T322'), window.t('T323'), window.t('T324')],
+                distractors: [window.t('T325'), window.t('T326'), window.t('T327')]
             },
             {
-                target: "STORM",
-                connected: ["THUNDER", "LIGHTNING", "TEMPEST"],
-                distractors: ["CALM", "DESERT", "SUNNY"]
+                target: window.t('T328'),
+                connected: [window.t('T329'), window.t('T330'), window.t('T331')],
+                distractors: [window.t('T332'), "DESERT", window.t('T334')]
             },
             {
-                target: "KITCHEN",
-                connected: ["PANTRY", "UTENSIL", "RECIPE"],
-                distractors: ["ORBIT", "SADDLE", "ANCHOR"]
+                target: window.t('T335'),
+                connected: [window.t('T336'), window.t('T337'), window.t('T338')],
+                distractors: [window.t('T301'), window.t('T340'), window.t('T341')]
             }
         ],
         4: [
             {
-                target: "JUSTICE",
-                connected: ["COURT", "SCALES", "VERDICT"],
-                distractors: ["RIVER", "CLOUD", "PIANO"]
+                target: window.t('T342'),
+                connected: [window.t('T343'), window.t('T344'), window.t('T345')],
+                distractors: [window.t('T346'), window.t('T347'), window.t('T348')]
             },
             {
-                target: "GENIUS",
-                connected: ["INTELLECT", "CREATIVE", "TALENT"],
-                distractors: ["DULL", "SLOW", "CLAY"]
+                target: window.t('T349'),
+                connected: [window.t('T350'), window.t('T351'), window.t('T352')],
+                distractors: [window.t('T353'), window.t('T354'), window.t('T355')]
             },
             {
-                target: "THEATRE",
-                connected: ["DRAMA", "ACTOR", "STAGE"],
-                distractors: ["CAR", "SAND", "RIVER"]
+                target: window.t('T356'),
+                connected: [window.t('T357'), window.t('T358'), window.t('T359')],
+                distractors: ["CAR", window.t('T308'), window.t('T346')]
             }
         ],
         5: [
             {
-                target: "TIME",
-                connected: ["CHRONOLOGY", "DECADE", "DIMENSION"],
-                distractors: ["FORK", "BRICK", "SHIRT"]
+                target: window.t('T363'),
+                connected: [window.t('T364'), window.t('T365'), window.t('T366')],
+                distractors: [window.t('T367'), window.t('T368'), window.t('T369')]
             },
             {
-                target: "ENERGY",
-                connected: ["KINETIC", "THERMAL", "ELECTRON"],
-                distractors: ["STONE", "PAPER", "WOOD"]
+                target: window.t('T370'),
+                connected: [window.t('T371'), window.t('T372'), window.t('T373')],
+                distractors: [window.t('T319'), window.t('T375'), window.t('T376')]
             },
             {
-                target: "MIND",
-                connected: ["SYNAPSE", "THOUGHT", "NEURON"],
-                distractors: ["VALVE", "METAL", "PLASTIC"]
+                target: window.t('T377'),
+                connected: [window.t('T378'), window.t('T379'), window.t('T380')],
+                distractors: [window.t('T381'), window.t('T382'), window.t('T383')]
             }
         ]
     };
@@ -134,7 +134,7 @@
             this.container.innerHTML = `
                 <div class="word-assoc-container">
                     <div class="word-target-banner">
-                        <div class="target-lbl">Core Theme Topic</div>
+                        <div class="target-lbl">${window.t('T278')}</div>
                         <div id="word-target-text" class="target-word">THEME</div>
                     </div>
                     

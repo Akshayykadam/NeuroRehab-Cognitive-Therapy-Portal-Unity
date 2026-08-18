@@ -17,8 +17,8 @@
     <div id="portrait-overlay" class="overlay-msg">
         <div class="overlay-msg-content">
             <i class="fa-solid fa-rotate"></i>
-            <h2>Rotate Your Screen</h2>
-            <p>This therapy application is designed for landscape screens. Please rotate your device to begin.</p>
+            <h2 data-i18n="T1">Rotate Your Screen</h2>
+            <p data-i18n="T2">This therapy application is designed for landscape screens. Please rotate your device to begin.</p>
         </div>
     </div>
 
@@ -26,8 +26,8 @@
     <div id="phone-blocker-overlay" class="overlay-msg">
         <div class="overlay-msg-content">
             <i class="fa-solid fa-tablet-screen-button"></i>
-            <h2>Tablet or Desktop Required</h2>
-            <p>This cognitive rehabilitation portal is designed for clinical use on tablet (iPad/Android Tablet) or desktop screens only. Mobile phone screens are too small to support these exercises.</p>
+            <h2 data-i18n="T3">Tablet or Desktop Required</h2>
+            <p data-i18n="T4">This cognitive rehabilitation portal is designed for clinical use on tablet (iPad/Android Tablet) or desktop screens only. Mobile phone screens are too small to support these exercises.</p>
         </div>
     </div>
 
@@ -38,54 +38,54 @@
             <header class="lobby-header">
                 <div class="logo">
                     <img src="assets/wizio_logo.png" alt="Wizio Logo" class="wizio-header-logo">
-                    <span>WIZIO <span>NEUROREHAB</span></span>
+                    <span data-i18n="T11">WIZIO NEUROREHAB</span>
                 </div>
                 <div class="patient-badge">
                     <i class="fa-solid fa-hospital-user patient-badge-icon"></i>
-                    <span id="patient-name-display">Patient</span>
-                    <span id="patient-id-display" class="id-tag">ID: --</span>
+                    <span id="patient-name-display" data-i18n="T12">Patient</span>
+                    <span id="patient-id-display" class="id-tag" data-i18n="T13">ID: --</span>
                 </div>
                 <!-- Lobby navigation tabs hidden as only exercise screen is active -->
                 <div class="lobby-tabs" style="display: none;">
                     <button id="tab-exercises" class="tab-btn active">
-                        <i class="fa-solid fa-shapes"></i> Exercises
+                        <i class="fa-solid fa-shapes"></i> <span data-i18n="T14">Exercises</span>
                     </button>
                     <!-- Progress Dashboard tab hidden as requested -->
                     <button id="tab-dashboard" class="tab-btn" style="display: none;">
-                        <i class="fa-solid fa-chart-line"></i> Progress Dashboard
+                        <i class="fa-solid fa-chart-line"></i> <span data-i18n="T15">Progress Dashboard</span>
                     </button>
                 </div>
                 <div class="player-hud">
-                    <div class="hud-stat" title="Exercises Practiced">
+                    <div class="hud-stat" title="Exercises Practiced" data-i18n-title="T19">
                         <i class="fa-solid fa-circle-check icon-green"></i>
                         <div>
-                            <span class="stat-label">Practiced</span>
+                            <span class="stat-label" data-i18n="T16">Practiced</span>
                             <span id="player-completed" class="stat-value">0/16</span>
                         </div>
                     </div>
                     <!-- Progress stat hidden as requested -->
-                    <div class="hud-stat" title="Overall Progress" style="display: none;">
+                    <div class="hud-stat" title="Overall Progress" data-i18n-title="T20" style="display: none;">
                         <i class="fa-solid fa-chart-line icon-blue"></i>
                         <div>
-                            <span class="stat-label">Progress</span>
+                            <span class="stat-label" data-i18n="T17">Progress</span>
                             <span id="player-progress" class="stat-value">0%</span>
                         </div>
                     </div>
-                    <div class="hud-stat" title="Average Accuracy">
+                    <div class="hud-stat" title="Average Accuracy" data-i18n-title="T21">
                         <i class="fa-solid fa-bullseye icon-orange"></i>
                         <div>
-                            <span class="stat-label">Accuracy</span>
+                            <span class="stat-label" data-i18n="T18">Accuracy</span>
                             <span id="player-accuracy" class="stat-value">100%</span>
                         </div>
                     </div>
-                    <button id="reset-progress-btn" class="icon-btn" title="Reset History">
+                    <button id="reset-progress-btn" class="icon-btn" title="Reset History" data-i18n-title="T22">
                         <i class="fa-solid fa-arrow-rotate-left"></i>
                     </button>
-                    <button id="sound-toggle-btn" class="icon-btn" title="Toggle Sound">
+                    <button id="sound-toggle-btn" class="icon-btn" title="Toggle Sound" data-i18n-title="T23">
                         <i id="sound-icon" class="fa-solid fa-volume-high"></i>
                     </button>
-                    <button id="exit-app-btn" class="hud-exit-btn" title="Exit to Unity Menu">
-                        <i class="fa-solid fa-right-from-bracket"></i> Exit
+                    <button id="exit-app-btn" class="hud-exit-btn" title="Exit to Unity Menu" data-i18n-title="T25">
+                        <i class="fa-solid fa-right-from-bracket"></i> <span data-i18n="T24">Exit</span>
                     </button>
                 </div>
             </header>
@@ -97,8 +97,8 @@
                 <!-- Exercises Tab Content -->
                 <div id="tab-content-exercises">
                     <div class="lobby-welcome">
-                        <h1>Your Supportive Mind Gym</h1>
-                        <p>Every single exercise you play helps nourish, build, and strengthen neural connections. Take your time, focus gently, and remember: consistency is your superpower!</p>
+                        <h1 data-i18n="T36">Your Supportive Mind Gym</h1>
+                        <p data-i18n="T37">Every single exercise you play helps nourish, build, and strengthen neural connections. Take your time, focus gently, and remember: consistency is your superpower!</p>
                     </div>
                     <!-- Game Grid -->
                     <div class="game-grid" id="game-grid">
@@ -118,23 +118,23 @@
             <!-- Game HUD (Top Bar) -->
             <div class="game-hud">
                 <button id="game-back-btn" class="game-nav-btn">
-                    <i class="fa-solid fa-arrow-left"></i> Return to Lobby
+                    <i class="fa-solid fa-arrow-left"></i> <span data-i18n="T26">Return to Lobby</span>
                 </button>
                 <div class="game-title-container">
-                    <span id="game-current-name">Exercise Title</span>
+                    <span id="game-current-name" data-i18n="T70">Exercise Title</span>
                     <span id="game-current-level" class="badge">Level 1</span>
                 </div>
                 <div class="game-live-stats">
                     <div class="live-stat-item" id="hud-score-container">
-                        <span class="live-label">ACCURACY</span>
+                        <span class="live-label" data-i18n="T67">ACCURACY</span>
                         <span id="hud-score" class="live-val">100%</span>
                     </div>
                     <div class="live-stat-item" id="hud-timer-container">
-                        <span class="live-label">TIME</span>
+                        <span class="live-label" data-i18n="T68">TIME</span>
                         <span id="hud-timer" class="live-val">00:00</span>
                     </div>
                     <div class="live-stat-item" id="hud-lives-container">
-                        <span class="live-label">CHANCES</span>
+                        <span class="live-label" data-i18n="T69">CHANCES</span>
                         <span id="hud-lives" class="live-val">3</span>
                     </div>
                 </div>
@@ -150,26 +150,26 @@
     <!-- Instructions Overlay Modal -->
     <div id="instructions-modal" class="modal">
         <div class="modal-content glassmorphism" style="position: relative;">
-            <button id="modal-close-btn" class="close-modal-btn" aria-label="Close modal">&times;</button>
+            <button id="modal-close-btn" class="close-modal-btn" aria-label="Close modal" data-i18n-aria="T54">&times;</button>
             <div class="modal-header">
                 <h2 id="modal-game-title">Exercise Title</h2>
                 <span class="cognitive-tag" id="modal-game-cognitive">Focus Skill</span>
             </div>
             <div class="modal-body">
-                <h3>Objective</h3>
+                <h3 data-i18n="T51">Objective</h3>
                 <p id="modal-game-desc">Instruction description goes here.</p>
                 
                 <div class="modal-level-selector">
-                    <h3>Therapy Difficulty Level</h3>
+                    <h3 data-i18n="T52">Therapy Difficulty Level</h3>
                     <div class="clinical-level-stepper">
-                        <button id="level-dec-btn" class="stepper-btn" aria-label="Decrease level">&minus;</button>
+                        <button id="level-dec-btn" class="stepper-btn" aria-label="Decrease level" data-i18n-aria="T55">&minus;</button>
                         <span id="level-display-val">1</span>
-                        <button id="level-inc-btn" class="stepper-btn" aria-label="Increase level">&plus;</button>
+                        <button id="level-inc-btn" class="stepper-btn" aria-label="Increase level" data-i18n-aria="T56">&plus;</button>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="modal-start-btn" class="primary-btn">START EXERCISE</button>
+                <button id="modal-start-btn" class="primary-btn" data-i18n="T53">START EXERCISE</button>
             </div>
         </div>
     </div>
@@ -180,29 +180,31 @@
             <div id="result-header-icon" class="result-icon-success">
                 <i class="fa-solid fa-circle-check"></i>
             </div>
-            <h2 id="result-title">EXERCISE COMPLETE</h2>
-            <p id="result-message">Great job! You completed this exercise level.</p>
+            <h2 id="result-title" data-i18n="T76">EXERCISE COMPLETE</h2>
+            <p id="result-message" data-i18n="T77">Great job! You completed this exercise level.</p>
             
             <div class="result-stats">
                 <div class="result-stat-box">
-                    <span class="stat-box-label">SESSION ACCURACY</span>
+                    <span class="stat-box-label" data-i18n="T82">SESSION ACCURACY</span>
                     <span id="result-score" class="stat-box-val">100%</span>
                 </div>
                 <div class="result-stat-box">
-                    <span class="stat-box-label">PROGRESS</span>
-                    <span id="result-xp" class="stat-box-val">Level Cleared!</span>
+                    <span class="stat-box-label" data-i18n="T83">PROGRESS</span>
+                    <span id="result-xp" class="stat-box-val" data-i18n="T84">Level Cleared!</span>
                 </div>
             </div>
             
             <div class="result-actions">
-                <button id="result-lobby-btn" class="secondary-btn">LOBBY</button>
-                <button id="result-retry-btn" class="secondary-btn">PRACTICE AGAIN</button>
-                <button id="result-next-btn" class="primary-btn">NEXT LEVEL</button>
+                <button id="result-lobby-btn" class="secondary-btn" data-i18n="T86">LOBBY</button>
+                <button id="result-retry-btn" class="secondary-btn" data-i18n="T87">PRACTICE AGAIN</button>
+                <button id="result-next-btn" class="primary-btn" data-i18n="T88">NEXT LEVEL</button>
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- Localization Engine Script (loaded first) -->
+    <script src="js/i18n.js?v=1"></script>
+    <!-- Bridge & Sound -->
     <script src="js/unity-bridge.js?v=3"></script>
     <script src="js/sound.js?v=8"></script>
     <!-- Games modules list loaded sequentially -->

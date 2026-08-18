@@ -9,7 +9,7 @@
         { name: "green", hex: "#4ade80", rgba: "rgba(74, 222, 128, 0.15)" }
     ];
     const NUMBERS = [1, 2, 3];
-    const RULES = ["COLOR", "SHAPE", "NUMBER"];
+    const RULES = [window.t('T256'), window.t('T257'), window.t('T258')];
 
     class TaskSwitchingGame {
         constructor() {
@@ -22,7 +22,7 @@
             this.correctCount = 0;
             this.targetMatches = 12;
             
-            this.currentRule = "COLOR";
+            this.currentRule = window.t('T256');
             this.turnsUntilSwitch = 3;
             this.maxTurnsPerRule = 3;
             
@@ -53,7 +53,7 @@
             this.maxTurnsPerRule = Math.max(2, 6 - Math.floor(this.activeLevel / 2));
 
             this.turnsUntilSwitch = this.maxTurnsPerRule;
-            this.currentRule = "COLOR";
+            this.currentRule = window.t('T256');
 
             this.gameCtx.setScore(this.score);
             this.gameCtx.setLives(this.lives);
@@ -64,7 +64,7 @@
             this.container.innerHTML = `
                 <div class="switching-container">
                     <div class="rule-banner">
-                        <div class="rule-title">Match Criterion</div>
+                        <div class="rule-title">${window.t('T255')}</div>
                         <div id="active-rule-text" class="rule-active rule-color" style="color: #2dd4bf;">COLOR</div>
                     </div>
                     
@@ -121,18 +121,18 @@
         switchRule() {
             this.turnsUntilSwitch = this.maxTurnsPerRule;
             
-            const availableRules = this.activeLevel >= 3 ? RULES : ["COLOR", "SHAPE"];
+            const availableRules = this.activeLevel >= 3 ? RULES : [window.t('T256'), window.t('T257')];
             const otherRules = availableRules.filter(r => r !== this.currentRule);
             this.currentRule = otherRules[Math.floor(Math.random() * otherRules.length)];
 
             this.gameCtx.playSound('match');
             const ruleText = document.getElementById("active-rule-text");
             if (ruleText) {
-                ruleText.innerText = `MATCH ${this.currentRule}`;
+                ruleText.innerText = window.t('T259', { rule: this.currentRule });
                 ruleText.className = "rule-active";
-                if (this.currentRule === "COLOR") ruleText.style.color = "#2dd4bf";
-                else if (this.currentRule === "SHAPE") ruleText.style.color = "#60a5fa";
-                else if (this.currentRule === "NUMBER") ruleText.style.color = "#fbbf24";
+                if (this.currentRule === window.t('T256')) ruleText.style.color = "#2dd4bf";
+                else if (this.currentRule === window.t('T257')) ruleText.style.color = "#60a5fa";
+                else if (this.currentRule === window.t('T258')) ruleText.style.color = "#fbbf24";
             }
         }
 
@@ -143,19 +143,19 @@
 
             const rule = this.currentRule;
 
-            if (rule === "COLOR") {
+            if (rule === window.t('T256')) {
                 this.leftCard.color = this.centerCard.color;
                 this.leftCard.shape = this.getDifferentValue(SHAPES, this.centerCard.shape);
                 this.leftCard.number = this.getDifferentValue(NUMBERS, this.centerCard.number);
                 this.rightCard.color = this.getDifferentValue(COLORS, this.centerCard.color);
             } 
-            else if (rule === "SHAPE") {
+            else if (rule === window.t('T257')) {
                 this.leftCard.shape = this.centerCard.shape;
                 this.leftCard.color = this.getDifferentValue(COLORS, this.centerCard.color);
                 this.leftCard.number = this.getDifferentValue(NUMBERS, this.centerCard.number);
                 this.rightCard.shape = this.getDifferentValue(SHAPES, this.centerCard.shape);
             } 
-            else if (rule === "NUMBER") {
+            else if (rule === window.t('T258')) {
                 this.leftCard.number = this.centerCard.number;
                 this.leftCard.color = this.getDifferentValue(COLORS, this.centerCard.color);
                 this.leftCard.shape = this.getDifferentValue(SHAPES, this.centerCard.shape);

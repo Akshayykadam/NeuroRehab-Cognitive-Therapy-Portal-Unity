@@ -1,0 +1,370 @@
+Key,English,Arabic
+T1,Rotate Your Screen,يرجى تدوير الشاشة
+T2,This therapy application is designed for landscape screens. Please rotate your device to begin.,تم تصميم هذا التطبيق للشاشات العرضية (أفقي). يرجى تدوير جهازك للبدء.
+T3,Tablet or Desktop Required,يلزم جهاز لوحي أو كمبيوتر
+T4,This cognitive rehabilitation portal is designed for clinical use on tablet (iPad/Android Tablet) or desktop screens only. Mobile phone screens are too small to support these exercises.,تم تصميم هذه البوابة لإعادة التأهيل المعرفي للاستخدام السريري على الأجهزة اللوحية أو شاشات الكمبيوتر فقط. شاشات الهواتف صغيرة جدًا.
+T11,WIZIO NEUROREHAB,ويزيو لإعادة التأهيل المعرفي
+T12,Patient,المريض
+T13,ID: --,المعرف: --
+T14,Exercises,التمارين
+T15,Progress Dashboard,لوحة المتابعة
+T16,Practiced,تمت ممارسته
+T17,Progress,التقدم
+T18,Accuracy,الدقة
+T19,Exercises Practiced,التمارين المنجزة
+T20,Overall Progress,التقدم العام
+T21,Average Accuracy,متوسط الدقة
+T22,Reset History,إعادة تعيين السجل
+T23,Toggle Sound,كتم / تشغيل الصوت
+T24,Exit,خروج
+T25,Exit to Unity Menu,الخروج إلى القائمة الرئيسية
+T26,Return to Lobby,العودة إلى صالة التمارين
+T27,Patient: {name},المريض: {name}
+T28,ID: {id},المعرف: {id}
+T36,Your Supportive Mind Gym,صالتك الذهنية الداعمة
+T37,"Every single exercise you play helps nourish, build, and strengthen neural connections. Take your time, focus gently, and remember: consistency is your superpower!",كل تمرين تمارسه يساعد في تقوية وبناء الروابط العصبية. خذ وقتك وركز بهدوء: الاستمرارية هي قوتك الحقيقية!
+T38,Max Level: L{level},أعلى مستوى: م{level}
+T39,Practiced,تمت ممارسته
+T40,Not Practiced,لم يمارس بعد
+T51,Objective,الهدف العلاجي
+T52,Therapy Difficulty Level,مستوى صعوبة التمرين
+T53,START EXERCISE,ابدأ التمرين
+T54,Close modal,إغلاق النافذة
+T55,Decrease level,تقليل المستوى
+T56,Increase level,زيادة المستوى
+T57,Reset exercise history and scores?,هل تريد إعادة تعيين سجل التمارين والنتائج؟
+T66,Level {level},المستوى {level}
+T67,ACCURACY,الدقة
+T68,TIME,الوقت
+T69,CHANCES,المحاولات
+T70,Exercise Title,عنوان التمرين
+T71,Exercise,التمرين
+T76,EXERCISE COMPLETE,اكتمل التمرين
+T77,Great job! You completed this exercise level.,عمل رائع! لقد أكملت هذا المستوى بنجاح.
+T78,FABULOUS WORK!,عمل رائع ومميز!
+T79,Congratulations on completing Level {level}! Every exercise you do nourishes and strengthens your mind. You are doing amazing!,تهانينا على إكمال المستوى {level}! كل تمرين تقوم به يغذي ويقوي عقلك. أنت تبلي بلاءً رائعاً!
+T80,GREAT TRY & PRACTICE!,محاولة رائعة وممارسة جيدة!
+T81,Every minute spent practicing is a wonderful step forward for your brain. Be proud of your dedication today!,كل دقيقة تقضيها في الممارسة هي خطوة رائعة للأمام لعقلك. كن فخوراً بالتزامك اليوم!
+T82,SESSION ACCURACY,دقة الجلسة
+T83,PROGRESS,التقدم
+T84,Level Cleared!,تم اجتياز المستوى!
+T85,Practice Completed,اكتملت الممارسة
+T86,LOBBY,القائمة
+T87,PRACTICE AGAIN,إعادة التمرين
+T88,NEXT LEVEL,المستوى التالي
+T89,NEXT LEVEL ({level}),المستوى التالي ({level})
+T96,Trace the Shape,تتبع المسار
+T97,Motor Control,التحكم الحركي
+T98,"Slowly trace pathways and shapes with your pointer. Focuses on motor planning, hand-eye tracking, and precise spatial movement control.",تتبع المسارات والأشكال ببطء باستخدام المؤشر. يركز على التخطيط الحركي والتنسيق الدقيق بين اليد والعين.
+T99,Colour Fill exercise,تلوين المساحات
+T100,Spatial Logic,المنطق المكاني
+T101,"Color connected circles so that no two connected items share the same color. Encourages logical planning, visual inspection, and puzzle sorting.",لوّن الدوائر المتصلة بحيث لا تتشارك أي دائرتين متصلتين بنفس اللون. يحفز التخطيط المنطقي والفرز البصري.
+T102,Selective Focus,التركيز الانتقائي
+T103,Visual Attention,الانتباه البصري
+T104,"Identify and tap moving shapes that match the active target description (e.g., 'Green Star'). Exercises visual search and selective attention.",حدد واضغط على الأشكال المتحركة التي تطابق الوصف المطلوب (مثل 'نجمة خضراء'). يمرن البحث البصري والانتباه الانتقائي.
+T105,Memory Cards,بطاقات الذاكرة
+T106,Working Memory,الذاكرة العاملة
+T107,Flip cards to find matching shapes. Levels scale to support associative memory by matching math equations to their solutions.,اقلب البطاقات للعثور على الأشكال المتطابقة، وتتدرج المستويات لمطابقة المعادلات الرياضية بحلولها.
+T108,Recall Practice,ممارسة الاسترجاع
+T109,Delayed Recall,الاسترجاع المؤجل
+T110,"Study a group of symbols, then spot which new object is added after they shuffle. Supports short-term visual retention and recall speed.",احفظ مجموعة من الرموز، ثم حدد الرمز الجديد الذي تمت إضافته بعد إعادة الترتيب. يدعم الذاكرة البصرية قصيرة المدى.
+T111,Spot the Difference,اكتشف العنصر المختلف
+T112,Visual Logic,المنطق البصري
+T113,"Find the single shape that has a rotational, color-shade, or edge count discrepancy. Exercises fine visual detail comparison.",اعثر على الشكل الفردي الذي يحتوي على اختلاف في التدوير أو تدرج اللون أو عدد الحواف.
+T114,Cognitive Flex,المرونة المعرفية
+T115,Cognitive Shifting,التحول الإدراكي
+T116,"Match objects by shifting your focus between Shape, Color, or Number. Supports mental agility and cognitive switching capacity.",طابق العناصر بالتبديل السريع لتركيزك بين الشكل أو اللون أو الرقم. يدعم خفة الحركة العقلية والقدرة على التبديل الإدراكي.
+T117,Sorting Practice,ممارسة التصنيف
+T118,Categorisation,التصنيف والفرز
+T119,"Sort incoming cards into left and right bins according to categories (Even/Odd, Living/Non-living). Trains categorization and quick sorting.",صنّف البطاقات الواردة إلى الصناديق المناسبة حسب الفئات (زوجي/فردي، كائن حي/جماد). يدرب على سرعة الفرز والتصنيف.
+T120,Catching Exercise,تمرين الالتقاط
+T121,Coordination,التناسق الحركي
+T122,Move a slider at the bottom to catch positive green gems while avoiding red obstacles. Promotes hand-eye reaction and spatial forecasting.,حرّك الشريط في الأسفل لالتقاط الجواهر الخضراء مع تجنب العقبات الحمراء. يعزز رد الفعل الحركي والتوقع المكاني.
+T123,Word Association,ربط الكلمات
+T124,Semantic Memory,الذاكرة الدلالية
+T125,Tap the floating words that belong to the active core topic. Strengthens vocabulary connection speed and semantic recall.,اضغط على الكلمات العائمة التي تنتمي إلى موضوع الفكرة الرئيسي. يقوي سرعة الربط المعجمي والاسترجاع الدلالي.
+T126,Color Confusion,تشويش الألوان
+T127,Inhibition,كبح الاستجابة (ستروب)
+T128,"Tap the correct button based on font color or word meaning. Exercises mental focus, cognitive inhibition, and Stroop processing.",اضغط على الزر الصحيح بناءً على لون الخط أو معنى الكلمة. يمرن التركيز الذهني وكبح الاستجابة التلقائية.
+T129,Quick Switch,التبديل السريع
+T130,Cognitive Shifting,التحول الإدراكي
+T131,"Connect numbers and letters in alternating sequence (1-A-2-B-3-C...). Promotes cognitive flexibility, sequencing speed, and executive control.",اربط الأرقام والحروف بالتسلسل المتناوب (١-أ-٢-ب-٣-ج...). يعزز المرونة المعرفية وسرعة التسلسل والتحكم التنفيذي.
+T132,Eagle Eye,عين الصقر
+T133,Visual Attention,الانتباه البصري
+T134,"Quickly locate and select numbers in ascending order (1, 2, 3...). Enhances rapid visual scanning, attention span, and field of view.",حدد واختر الأرقام بسرعة بترتيب تصاعدي (١، ٢، ٣...). يعزز المسح البصري السريع ومدى الانتباه ومجال الرؤية.
+T135,Turnabout,التدوير المكاني
+T136,Mental Rotation,التدوير الذهني
+T137,"Identify the correctly rotated version of a shape grid. Strengthens mental rotation capabilities, spatial awareness, and visual reasoning.",حدد النسخة المدورة بشكل صحيح لشبكة الأشكال. يقوي قدرات التدوير الذهني والوعي المكاني والتفكير البصري.
+T138,Turning Tables,الطاولة الدوارة
+T139,Spatial Memory,الذاكرة المكانية
+T140,"Memorize target slots on a round table, track them as the table spins, and identify their new positions. Exercises dynamic spatial tracking and recall.",احفظ مواقع الأهداف على طاولة مستديرة، وتتبعها أثناء دوران الطاولة، ثم حدد مواقعها الجديدة.
+T141,Quick Count,العد السريع
+T142,Visual Attention,الانتباه البصري
+T143,Instantly subitize or count blocks of a specific color in a randomized grid against a swift countdown. Strengthens scanning speed and visual quantity estimation.,احسب أو قدر عدد المربعات ذات اللون المحدد في شبكة عشوائية في وقت سريع. يقوي سرعة المسح وتقدير الكميات.
+T146,Average Accuracy,متوسط الدقة
+T147,Target precision metric,مقياس دقة الإصابة للأهداف
+T148,Daily Training Streak,أيام التمرين المتتالية
+T149,Day,يوم
+T150,Days,أيام
+T151,Consistency builds connections,الاستمرارية تبني روابط عصبية قوية
+T152,Exercises Completed,التمارين المنجزة
+T153,Total active rehab units,إجمالي وحدات إعادة التأهيل
+T154,Rehab Progress,تقدم إعادة التأهيل
+T155,Overall progression index,مؤشر التقدم الشامل
+T156,Cognitive Performance Index (Total Sessions: {sessions}),مؤشر الأداء المعرفي (إجمالي الجلسات: {sessions})
+T157,Accuracy Progression (Total Sessions: {sessions}),تطور الدقة (إجمالي الجلسات: {sessions})
+T158,Cognitive Performance Index (CPI),مؤشر الأداء المعرفي (CPI)
+T159,What is it:,ما هو:
+T160,"A clinical metric (0 - 1000) measuring overall performance across memory, attention, and logic domains.",مقياس سريري (٠ - ١٠٠٠) يقيس الأداء العام عبر مجالات الذاكرة والانتباه والمنطق.
+T161,How calculated:,كيف يُحسب:
+T162,"Combines execution accuracy, level difficulty multipliers, and speed bonuses from cleared rounds.",يجمع بين دقة التنفيذ ومضاعفات صعوبة المستوى ومكافآت السرعة من الجولات المنجزة.
+T163,Accuracy Progression,تطور الدقة
+T164,"Tracks performance precision, correct selections, and mistake margins across your last 7 active sessions.",يتتبع دقة الأداء والاختيارات الصحيحة وهوامش الأخطاء عبر آخر ٧ جلسات تدريبية نشطة.
+T165,The average accuracy percentage (50% - 100%) recorded across all cleared training units.,متوسط نسبة الدقة المئوية (٥٠٪ - ١٠٠٪) المسجلة عبر جميع وحدات التدريب المكتملة.
+T166,Practice exercises to start tracking {title},مارس التمارين لبدء تتبع {title}
+T167,Memory & Recall,الذاكرة والاسترجاع
+T168,"Working memory, association, and retrieval speed",الذاكرة العاملة والربط وسرعة الاسترجاع
+T169,Focus & Attention,التركيز والانتباه
+T170,"Visual search, selection speed, and task switching",البحث البصري وسرعة الاختيار وتبديل المهام
+T171,Motor & Logic,الحركة والمنطق
+T172,"Spatial tracking, coordination, and deductive logic",التتبع المكاني والتناسق والمنطق الاستنتاجي
+T173,Lvl {level} / 50,مستوى {level} / 50
+T174,Explorer,مستكشف
+T175,Proficient,متمكن
+T176,Expert Trainer,مدرب خبير
+T177,Best Accuracy,أفضل دقة
+T178,Practice,تمرين
+T179,Exercise module [{id}] loaded incorrectly. Please contact administrator.,حدث خطأ في تحميل وحدة التمرين [{id}]. يرجى مراجعة المسؤول.
+T180,Trace L shape starting from top-left,تتبع شكل L بدءاً من أعلى اليسار
+T181,Trace U shape starting from top-left,تتبع شكل U بدءاً من أعلى اليسار
+T182,Trace A shape starting bottom-left,تتبع شكل A بدءاً من أسفل اليسار
+T183,Trace S curve starting from top-right,تتبع منحنى S بدءاً من أعلى اليمين
+T184,Trace Infinity Loop starting from center,تتبع رمز اللانهاية بدءاً من المركز
+T185,Trace this Triangle,تتبع هذا المثلث
+T186,Trace this Square,تتبع هذا المربع
+T187,Trace this Pentagon,تتبع هذا الشكل الخماسي
+T188,Trace this Hexagon,تتبع هذا الشكل السداسي
+T189,Trace this Heptagon,تتبع هذا الشكل السباعي
+T190,Trace this Octagon,تتبع هذا الشكل الثماني
+T191,Trace the Heart shape starting from top center,تتبع شكل القلب بدءاً من أعلى الوسط
+T192,Trace this 4-Point Sparkle Star,تتبع هذه النجمة الرباعية
+T193,Trace this 5-Point Star,تتبع هذه النجمة الخماسية
+T194,Trace this 6-Point Star,تتبع هذه النجمة السداسية
+T195,Trace the Crescent Moon,تتبع شكل الهلال
+T196,Trace the Diamond Gem,تتبع شكل الجوهرة الماسية
+T197,Trace this clinical Cross,تتبع شكل الصليب السريري
+T198,Trace this House outline starting from bottom-left,تتبع مخطط المنزل بدءاً من أسفل اليسار
+T199,Trace the letter M starting bottom-left,تتبع حرف M بدءاً من أسفل اليسار
+T200,Trace the Raindrop outline,تتبع شكل قطرة المطر
+T201,Trace the Bowtie curve,تتبع شكل ربطة القوس
+T202,Trace this Envelope starting from top-left,تتبع شكل الظرف بدءاً من أعلى اليسار
+T203,Trace the horizontal Sine Wave,تتبع الموجة الأفقية
+T204,Trace the spiral clockwise outward,تتبع الحلزون باتجاه عقارب الساعة للخارج
+T205,Trace this 3-Petal Rose outline,تتبع بتلات الوردة الثلاثية
+T206,Trace this 4-Petal Rose outline,تتبع بتلات الوردة الرباعية
+T207,Trace the fish outline starting from tail,تتبع شكل السمكة بدءاً من الذيل
+T208,Trace this right-pointing Arrow,تتبع السهم المتجه لليمين
+T209,Trace this upward-pointing Arrow,تتبع السهم المتجه للأعلى
+T210,Trace the Crown outline starting bottom-left,تتبع شكل التاج بدءاً من أسفل اليسار
+T211,Trace this Lightning Bolt,تتبع شكل وميض البرق
+T212,Trace the Shield outline starting top-left,تتبع شكل الدرع بدءاً من أعلى اليسار
+T213,Trace the letter W starting top-left,تتبع حرف W بدءاً من أعلى اليسار
+T214,Trace this 8-point Star outline,تتبع النجمة ثمانية الأطراف
+T215,Trace the vertical Wave curve,تتبع الموجة العمودية
+T216,Trace the Hourglass outline,تتبع شكل الساعة الرملية
+T217,Trace this Cloud shape outline,تتبع شكل السحابة
+T218,Trace the Double Diamond path,تتبع مسار الماسة المزدوجة
+T219,Trace the 3-Leaf Clover outline,تتبع نبات البرسيم ثلاثي الأوراق
+T220,Trace this mirrored Crescent Moon,تتبع الهلال المعكوس
+T221,Trace the counter-clockwise spiral outward,تتبع الحلزون عكس عقارب الساعة للخارج
+T222,Trace this 5-Petal Flower shape,تتبع الزهرة خماسية البتلات
+T223,Trace this Quatrefoil shape,تتبع الشكل رباعي الفصوص
+T224,Trace this S-like Yin Yang border,تتبع الحدود المنحنية
+T225,Trace this Key outline,تتبع شكل المفتاح
+T226,Trace the Bell outline starting from top,تتبع شكل الجرس بدءاً من الأعلى
+T227,Trace this Octagram Star outline,تتبع النجمة الثمانية النجمية
+T228,Trace this Star outline path,تتبع مسار النجمة
+T229,Trace this Double Infinity Rose outline,تتبع وردة اللانهاية المزدوجة
+T230,Please start at the green circular target.,يرجى البدء من النقطة الخضراء الدائرية.
+T231,Keep your pointer inside the guide lines.,حافظ على مؤشرك داخل خطوط التوجيه.
+T232,Try to trace in one continuous movement.,حاول التتبع بحركة واحدة مستمرة.
+T233,START HERE,ابدأ من هنا
+T234,Blue,أزرق
+T235,Teal,تركواز
+T236,Green,أخضر
+T237,Yellow,أصفر
+T238,Orange,برتقالي
+T239,Red,أحمر
+T240,Purple,بنفسجي
+T241,Pink,وردي
+T242,Eraser,ممحاة
+T243,Progress: {val}% | Goal: 96%,التقدم: {val}% | الهدف: 96%
+T244,Select Paint Color:,اختر لون الطلاء:
+T245,TAP ONLY:,اضغط فقط على:
+T246,CIRCLES,الدوائر
+T247,SQUARES,المربعات
+T248,TRIANGLES,المثلثات
+T249,STARS,النجوم
+T250,{color} {type},{type} {color}
+T251,MEMORIZE THESE SYMBOLS,احفظ هذه الرموز جيداً
+T252,WHICH OBJECT WAS ADDED?,ما هو العنصر الجديد الذي تمت إضافته؟
+T253,Round {round}/{max},الجولة {round}/{max}
+T254,Round {round}/{max} - Select the Odd Item,الجولة {round}/{max} - اختر العنصر المختلف
+T255,Match Criterion,معيار المطابقة
+T256,COLOR,اللون
+T257,SHAPE,الشكل
+T258,NUMBER,العدد
+T259,MATCH {rule},طابق {rule}
+T260,Even / Odd Numbers,الأرقام الزوجية / الفردية
+T261,EVEN,زوجي
+T262,ODD,فردي
+T263,Vowels / Consonants,حروف العلة / الحروف الساكنة
+T264,VOWEL,حرف علة
+T265,CONSONANT,حرف ساكن
+T266,Living / Non-Living,كائن حي / جماد
+T267,LIVING,كائن حي
+T268,NON-LIVING,جماد
+T269,Prime / Composite,أعداد أولية / غير أولية
+T270,PRIME,أولي
+T271,COMPOSITE,غير أولي
+T272,Thermal: Hot / Cold Items,عناصر ساخنة / باردة
+T273,HOT,ساخن
+T274,COLD,بارد
+T275,[Press Left Arrow],[اضغط السهم الأيسر]
+T276,[Press Right Arrow],[اضغط السهم الأيمن]
+T277,{cat} ({current}/{total}),{cat} ({current}/{total})
+T278,Core Theme Topic,الموضوع الرئيسي
+T279,DOG,كلب
+T280,BARK,نباح
+T281,PUPPY,جرو
+T282,BONE,عظم
+T283,PEN,قلم
+T284,CLOCK,ساعة
+T285,TRAIN,قطار
+T286,TREE,شجرة
+T287,LEAF,ورقة
+T288,BRANCH,غصن
+T289,FOREST,غابة
+T290,PHONE,هاتف
+T291,MILK,حليب
+T292,SHOE,حذاء
+T293,FIRE,نار
+T294,HOT,حار
+T295,FLAME,لهب
+T296,SMOKE,دخان
+T297,ICE,ثلج
+T298,SHOWER,دش
+T299,GLASS,زجاج
+T300,SPACE,فضاء
+T301,ORBIT,مدار
+T302,GRAVITY,جاذبية
+T303,COMET,مذنب
+T304,BREAD,خبز
+T305,TABLE,طاولة
+T306,CAR,سيارة
+T307,DESERT,صحراء
+T308,SAND,رمل
+T309,CACTUS,صبار
+T310,OASIS,واحة
+T311,SNOW,جليد
+T312,OCEAN,محيط
+T313,METRO,مترو
+T314,MUSIC,موسيقى
+T315,RHYTHM,إيقاع
+T316,MELODY,لحن
+T317,CHORD,وتر
+T318,STEEL,فولاذ
+T319,STONE,حجر
+T320,FRUIT,فاكهة
+T321,ANCIENT,قديم
+T322,RUINS,آثار
+T323,FOSSIL,أحفورة
+T324,DYNASTY,سلالة
+T325,CYBER,إلكتروني
+T326,MODERN,حديث
+T327,LASER,ليزر
+T328,STORM,عاصفة
+T329,THUNDER,رعد
+T330,LIGHTNING,برق
+T331,TEMPEST,إعصار
+T332,CALM,هدوء
+T333,DESERT,صحراء
+T334,SUNNY,مشمس
+T335,KITCHEN,مطبخ
+T336,PANTRY,مؤن
+T337,UTENSIL,أداة
+T338,RECIPE,وصفة
+T339,ORBIT,مدار
+T340,SADDLE,سرج
+T341,ANCHOR,مرساة
+T342,JUSTICE,عدالة
+T343,COURT,محكمة
+T344,SCALES,ميزان
+T345,VERDICT,حكم
+T346,RIVER,نهر
+T347,CLOUD,سحابة
+T348,PIANO,بيانو
+T349,GENIUS,عبقري
+T350,INTELLECT,ذكاء
+T351,CREATIVE,مبدع
+T352,TALENT,موهبة
+T353,DULL,باهت
+T354,SLOW,بطيء
+T355,CLAY,صلصال
+T356,THEATRE,مسرح
+T357,DRAMA,دراما
+T358,ACTOR,ممثل
+T359,STAGE,خشبة
+T360,CAR,سيارة
+T361,SAND,رمل
+T362,RIVER,نهر
+T363,TIME,وقت
+T364,CHRONOLOGY,تسلسل زمني
+T365,DECADE,عقد
+T366,DIMENSION,بُعد
+T367,FORK,شوكة
+T368,BRICK,طوب
+T369,SHIRT,قميص
+T370,ENERGY,طاقة
+T371,KINETIC,حركي
+T372,THERMAL,حراري
+T373,ELECTRON,إلكترون
+T374,STONE,حجر
+T375,PAPER,ورق
+T376,WOOD,خشب
+T377,MIND,عقل
+T378,SYNAPSE,تشابك عصبي
+T379,THOUGHT,فكرة
+T380,NEURON,عصبون
+T381,VALVE,صمام
+T382,METAL,معدن
+T383,PLASTIC,بلاستيك
+T384,IDENTIFY THE WORD MEANING,حدد معنى الكلمة
+T385,TAP THE WORD MEANING,اضغط على معنى الكلمة
+T386,TAP THE FONT COLOR,اضغط على لون الخط
+T387,RED,أحمر
+T388,BLUE,أزرق
+T389,GREEN,أخضر
+T390,YELLOW,أصفر
+T391,WIND: CALM,الرياح: هادئة
+T392,WIND: << GENTLE LEFT,الرياح: << خفيفة يساراً
+T393,WIND: GENTLE RIGHT >>,الرياح: خفيفة يميناً >>
+T394,Tap elements in sequence: 1 → A → 2 → B...,المس العناصر بالتسلسل: 1 ← A ← 2 ← B...
+T395,Connect: {target},المس: {target}
+T396,Find and tap in ascending order: {target},ابحث والمس بترتيب تصاعدي: {target}
+T397,90° Clockwise,90° مع عقارب الساعة
+T398,90° Counter-Clockwise,90° عكس عقارب الساعة
+T399,180° Rotation,تدوير 180°
+T400,Rotate: {arrow} {label},دوّر: {arrow} {label}
+T401,Select Correct Rotation:,اختر التدوير الصحيح:
+T402,90° CW,90° يمين
+T403,90° CCW,90° يسار
+T404,180°,180°
+T405,Memorize the {count} Target Dots,احفظ مواقع {count} نقاط مستهدفة
+T406,Table spins: {label},دوران الطاولة: {label}
+T407,Find the {count} Rotated Dots!,ابحث عن الـ {count} نقاط المدورة!
+T408,PINK BLOCKS,المربعات الوردية
+T409,BLUE BLOCKS,المربعات الزرقاء
+T410,YELLOW BLOCKS,المربعات الصفراء
+T411,Count: {label},العدد: {label}
+T412,Time: {time}s,الوقت: {time} ث

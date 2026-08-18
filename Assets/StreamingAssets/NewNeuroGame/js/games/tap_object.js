@@ -48,7 +48,7 @@
             container.innerHTML = `
                 <div class="canvas-game-container" style="flex-direction: column;">
                     <div class="trace-guide-overlay" id="tap-rule-banner" style="top: 3%; right: auto; font-size:1.15rem; font-weight:700; color:var(--text-main); padding: 0.6rem 2rem;">
-                        TAP ONLY: <span id="tap-rule-text">...</span>
+                        ${window.t('T245')} <span id="tap-rule-text">...</span>
                     </div>
                     <canvas id="tap-canvas" width="800" height="460"></canvas>
                 </div>
@@ -133,7 +133,8 @@
 
             const textEl = document.getElementById("tap-rule-text");
             if (textEl) {
-                textEl.innerText = `${this.targetRule.color.name.toUpperCase()} ${this.targetRule.type.toUpperCase()}S`;
+                const shapeKey = { circle: 'T246', square: 'T247', triangle: 'T248', star: 'T249' }[this.targetRule.type] || 'T246';
+                textEl.innerText = window.t('T250', { color: this.targetRule.color.name.toUpperCase(), type: window.t(shapeKey) });
                 textEl.style.color = this.targetRule.color.hex;
             }
         }

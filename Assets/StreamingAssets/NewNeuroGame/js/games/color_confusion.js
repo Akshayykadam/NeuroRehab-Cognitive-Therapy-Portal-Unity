@@ -3,10 +3,10 @@
  */
 (function () {
     const COLOR_DATA = {
-        RED: { name: "RED", hex: "#f11212ff" },
-        BLUE: { name: "BLUE", hex: "#3b82f6" },
-        GREEN: { name: "GREEN", hex: "#10b981" },
-        YELLOW: { name: "YELLOW", hex: "#f5e20bff" } // calming clinical gold/amber
+        RED: { name: window.t('T387'), hex: "#f11212ff" },
+        BLUE: { name: window.t('T388'), hex: "#3b82f6" },
+        GREEN: { name: window.t('T389'), hex: "#10b981" },
+        YELLOW: { name: window.t('T390'), hex: "#f5e20bff" } // calming clinical gold/amber
     };
 
     const COLOR_KEYS = ["RED", "BLUE", "GREEN", "YELLOW"];
@@ -50,7 +50,7 @@
             this.container.innerHTML = `
                 <div class="color-conf-container">
                     <div class="color-conf-instruction" id="color-conf-instruction">
-                        IDENTIFY THE WORD MEANING
+                        ${window.t('T384')}
                     </div>
                     
                     <div class="color-conf-card" id="color-conf-card">
@@ -141,10 +141,10 @@
             const cardEl = document.getElementById("color-conf-card");
 
             if (this.currentMode === "MEANING") {
-                instEl.innerText = "TAP THE WORD MEANING";
+                instEl.innerText = window.t('T385');
                 instEl.className = "color-conf-instruction mode-meaning";
             } else {
-                instEl.innerText = "TAP THE FONT COLOR";
+                instEl.innerText = window.t('T386');
                 instEl.className = "color-conf-instruction mode-color";
             }
 

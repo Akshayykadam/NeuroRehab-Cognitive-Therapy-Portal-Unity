@@ -3,9 +3,9 @@
  */
 (function() {
     const ROTATION_DELTAS = [
-        { label: "90° CW", delta: 90 },
-        { label: "90° CCW", delta: -90 },
-        { label: "180°", delta: 180 }
+        { label: window.t('T402'), delta: 90 },
+        { label: window.t('T403'), delta: -90 },
+        { label: window.t('T404'), delta: 180 }
     ];
 
     class TurningTablesGame {
@@ -112,7 +112,7 @@
             // Update banner text
             const banner = this.container.querySelector("#tt-banner-text");
             if (banner) {
-                banner.innerHTML = `Table spins: <span>${rot.label}</span>`;
+                banner.innerHTML = window.t('T406', { label: rot.label }).replace(rot.label, `<span>${rot.label}</span>`);
             }
 
             // Animate spin
@@ -131,7 +131,7 @@
             this.interactionState = "PLAY";
             const banner = this.container.querySelector("#tt-banner-text");
             if (banner) {
-                banner.innerHTML = `Find the <span>${this.targetCount} Rotated Dots</span>!`;
+                banner.innerHTML = window.t('T407', { count: this.targetCount }).replace(String(this.targetCount), `<span>${this.targetCount}</span>`);
             }
         }
 

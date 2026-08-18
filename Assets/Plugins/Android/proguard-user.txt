@@ -1,0 +1,5 @@
+# Keep UniWebView classes and native interfaces
+-keep class com.onevcat.uniwebview.** { *; }
+-keepclassmembers class com.onevcat.uniwebview.** { *; }
+-keep class com.onevcat.uniwebview.UniWebViewInterface { *; }
+-keep class com.onevcat.uniwebview.UniWebViewNativeChannel { *; }

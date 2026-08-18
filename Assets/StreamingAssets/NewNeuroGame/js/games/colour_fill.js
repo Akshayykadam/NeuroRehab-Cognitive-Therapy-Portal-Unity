@@ -4,15 +4,15 @@
 (function () {
     // Elegant therapy color palette (9 glossy swatches including white eraser)
     const COLOR_PALETTE = [
-        { name: "Blue", hex: "#3b82f6", rgb: { r: 59, g: 130, b: 246 } },
-        { name: "Teal", hex: "#15dfc7ff", rgb: { r: 20, g: 184, b: 166 } },
-        { name: "Green", hex: "#10b918ff", rgb: { r: 16, g: 185, b: 129 } },
-        { name: "Yellow", hex: "#f5e20bff", rgb: { r: 245, g: 158, b: 11 } },
-        { name: "Orange", hex: "#f97316", rgb: { r: 249, g: 115, b: 22 } },
-        { name: "Red", hex: "#f11212ff", rgb: { r: 239, g: 68, b: 68 } },
-        { name: "Purple", hex: "#8b5cf6", rgb: { r: 139, g: 92, b: 246 } },
-        { name: "Pink", hex: "#eb117eff", rgb: { r: 236, g: 72, b: 153 } },
-        { name: "Eraser", hex: "#ffffff", rgb: { r: 255, g: 255, b: 255 } }
+        { name: window.t('T234'), hex: "#3b82f6", rgb: { r: 59, g: 130, b: 246 } },
+        { name: window.t('T235'), hex: "#15dfc7ff", rgb: { r: 20, g: 184, b: 166 } },
+        { name: window.t('T236'), hex: "#10b918ff", rgb: { r: 16, g: 185, b: 129 } },
+        { name: window.t('T237'), hex: "#f5e20bff", rgb: { r: 245, g: 158, b: 11 } },
+        { name: window.t('T238'), hex: "#f97316", rgb: { r: 249, g: 115, b: 22 } },
+        { name: window.t('T239'), hex: "#f11212ff", rgb: { r: 239, g: 68, b: 68 } },
+        { name: window.t('T240'), hex: "#8b5cf6", rgb: { r: 139, g: 92, b: 246 } },
+        { name: window.t('T241'), hex: "#eb117eff", rgb: { r: 236, g: 72, b: 153 } },
+        { name: window.t('T242'), hex: "#ffffff", rgb: { r: 255, g: 255, b: 255 } }
     ];
 
     // Mapped illustrations per level (exactly 50 levels)
@@ -112,13 +112,13 @@
                 <div class="canvas-game-container" style="flex-direction: column; gap: 0.8rem; padding: 0.6rem 0; align-items: center;">
                     <!-- Real-time Centered Progress Banner -->
                     <div class="trace-guide-overlay" id="coloring-progress-banner" style="position: relative; top: auto; right: auto; margin-bottom: 0.2rem; font-size:1.05rem; font-weight:700; color:var(--text-main); padding: 0.6rem 2rem; display: inline-block; text-align: center; width: auto; box-sizing: border-box;">
-                        Progress: <span id="progress-val" style="color: #16a34a; font-weight: 800;">0</span>% <span style="color: rgba(30, 41, 59, 0.2); margin: 0 0.5rem;">|</span> Goal: 96%
+                        <span id="coloring-progress-text">${window.t('T243', { val: 0 })}</span>
                     </div>
                     <canvas id="fill-canvas" width="800" height="460"></canvas>
                     
                     <!-- Premium Glossy Swatch Palette -->
                     <div style="display:flex; flex-direction: column; gap: 0.5rem; align-items: center; margin-top: 0.5rem; width: 100%;">
-                        <span style="font-size:0.85rem; font-weight:700; text-transform:uppercase; color: var(--text-muted); letter-spacing:1px; margin-bottom: 0.3rem;">Select Paint Color:</span>
+                        <span style="font-size:0.85rem; font-weight:700; text-transform:uppercase; color: var(--text-muted); letter-spacing:1px; margin-bottom: 0.3rem;">${window.t('T244')}</span>
                         <div id="fill-palette" style="display:flex; gap:1.2rem; align-items:center;"></div>
                     </div>
                 </div>
@@ -410,9 +410,9 @@
         }
 
         updateProgressUI() {
-            const valEl = document.getElementById("progress-val");
-            if (valEl) {
-                valEl.innerText = this.coloringProgress;
+            const textEl = document.getElementById("coloring-progress-text");
+            if (textEl) {
+                textEl.innerText = window.t('T243', { val: this.coloringProgress });
             }
         }
 

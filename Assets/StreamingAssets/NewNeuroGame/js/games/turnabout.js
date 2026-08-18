@@ -4,9 +4,9 @@
 (function() {
     const SHAPES = ["▲", "■", "●", "★", "♦", "♥"];
     const ROTATIONS = [
-        { label: "90° Clockwise", angle: 90, dir: "CW", arrow: "↻" },
-        { label: "90° Counter-Clockwise", angle: 270, dir: "CCW", arrow: "↺" },
-        { label: "180° Rotation", angle: 180, dir: "180", arrow: "⇅" }
+        { label: window.t('T397'), angle: 90, dir: "CW", arrow: "↻" },
+        { label: window.t('T398'), angle: 270, dir: "CCW", arrow: "↺" },
+        { label: window.t('T399'), angle: 180, dir: "180", arrow: "⇅" }
     ];
 
     class TurnaboutGame {
@@ -197,7 +197,7 @@
                     <div class="ta-container" style="flex: 1; margin: 0; width: 100%;">
                         <div class="ta-left-panel">
                             <div class="ta-prompt-banner">
-                                Rotate: <span>${this.targetRotation.arrow} ${this.targetRotation.label}</span>
+                                ${window.t('T400', { arrow: this.targetRotation.arrow, label: this.targetRotation.label })}
                             </div>
                             <div class="ta-grid" style="grid-template-columns: repeat(${size}, 1fr); width: ${size * 76}px;">
                                 ${this.currentGrid.map(cell => `<div class="ta-cell" style="width: 60px; height: 60px;">${cell}</div>`).join("")}
@@ -205,7 +205,7 @@
                         </div>
                         
                         <div class="ta-right-panel">
-                            <div style="font-size:0.85rem; font-weight:700; text-transform:uppercase; color: var(--text-muted); letter-spacing:1px; margin-bottom: 0.5rem;">Select Correct Rotation:</div>
+                            <div style="font-size:0.85rem; font-weight:700; text-transform:uppercase; color: var(--text-muted); letter-spacing:1px; margin-bottom: 0.5rem;">${window.t('T401')}</div>
                             <div class="ta-options">
                                 ${this.options.map((opt, idx) => `
                                     <div class="ta-option-card" data-idx="${idx}">

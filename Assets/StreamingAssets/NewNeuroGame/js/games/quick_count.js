@@ -3,9 +3,9 @@
  */
 (function() {
     const COLOR_THEMES = {
-        PINK: { label: "PINK BLOCKS", hex: "#ec4899", class: "color-target" },
-        BLUE: { label: "BLUE BLOCKS", hex: "#3b82f6", class: "color-distractor1" },
-        YELLOW: { label: "YELLOW BLOCKS", hex: "#fbbf24", class: "color-distractor2" }
+        PINK: { label: window.t('T408'), hex: "#ec4899", class: "color-target" },
+        BLUE: { label: window.t('T409'), hex: "#3b82f6", class: "color-distractor1" },
+        YELLOW: { label: window.t('T410'), hex: "#fbbf24", class: "color-distractor2" }
     };
 
     class QuickCountGame {
@@ -235,8 +235,8 @@
             this.container.innerHTML = `
                 <div class="qc-container">
                     <div class="qc-prompt">
-                        Count: <span style="color: ${targetInfo.hex}">${targetInfo.label}</span> 
-                        <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: 1rem;">Time: <b id="qc-round-time">${this.roundTimeLeft}</b>s</span>
+                        ${window.t('T411', { label: targetInfo.label }).replace(targetInfo.label, `<span style="color: ${targetInfo.hex}">${targetInfo.label}</span>`)} 
+                        <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: 1rem;">${window.t('T412', { time: this.roundTimeLeft }).replace(String(this.roundTimeLeft), `<b id="qc-round-time">${this.roundTimeLeft}</b>`)}</span>
                     </div>
 
                     <div class="qc-grid" style="grid-template-columns: repeat(${size}, 1fr); width: ${size * 70}px;">

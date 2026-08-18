@@ -144,6 +144,29 @@ const UnityBridge = {
                     app.setupGame(message.gameId, message.level || 1);
                 }
                 break;
+            case "set_language":
+                if (message.language && window.i18n) {
+                    window.i18n.setLanguage(message.language);
+                    if (app) {
+                        app.renderLobby();
+                        app.renderDashboard();
+                        app.updatePlayerHUD();
+                    }
+                }
+                break;
+            case "load_csv":
+                if (message.csv && window.i18n) {
+                    window.i18n.loadCSV(message.csv);
+                    if (message.language) {
+                        window.i18n.setLanguage(message.language);
+                    }
+                    if (app) {
+                        app.renderLobby();
+                        app.renderDashboard();
+                        app.updatePlayerHUD();
+                    }
+                }
+                break;
             case "toggle_sound":
                 Sound.toggleMute();
                 app.updateSoundIcon();

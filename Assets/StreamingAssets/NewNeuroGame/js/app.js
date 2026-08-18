@@ -4,150 +4,199 @@
 
 // Define Therapy Exercises Metadata
 // Define Therapy Exercises Metadata
+// Define Therapy Exercises Metadata with Localization Keys
 const GAME_DEFS = [
     {
         id: "trace_letter",
-        name: "Trace the Shape",
-        skill: "Motor Control",
+        nameKey: "T96",
+        skillKey: "T97",
+        descKey: "T98",
+        get name() { return window.t ? window.t(this.nameKey, "Trace the Shape") : "Trace the Shape"; },
+        get skill() { return window.t ? window.t(this.skillKey, "Motor Control") : "Motor Control"; },
+        get desc() { return window.t ? window.t(this.descKey, "Slowly trace pathways and shapes with your pointer. Focuses on motor planning, hand-eye tracking, and precise spatial movement control.") : "Slowly trace pathways and shapes with your pointer. Focuses on motor planning, hand-eye tracking, and precise spatial movement control."; },
         theme: "theme-blue",
         icon: "fa-solid fa-bezier-curve",
-        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><path d="M15,30 Q35,10 50,30 T85,30" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="4" stroke-dasharray="4 4" /><path d="M15,30 Q35,10 50,30" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="4" stroke-linecap="round" /><circle cx="50" cy="30" r="6" fill="#fff" /><path d="M50,30 L55,42 L45,38 Z" fill="#fff" /></svg>`,
-        desc: "Slowly trace pathways and shapes with your pointer. Focuses on motor planning, hand-eye tracking, and precise spatial movement control."
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><path d="M15,30 Q35,10 50,30 T85,30" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="4" stroke-dasharray="4 4" /><path d="M15,30 Q35,10 50,30" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="4" stroke-linecap="round" /><circle cx="50" cy="30" r="6" fill="#fff" /><path d="M50,30 L55,42 L45,38 Z" fill="#fff" /></svg>`
     },
     {
         id: "colour_fill",
-        name: "Colour Fill exercise",
-        skill: "Spatial Logic",
+        nameKey: "T99",
+        skillKey: "T100",
+        descKey: "T101",
+        get name() { return window.t ? window.t(this.nameKey, "Colour Fill exercise") : "Colour Fill exercise"; },
+        get skill() { return window.t ? window.t(this.skillKey, "Spatial Logic") : "Spatial Logic"; },
+        get desc() { return window.t ? window.t(this.descKey, "Color connected circles so that no two connected items share the same color. Encourages logical planning, visual inspection, and puzzle sorting.") : "Color connected circles so that no two connected items share the same color. Encourages logical planning, visual inspection, and puzzle sorting."; },
         theme: "theme-green",
         icon: "fa-solid fa-fill-drip",
-        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><line x1="25" y1="30" x2="50" y2="15" stroke="rgba(255,255,255,0.5)" stroke-width="2" /><line x1="25" y1="30" x2="50" y2="45" stroke="rgba(255,255,255,0.5)" stroke-width="2" /><line x1="50" y1="15" x2="75" y2="30" stroke="rgba(255,255,255,0.5)" stroke-width="2" /><line x1="50" y1="45" x2="75" y2="30" stroke="rgba(255,255,255,0.5)" stroke-width="2" /><line x1="50" y1="15" x2="50" y2="45" stroke="rgba(255,255,255,0.5)" stroke-width="2" /><circle cx="25" cy="30" r="7" fill="#fff" /><circle cx="50" cy="15" r="7" fill="rgba(255,255,255,0.7)" /><circle cx="50" cy="45" r="7" fill="rgba(255,255,255,0.7)" /><circle cx="75" cy="30" r="7" fill="#fff" /></svg>`,
-        desc: "Color connected circles so that no two connected items share the same color. Encourages logical planning, visual inspection, and puzzle sorting."
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><line x1="25" y1="30" x2="50" y2="15" stroke="rgba(255,255,255,0.5)" stroke-width="2" /><line x1="25" y1="30" x2="50" y2="45" stroke="rgba(255,255,255,0.5)" stroke-width="2" /><line x1="50" y1="15" x2="75" y2="30" stroke="rgba(255,255,255,0.5)" stroke-width="2" /><line x1="50" y1="45" x2="75" y2="30" stroke="rgba(255,255,255,0.5)" stroke-width="2" /><line x1="50" y1="15" x2="50" y2="45" stroke="rgba(255,255,255,0.5)" stroke-width="2" /><circle cx="25" cy="30" r="7" fill="#fff" /><circle cx="50" cy="15" r="7" fill="rgba(255,255,255,0.7)" /><circle cx="50" cy="45" r="7" fill="rgba(255,255,255,0.7)" /><circle cx="75" cy="30" r="7" fill="#fff" /></svg>`
     },
     {
         id: "tap_object",
-        name: "Selective Focus",
-        skill: "Visual Attention",
+        nameKey: "T102",
+        skillKey: "T103",
+        descKey: "T104",
+        get name() { return window.t ? window.t(this.nameKey, "Selective Focus") : "Selective Focus"; },
+        get skill() { return window.t ? window.t(this.skillKey, "Visual Attention") : "Visual Attention"; },
+        get desc() { return window.t ? window.t(this.descKey, "Identify and tap moving shapes that match the active target description (e.g., 'Green Star'). Exercises visual search and selective attention.") : "Identify and tap moving shapes that match the active target description (e.g., 'Green Star'). Exercises visual search and selective attention."; },
         theme: "theme-gold",
         icon: "fa-solid fa-bullseye",
-        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="50" cy="30" r="20" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" /><circle cx="50" cy="30" r="10" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" /><line x1="50" y1="5" x2="50" y2="55" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" /><line x1="20" y1="30" x2="80" y2="30" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" /><polygon points="50,22 53,28 59,29 55,33 56,39 50,36 44,39 45,33 41,29 47,28" fill="#fff" /></svg>`,
-        desc: "Identify and tap moving shapes that match the active target description (e.g., 'Green Star'). Exercises visual search and selective attention."
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="50" cy="30" r="20" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" /><circle cx="50" cy="30" r="10" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" /><line x1="50" y1="5" x2="50" y2="55" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" /><line x1="20" y1="30" x2="80" y2="30" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" /><polygon points="50,22 53,28 59,29 55,33 56,39 50,36 44,39 45,33 41,29 47,28" fill="#fff" /></svg>`
     },
     {
         id: "memory",
-        name: "Memory Cards",
-        skill: "Working Memory",
+        nameKey: "T105",
+        skillKey: "T106",
+        descKey: "T107",
+        get name() { return window.t ? window.t(this.nameKey, "Memory Cards") : "Memory Cards"; },
+        get skill() { return window.t ? window.t(this.skillKey, "Working Memory") : "Working Memory"; },
+        get desc() { return window.t ? window.t(this.descKey, "Flip cards to find matching shapes. Levels scale to support associative memory by matching math equations to their solutions.") : "Flip cards to find matching shapes. Levels scale to support associative memory by matching math equations to their solutions."; },
         theme: "theme-purple",
         icon: "fa-solid fa-clone",
-        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><rect x="18" y="14" width="22" height="32" rx="4" fill="rgba(255,255,255,0.5)" stroke="rgba(255,255,255,0.8)" stroke-width="1.5" transform="rotate(-8, 29, 30)" /><rect x="60" y="14" width="22" height="32" rx="4" fill="rgba(255,255,255,0.5)" stroke="rgba(255,255,255,0.8)" stroke-width="1.5" transform="rotate(8, 71, 30)" /><rect x="38" y="12" width="24" height="36" rx="4" fill="#fff" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" /><circle cx="50" cy="30" r="5" fill="var(--clinical-blue)" /></svg>`,
-        desc: "Flip cards to find matching shapes. Levels scale to support associative memory by matching math equations to their solutions."
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><rect x="18" y="14" width="22" height="32" rx="4" fill="rgba(255,255,255,0.5)" stroke="rgba(255,255,255,0.8)" stroke-width="1.5" transform="rotate(-8, 29, 30)" /><rect x="60" y="14" width="22" height="32" rx="4" fill="rgba(255,255,255,0.5)" stroke="rgba(255,255,255,0.8)" stroke-width="1.5" transform="rotate(8, 71, 30)" /><rect x="38" y="12" width="24" height="36" rx="4" fill="#fff" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" /><circle cx="50" cy="30" r="5" fill="var(--clinical-blue)" /></svg>`
     },
     {
         id: "object_recall",
-        name: "Recall Practice",
-        skill: "Delayed Recall",
+        nameKey: "T108",
+        skillKey: "T109",
+        descKey: "T110",
+        get name() { return window.t ? window.t(this.nameKey, "Recall Practice") : "Recall Practice"; },
+        get skill() { return window.t ? window.t(this.skillKey, "Delayed Recall") : "Delayed Recall"; },
+        get desc() { return window.t ? window.t(this.descKey, "Study a group of symbols, then spot which new object is added after they shuffle. Supports short-term visual retention and recall speed.") : "Study a group of symbols, then spot which new object is added after they shuffle. Supports short-term visual retention and recall speed."; },
         theme: "theme-magenta",
         icon: "fa-solid fa-clock-rotate-left",
-        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="28" cy="22" r="6" fill="rgba(255,255,255,0.6)" /><rect x="60" y="16" width="12" height="12" rx="2" fill="rgba(255,255,255,0.6)" /><polygon points="48,42 53,50 43,50" fill="rgba(255,255,255,0.6)" /><path d="M50,15 A15,15 0 0,1 65,30 A15,15 0 0,1 50,45 A15,15 0 0,1 35,30 A15,15 0 0,1 50,15 Z" fill="none" stroke="#fff" stroke-width="2" /><circle cx="50" cy="30" r="5" fill="#fff" /></svg>`,
-        desc: "Study a group of symbols, then spot which new object is added after they shuffle. Supports short-term visual retention and recall speed."
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="28" cy="22" r="6" fill="rgba(255,255,255,0.6)" /><rect x="60" y="16" width="12" height="12" rx="2" fill="rgba(255,255,255,0.6)" /><polygon points="48,42 53,50 43,50" fill="rgba(255,255,255,0.6)" /><path d="M50,15 A15,15 0 0,1 65,30 A15,15 0 0,1 50,45 A15,15 0 0,1 35,30 A15,15 0 0,1 50,15 Z" fill="none" stroke="#fff" stroke-width="2" /><circle cx="50" cy="30" r="5" fill="#fff" /></svg>`
     },
     {
         id: "odd_one_out",
-        name: "Spot the Difference",
-        skill: "Visual Logic",
+        nameKey: "T111",
+        skillKey: "T112",
+        descKey: "T113",
+        get name() { return window.t ? window.t(this.nameKey, "Spot the Difference") : "Spot the Difference"; },
+        get skill() { return window.t ? window.t(this.skillKey, "Visual Logic") : "Visual Logic"; },
+        get desc() { return window.t ? window.t(this.descKey, "Find the single shape that has a rotational, color-shade, or edge count discrepancy. Exercises fine visual detail comparison.") : "Find the single shape that has a rotational, color-shade, or edge count discrepancy. Exercises fine visual detail comparison."; },
         theme: "theme-orange",
         icon: "fa-solid fa-binoculars",
-        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="25" cy="30" r="8" fill="rgba(255,255,255,0.7)" /><circle cx="50" cy="30" r="8" fill="rgba(255,255,255,0.7)" /><rect x="71" y="26" width="8" height="8" fill="#fff" rx="1" transform="rotate(45, 75, 30)" /></svg>`,
-        desc: "Find the single shape that has a rotational, color-shade, or edge count discrepancy. Exercises fine visual detail comparison."
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="25" cy="30" r="8" fill="rgba(255,255,255,0.7)" /><circle cx="50" cy="30" r="8" fill="rgba(255,255,255,0.7)" /><rect x="71" y="26" width="8" height="8" fill="#fff" rx="1" transform="rotate(45, 75, 30)" /></svg>`
     },
     {
         id: "task_switching",
-        name: "Cognitive Flex",
-        skill: "Cognitive Shifting",
+        nameKey: "T114",
+        skillKey: "T115",
+        descKey: "T116",
+        get name() { return window.t ? window.t(this.nameKey, "Cognitive Flex") : "Cognitive Flex"; },
+        get skill() { return window.t ? window.t(this.skillKey, "Cognitive Shifting") : "Cognitive Shifting"; },
+        get desc() { return window.t ? window.t(this.descKey, "Match objects by shifting your focus between Shape, Color, or Number. Supports mental agility and cognitive switching capacity.") : "Match objects by shifting your focus between Shape, Color, or Number. Supports mental agility and cognitive switching capacity."; },
         theme: "theme-teal",
         icon: "fa-solid fa-arrows-spin",
-        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><path d="M30,30 A15,15 0 1,1 70,30" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="3" /><path d="M70,30 A15,15 0 1,1 30,30" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="25 10" /><polygon points="70,25 78,30 70,35" fill="#fff" /><polygon points="30,35 22,30 30,25" fill="rgba(255,255,255,0.4)" /><circle cx="50" cy="30" r="6" fill="#fff" /></svg>`,
-        desc: "Match objects by shifting your focus between Shape, Color, or Number. Supports mental agility and cognitive switching capacity."
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><path d="M30,30 A15,15 0 1,1 70,30" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="3" /><path d="M70,30 A15,15 0 1,1 30,30" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="25 10" /><polygon points="70,25 78,30 70,35" fill="#fff" /><polygon points="30,35 22,30 30,25" fill="rgba(255,255,255,0.4)" /><circle cx="50" cy="30" r="6" fill="#fff" /></svg>`
     },
     {
         id: "sorting",
-        name: "Sorting Practice",
-        skill: "Categorisation",
+        nameKey: "T117",
+        skillKey: "T118",
+        descKey: "T119",
+        get name() { return window.t ? window.t(this.nameKey, "Sorting Practice") : "Sorting Practice"; },
+        get skill() { return window.t ? window.t(this.skillKey, "Categorisation") : "Categorisation"; },
+        get desc() { return window.t ? window.t(this.descKey, "Sort incoming cards into left and right bins according to categories (Even/Odd, Living/Non-living). Trains categorization and quick sorting.") : "Sort incoming cards into left and right bins according to categories (Even/Odd, Living/Non-living). Trains categorization and quick sorting."; },
         theme: "theme-indigo",
         icon: "fa-solid fa-filter",
-        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><path d="M50,12 L30,45 L15,45" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="3" /><path d="M50,12 L70,45 L85,45" fill="none" stroke="#fff" stroke-width="3" /><circle cx="50" cy="17" r="5" fill="#fff" /><rect x="20" y="40" width="10" height="10" fill="rgba(255,255,255,0.5)" rx="1" /><circle cx="78" cy="45" r="5" fill="#fff" /></svg>`,
-        desc: "Sort incoming cards into left and right bins according to categories (Even/Odd, Living/Non-living). Trains categorization and quick sorting."
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><path d="M50,12 L30,45 L15,45" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="3" /><path d="M50,12 L70,45 L85,45" fill="none" stroke="#fff" stroke-width="3" /><circle cx="50" cy="17" r="5" fill="#fff" /><rect x="20" y="40" width="10" height="10" fill="rgba(255,255,255,0.5)" rx="1" /><circle cx="78" cy="45" r="5" fill="#fff" /></svg>`
     },
     {
         id: "falling_catcher",
-        name: "Catching Exercise",
-        skill: "Coordination",
+        nameKey: "T120",
+        skillKey: "T121",
+        descKey: "T122",
+        get name() { return window.t ? window.t(this.nameKey, "Catching Exercise") : "Catching Exercise"; },
+        get skill() { return window.t ? window.t(this.skillKey, "Coordination") : "Coordination"; },
+        get desc() { return window.t ? window.t(this.descKey, "Move a slider at the bottom to catch positive green gems while avoiding red obstacles. Promotes hand-eye reaction and spatial forecasting.") : "Move a slider at the bottom to catch positive green gems while avoiding red obstacles. Promotes hand-eye reaction and spatial forecasting."; },
         theme: "theme-red",
         icon: "fa-solid fa-basket-shopping",
-        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><rect x="35" y="45" width="30" height="8" rx="4" fill="#fff" /><polygon points="50,15 53,21 60,21 55,25 57,31 50,27 43,31 45,25 40,21 47,21" fill="rgba(255,255,255,0.8)" /><polygon points="25,20 27,25 33,25 29,29 31,34 25,30 19,34 21,29 17,25 23,25" fill="rgba(255,255,255,0.4)" /><polygon points="75,25 77,30 83,30 79,34 81,39 75,35 69,39 71,34 67,30 73,30" fill="rgba(255,255,255,0.4)" /></svg>`,
-        desc: "Move a slider at the bottom to catch positive green gems while avoiding red obstacles. Promotes hand-eye reaction and spatial forecasting."
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><rect x="35" y="45" width="30" height="8" rx="4" fill="#fff" /><polygon points="50,15 53,21 60,21 55,25 57,31 50,27 43,31 45,25 40,21 47,21" fill="rgba(255,255,255,0.8)" /><polygon points="25,20 27,25 33,25 29,29 31,34 25,30 19,34 21,29 17,25 23,25" fill="rgba(255,255,255,0.4)" /><polygon points="75,25 77,30 83,30 79,34 81,39 75,35 69,39 71,34 67,30 73,30" fill="rgba(255,255,255,0.4)" /></svg>`
     },
     {
         id: "word_association",
-        name: "Word Association",
-        skill: "Semantic Memory",
+        nameKey: "T123",
+        skillKey: "T124",
+        descKey: "T125",
+        get name() { return window.t ? window.t(this.nameKey, "Word Association") : "Word Association"; },
+        get skill() { return window.t ? window.t(this.skillKey, "Semantic Memory") : "Semantic Memory"; },
+        get desc() { return window.t ? window.t(this.descKey, "Tap the floating words that belong to the active core topic. Strengthens vocabulary connection speed and semantic recall.") : "Tap the floating words that belong to the active core topic. Strengthens vocabulary connection speed and semantic recall."; },
         theme: "theme-violet",
         icon: "fa-solid fa-network-wired",
-        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="50" cy="30" r="12" fill="#fff" opacity="0.9" /><circle cx="26" cy="20" r="8" fill="rgba(255,255,255,0.5)" /><circle cx="74" cy="24" r="8" fill="rgba(255,255,255,0.5)" /><circle cx="36" cy="44" r="7" fill="rgba(255,255,255,0.5)" /><line x1="50" y1="30" x2="26" y2="20" stroke="rgba(255,255,255,0.6)" stroke-width="2" /><line x1="50" y1="30" x2="74" y2="24" stroke="rgba(255,255,255,0.6)" stroke-width="2" /><line x1="50" y1="30" x2="36" y2="44" stroke="rgba(255,255,255,0.6)" stroke-width="2" /></svg>`,
-        desc: "Tap the floating words that belong to the active core topic. Strengthens vocabulary connection speed and semantic recall."
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="50" cy="30" r="12" fill="#fff" opacity="0.9" /><circle cx="26" cy="20" r="8" fill="rgba(255,255,255,0.5)" /><circle cx="74" cy="24" r="8" fill="rgba(255,255,255,0.5)" /><circle cx="36" cy="44" r="7" fill="rgba(255,255,255,0.5)" /><line x1="50" y1="30" x2="26" y2="20" stroke="rgba(255,255,255,0.6)" stroke-width="2" /><line x1="50" y1="30" x2="74" y2="24" stroke="rgba(255,255,255,0.6)" stroke-width="2" /><line x1="50" y1="30" x2="36" y2="44" stroke="rgba(255,255,255,0.6)" stroke-width="2" /></svg>`
     },
     {
         id: "color_confusion",
-        name: "Color Confusion",
-        skill: "Inhibition",
+        nameKey: "T126",
+        skillKey: "T127",
+        descKey: "T128",
+        get name() { return window.t ? window.t(this.nameKey, "Color Confusion") : "Color Confusion"; },
+        get skill() { return window.t ? window.t(this.skillKey, "Inhibition") : "Inhibition"; },
+        get desc() { return window.t ? window.t(this.descKey, "Tap the correct button based on font color or word meaning. Exercises mental focus, cognitive inhibition, and Stroop processing.") : "Tap the correct button based on font color or word meaning. Exercises mental focus, cognitive inhibition, and Stroop processing."; },
         theme: "theme-orange",
         icon: "fa-solid fa-palette",
-        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><rect x="25" y="10" width="50" height="22" rx="4" fill="rgba(255,255,255,0.9)" /><text x="50" y="25" font-family="'Outfit', sans-serif" font-weight="800" font-size="10" fill="#f97316" text-anchor="middle">GREEN</text><rect x="20" y="38" width="16" height="10" rx="2" fill="#ef4444" /><rect x="42" y="38" width="16" height="10" rx="2" fill="#3b82f6" /><rect x="64" y="38" width="16" height="10" rx="2" fill="#10b981" /></svg>`,
-        desc: "Tap the correct button based on font color or word meaning. Exercises mental focus, cognitive inhibition, and Stroop processing."
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><rect x="25" y="10" width="50" height="22" rx="4" fill="rgba(255,255,255,0.9)" /><text x="50" y="25" font-family="'Outfit', sans-serif" font-weight="800" font-size="10" fill="#f97316" text-anchor="middle">GREEN</text><rect x="20" y="38" width="16" height="10" rx="2" fill="#ef4444" /><rect x="42" y="38" width="16" height="10" rx="2" fill="#3b82f6" /><rect x="64" y="38" width="16" height="10" rx="2" fill="#10b981" /></svg>`
     },
     {
         id: "quick_switch",
-        name: "Quick Switch",
-        skill: "Cognitive Shifting",
+        nameKey: "T129",
+        skillKey: "T130",
+        descKey: "T131",
+        get name() { return window.t ? window.t(this.nameKey, "Quick Switch") : "Quick Switch"; },
+        get skill() { return window.t ? window.t(this.skillKey, "Cognitive Shifting") : "Cognitive Shifting"; },
+        get desc() { return window.t ? window.t(this.descKey, "Connect numbers and letters in alternating sequence (1-A-2-B-3-C...). Promotes cognitive flexibility, sequencing speed, and executive control.") : "Connect numbers and letters in alternating sequence (1-A-2-B-3-C...). Promotes cognitive flexibility, sequencing speed, and executive control."; },
         theme: "theme-teal",
         icon: "fa-solid fa-shuffle",
-        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="22" cy="18" r="7" fill="#fff" /><text x="22" y="22" font-family="'Outfit', sans-serif" font-weight="800" font-size="10" fill="#0d9488" text-anchor="middle">1</text><circle cx="50" cy="40" r="7" fill="#fff" /><text x="50" y="44" font-family="'Outfit', sans-serif" font-weight="800" font-size="10" fill="#0d9488" text-anchor="middle">A</text><circle cx="78" cy="18" r="7" fill="rgba(255,255,255,0.5)" /><text x="78" y="22" font-family="'Outfit', sans-serif" font-weight="800" font-size="10" fill="#fff" text-anchor="middle">2</text><line x1="28" y1="21" x2="44" y2="35" stroke="#fff" stroke-width="2" /><line x1="56" y1="35" x2="72" y2="21" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-dasharray="2 2" /></svg>`,
-        desc: "Connect numbers and letters in alternating sequence (1-A-2-B-3-C...). Promotes cognitive flexibility, sequencing speed, and executive control."
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="22" cy="18" r="7" fill="#fff" /><text x="22" y="22" font-family="'Outfit', sans-serif" font-weight="800" font-size="10" fill="#0d9488" text-anchor="middle">1</text><circle cx="50" cy="40" r="7" fill="#fff" /><text x="50" y="44" font-family="'Outfit', sans-serif" font-weight="800" font-size="10" fill="#0d9488" text-anchor="middle">A</text><circle cx="78" cy="18" r="7" fill="rgba(255,255,255,0.5)" /><text x="78" y="22" font-family="'Outfit', sans-serif" font-weight="800" font-size="10" fill="#fff" text-anchor="middle">2</text><line x1="28" y1="21" x2="44" y2="35" stroke="#fff" stroke-width="2" /><line x1="56" y1="35" x2="72" y2="21" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-dasharray="2 2" /></svg>`
     },
     {
         id: "eagle_eye",
-        name: "Eagle Eye",
-        skill: "Visual Attention",
+        nameKey: "T132",
+        skillKey: "T133",
+        descKey: "T134",
+        get name() { return window.t ? window.t(this.nameKey, "Eagle Eye") : "Eagle Eye"; },
+        get skill() { return window.t ? window.t(this.skillKey, "Visual Attention") : "Visual Attention"; },
+        get desc() { return window.t ? window.t(this.descKey, "Quickly locate and select numbers in ascending order (1, 2, 3...). Enhances rapid visual scanning, attention span, and field of view.") : "Quickly locate and select numbers in ascending order (1, 2, 3...). Enhances rapid visual scanning, attention span, and field of view."; },
         theme: "theme-blue",
         icon: "fa-solid fa-eye",
-        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="30" cy="18" r="8" fill="#fff" /><text x="30" y="22" font-family="'Outfit', sans-serif" font-weight="800" font-size="10" fill="#1b52a4" text-anchor="middle">1</text><circle cx="70" cy="22" r="7" fill="rgba(255,255,255,0.7)" /><text x="70" y="26" font-family="'Outfit', sans-serif" font-weight="800" font-size="8" fill="#1b52a4" text-anchor="middle">2</text><circle cx="45" cy="44" r="9" fill="rgba(255,255,255,0.5)" /><text x="45" y="48" font-family="'Outfit', sans-serif" font-weight="800" font-size="11" fill="#fff" text-anchor="middle">3</text><circle cx="15" cy="42" r="5" fill="rgba(255,255,255,0.2)" /><circle cx="85" cy="45" r="4" fill="rgba(255,255,255,0.1)" /></svg>`,
-        desc: "Quickly locate and select numbers in ascending order (1, 2, 3...). Enhances rapid visual scanning, attention span, and field of view."
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="30" cy="18" r="8" fill="#fff" /><text x="30" y="22" font-family="'Outfit', sans-serif" font-weight="800" font-size="10" fill="#1b52a4" text-anchor="middle">1</text><circle cx="70" cy="22" r="7" fill="rgba(255,255,255,0.7)" /><text x="70" y="26" font-family="'Outfit', sans-serif" font-weight="800" font-size="8" fill="#1b52a4" text-anchor="middle">2</text><circle cx="45" cy="44" r="9" fill="rgba(255,255,255,0.5)" /><text x="45" y="48" font-family="'Outfit', sans-serif" font-weight="800" font-size="11" fill="#fff" text-anchor="middle">3</text><circle cx="15" cy="42" r="5" fill="rgba(255,255,255,0.2)" /><circle cx="85" cy="45" r="4" fill="rgba(255,255,255,0.1)" /></svg>`
     },
     {
         id: "turnabout",
-        name: "Turnabout",
-        skill: "Mental Rotation",
+        nameKey: "T135",
+        skillKey: "T136",
+        descKey: "T137",
+        get name() { return window.t ? window.t(this.nameKey, "Turnabout") : "Turnabout"; },
+        get skill() { return window.t ? window.t(this.skillKey, "Mental Rotation") : "Mental Rotation"; },
+        get desc() { return window.t ? window.t(this.descKey, "Identify the correctly rotated version of a shape grid. Strengthens mental rotation capabilities, spatial awareness, and visual reasoning.") : "Identify the correctly rotated version of a shape grid. Strengthens mental rotation capabilities, spatial awareness, and visual reasoning."; },
         theme: "theme-indigo",
         icon: "fa-solid fa-arrows-turn-to-dots",
-        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><rect x="20" y="10" width="36" height="36" rx="6" fill="rgba(255,255,255,0.85)" /><path d="M 75,22 A 16,16 0 1,1 72,36" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" /><path d="M 72,36 L 66,32 M 72,36 L 77,31" stroke="#fff" stroke-width="4" stroke-linecap="round" /><circle cx="28" cy="18" r="4" fill="#6366f1" /><circle cx="48" cy="38" r="4" fill="#6366f1" /><circle cx="44" cy="24" r="4" fill="#ef4444" /></svg>`,
-        desc: "Identify the correctly rotated version of a shape grid. Strengthens mental rotation capabilities, spatial awareness, and visual reasoning."
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><rect x="20" y="10" width="36" height="36" rx="6" fill="rgba(255,255,255,0.85)" /><path d="M 75,22 A 16,16 0 1,1 72,36" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" /><path d="M 72,36 L 66,32 M 72,36 L 77,31" stroke="#fff" stroke-width="4" stroke-linecap="round" /><circle cx="28" cy="18" r="4" fill="#6366f1" /><circle cx="48" cy="38" r="4" fill="#6366f1" /><circle cx="44" cy="24" r="4" fill="#ef4444" /></svg>`
     },
     {
         id: "turning_tables",
-        name: "Turning Tables",
-        skill: "Spatial Memory",
+        nameKey: "T138",
+        skillKey: "T139",
+        descKey: "T140",
+        get name() { return window.t ? window.t(this.nameKey, "Turning Tables") : "Turning Tables"; },
+        get skill() { return window.t ? window.t(this.skillKey, "Spatial Memory") : "Spatial Memory"; },
+        get desc() { return window.t ? window.t(this.descKey, "Memorize target slots on a round table, track them as the table spins, and identify their new positions. Exercises dynamic spatial tracking and recall.") : "Memorize target slots on a round table, track them as the table spins, and identify their new positions. Exercises dynamic spatial tracking and recall."; },
         theme: "theme-green",
         icon: "fa-solid fa-arrows-spin",
-        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="50" cy="30" r="22" fill="rgba(255,255,255,0.3)" stroke="#fff" stroke-width="2" /><circle cx="50" cy="30" r="10" fill="rgba(255,255,255,0.5)" /><circle cx="50" cy="14" r="4.5" fill="#fff" /><circle cx="50" cy="46" r="4.5" fill="#10b981" /><circle cx="34" cy="30" r="4.5" fill="#fff" opacity="0.6" /><circle cx="66" cy="30" r="4.5" fill="#10b981" /><path d="M 78,22 A 28,28 0 0,0 72,12" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" /><path d="M 72,12 L 67,16 M 72,12 L 75,7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" /></svg>`,
-        desc: "Memorize target slots on a round table, track them as the table spins, and identify their new positions. Exercises dynamic spatial tracking and recall."
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><circle cx="50" cy="30" r="22" fill="rgba(255,255,255,0.3)" stroke="#fff" stroke-width="2" /><circle cx="50" cy="30" r="10" fill="rgba(255,255,255,0.5)" /><circle cx="50" cy="14" r="4.5" fill="#fff" /><circle cx="50" cy="46" r="4.5" fill="#10b981" /><circle cx="34" cy="30" r="4.5" fill="#fff" opacity="0.6" /><circle cx="66" cy="30" r="4.5" fill="#10b981" /><path d="M 78,22 A 28,28 0 0,0 72,12" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" /><path d="M 72,12 L 67,16 M 72,12 L 75,7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" /></svg>`
     },
     {
         id: "quick_count",
-        name: "Quick Count",
-        skill: "Visual Attention",
+        nameKey: "T141",
+        skillKey: "T142",
+        descKey: "T143",
+        get name() { return window.t ? window.t(this.nameKey, "Quick Count") : "Quick Count"; },
+        get skill() { return window.t ? window.t(this.skillKey, "Visual Attention") : "Visual Attention"; },
+        get desc() { return window.t ? window.t(this.descKey, "Instantly subitize or count blocks of a specific color in a randomized grid against a swift countdown. Strengthens scanning speed and visual quantity estimation.") : "Instantly subitize or count blocks of a specific color in a randomized grid against a swift countdown. Strengthens scanning speed and visual quantity estimation."; },
         theme: "theme-magenta",
         icon: "fa-solid fa-table-cells-large",
-        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><rect x="24" y="10" width="10" height="10" rx="2" fill="#ec4899" /><rect x="38" y="10" width="10" height="10" rx="2" fill="rgba(255,255,255,0.4)" /><rect x="52" y="10" width="10" height="10" rx="2" fill="#ec4899" /><rect x="66" y="10" width="10" height="10" rx="2" fill="rgba(255,255,255,0.4)" /><rect x="24" y="24" width="10" height="10" rx="2" fill="rgba(255,255,255,0.4)" /><rect x="38" y="24" width="10" height="10" rx="2" fill="#ec4899" /><rect x="52" y="24" width="10" height="10" rx="2" fill="rgba(255,255,255,0.4)" /><rect x="66" y="24" width="10" height="10" rx="2" fill="#ec4899" /><rect x="24" y="38" width="10" height="10" rx="2" fill="#ec4899" /><rect x="38" y="38" width="10" height="10" rx="2" fill="rgba(255,255,255,0.4)" /><rect x="52" y="38" width="10" height="10" rx="2" fill="#ec4899" /><rect x="66" y="38" width="10" height="10" rx="2" fill="rgba(255,255,255,0.4)" /></svg>`,
-        desc: "Instantly subitize or count blocks of a specific color in a randomized grid against a swift countdown. Strengthens scanning speed and visual quantity estimation."
+        svg: `<svg viewBox="0 0 100 60" class="card-illustration"><rect x="24" y="10" width="10" height="10" rx="2" fill="#ec4899" /><rect x="38" y="10" width="10" height="10" rx="2" fill="rgba(255,255,255,0.4)" /><rect x="52" y="10" width="10" height="10" rx="2" fill="#ec4899" /><rect x="66" y="10" width="10" height="10" rx="2" fill="rgba(255,255,255,0.4)" /><rect x="24" y="24" width="10" height="10" rx="2" fill="rgba(255,255,255,0.4)" /><rect x="38" y="24" width="10" height="10" rx="2" fill="#ec4899" /><rect x="52" y="24" width="10" height="10" rx="2" fill="rgba(255,255,255,0.4)" /><rect x="66" y="24" width="10" height="10" rx="2" fill="#ec4899" /><rect x="24" y="38" width="10" height="10" rx="2" fill="#ec4899" /><rect x="38" y="38" width="10" height="10" rx="2" fill="rgba(255,255,255,0.4)" /><rect x="52" y="38" width="10" height="10" rx="2" fill="#ec4899" /><rect x="66" y="38" width="10" height="10" rx="2" fill="rgba(255,255,255,0.4)" /></svg>`
     }
 ];
 
@@ -194,11 +243,25 @@ class AppManager {
 
         const patientEl = document.getElementById("patient-name-display");
         if (patientEl) {
-            patientEl.innerText = `Patient: ${this.patientName}`;
+            patientEl.innerText = window.t ? window.t('T27', `Patient: ${this.patientName}`, { name: this.patientName }) : `Patient: ${this.patientName}`;
         }
         const userIdEl = document.getElementById("patient-id-display");
         if (userIdEl) {
-            userIdEl.innerText = `ID: ${this.userId}`;
+            userIdEl.innerText = window.t ? window.t('T28', `ID: ${this.userId}`, { id: this.userId }) : `ID: ${this.userId}`;
+        }
+
+        if (window.i18n) {
+            window.i18n.onLanguageChanged(() => {
+                if (patientEl) {
+                    patientEl.innerText = window.t ? window.t('T27', `Patient: ${this.patientName}`, { name: this.patientName }) : `Patient: ${this.patientName}`;
+                }
+                if (userIdEl) {
+                    userIdEl.innerText = window.t ? window.t('T28', `ID: ${this.userId}`, { id: this.userId }) : `ID: ${this.userId}`;
+                }
+                this.renderLobby();
+                this.renderDashboard();
+                this.updatePlayerHUD();
+            });
         }
 
         if (window.UnityBridge) {
@@ -609,7 +672,7 @@ class AppManager {
             }
 
             const isPracticed = highestLevel > 0 || this.isGamePracticed(game.id);
-            const displayLevelText = isPracticed ? (highestLevel > 0 ? `Max Level: L${highestLevel}` : "Practiced") : "Not Practiced";
+            const displayLevelText = isPracticed ? (highestLevel > 0 ? (window.t ? window.t('T38', `Max Level: L${highestLevel}`, { level: highestLevel }) : `Max Level: L${highestLevel}`) : (window.t ? window.t('T39', "Practiced") : "Practiced")) : (window.t ? window.t('T40', "Not Practiced") : "Not Practiced");
             const progressPercent = highestLevel > 0 ? Math.min(100, (highestLevel / 50) * 100) : (isPracticed ? 2 : 0);
 
             const card = document.createElement("div");
@@ -681,7 +744,8 @@ class AppManager {
         document.getElementById("reset-progress-btn").addEventListener("click", (e) => {
             e.stopPropagation();
             Sound.playClick();
-            if (confirm("Reset exercise history and scores?")) {
+            const resetMsg = window.t ? window.t('T57', "Reset exercise history and scores?") : "Reset exercise history and scores?";
+            if (confirm(resetMsg)) {
                 localStorage.removeItem(this.stateKey);
                 this.gameState = { xp: 0, progress: {}, highScores: {} };
                 this.loadState();
@@ -824,8 +888,10 @@ class AppManager {
         document.getElementById("game-view").classList.add("active");
 
         const game = GAME_DEFS.find(g => g.id === gameId);
-        document.getElementById("game-current-name").innerText = game ? game.name : "Exercise";
-        document.getElementById("game-current-level").innerText = `Level ${level}`;
+        const fallbackExercise = window.t ? window.t('T71', "Exercise") : "Exercise";
+        const levelLabel = window.t ? window.t('T66', `Level ${level}`, { level: level }) : `Level ${level}`;
+        document.getElementById("game-current-name").innerText = game ? game.name : fallbackExercise;
+        document.getElementById("game-current-level").innerText = levelLabel;
 
         if (window.UnityBridge) {
             window.UnityBridge.sendEvent("exercise_started", {
@@ -847,7 +913,8 @@ class AppManager {
 
         const impl = window.Games[gameId];
         if (!impl) {
-            arena.innerHTML = `<div style="padding:2rem; text-align:center;">Exercise module [${gameId}] loaded incorrectly. Please contact administrator.</div>`;
+            const errText = window.t ? window.t('T179', `Exercise module [${gameId}] loaded incorrectly. Please contact administrator.`, { id: gameId }) : `Exercise module [${gameId}] loaded incorrectly. Please contact administrator.`;
+            arena.innerHTML = `<div style="padding:2rem; text-align:center;">${errText}</div>`;
             return;
         }
 
@@ -968,7 +1035,9 @@ class AppManager {
 
         // Render result stats
         document.getElementById("result-score").innerText = `${sessionAccuracy}%`;
-        document.getElementById("result-xp").innerText = success ? "Level Cleared!" : "Practice Completed";
+        const clearedText = window.t ? window.t('T84', "Level Cleared!") : "Level Cleared!";
+        const practiceText = window.t ? window.t('T85', "Practice Completed") : "Practice Completed";
+        document.getElementById("result-xp").innerText = success ? clearedText : practiceText;
 
         this.updateSessionHistory(sessionAccuracy, success ? xp : 20);
 
@@ -976,8 +1045,9 @@ class AppManager {
             Sound.playWin();
             resultIcon.className = "result-icon-success";
             resultIcon.innerHTML = `<i class="fa-solid fa-heart" style="color: var(--clinical-red)"></i>`;
-            resultTitle.innerText = "FABULOUS WORK!";
-            resultMessage.innerText = `Congratulations on completing Level ${this.activeLevel}! Every exercise you do nourishes and strengthens your mind. You are doing amazing!`;
+            resultTitle.innerText = window.t ? window.t('T78', "FABULOUS WORK!") : "FABULOUS WORK!";
+            const successMsg = window.t ? window.t('T79', `Congratulations on completing Level ${this.activeLevel}! Every exercise you do nourishes and strengthens your mind. You are doing amazing!`, { level: this.activeLevel }) : `Congratulations on completing Level ${this.activeLevel}! Every exercise you do nourishes and strengthens your mind. You are doing amazing!`;
+            resultMessage.innerText = successMsg;
             
             // Record High Score for progression checking
             const oldHighScore = this.gameState.highScores[this.activeGameId][this.activeLevel] || 0;
@@ -995,7 +1065,7 @@ class AppManager {
 
             if (this.activeLevel < 50) {
                 nextBtn.style.display = "block";
-                nextBtn.innerText = `NEXT LEVEL (${this.activeLevel + 1})`;
+                nextBtn.innerText = window.t ? window.t('T89', `NEXT LEVEL (${this.activeLevel + 1})`, { level: this.activeLevel + 1 }) : `NEXT LEVEL (${this.activeLevel + 1})`;
             } else {
                 nextBtn.style.display = "none";
             }
@@ -1003,8 +1073,8 @@ class AppManager {
             Sound.playError();
             resultIcon.className = "result-icon-fail";
             resultIcon.innerHTML = `<i class="fa-solid fa-circle-check" style="color: var(--clinical-teal)"></i>`;
-            resultTitle.innerText = "GREAT TRY & PRACTICE!";
-            resultMessage.innerText = `Every minute spent practicing is a wonderful step forward for your brain. Be proud of your dedication today!`;
+            resultTitle.innerText = window.t ? window.t('T80', "GREAT TRY & PRACTICE!") : "GREAT TRY & PRACTICE!";
+            resultMessage.innerText = window.t ? window.t('T81', "Every minute spent practicing is a wonderful step forward for your brain. Be proud of your dedication today!") : "Every minute spent practicing is a wonderful step forward for your brain. Be proud of your dedication today!";
             nextBtn.style.display = "none";
             
             // Supportive progression entry
@@ -1187,7 +1257,10 @@ class AppManager {
         let accChartSvg = "";
 
         if (history.length === 0) {
-            const noDataTemplate = (title) => `
+            const noDataTemplate = (titleKey, defaultTitle) => {
+                const title = window.t ? window.t(titleKey, defaultTitle) : defaultTitle;
+                const msg = window.t ? window.t('T166', `Practice exercises to start tracking ${title}`, { title: title }) : `Practice exercises to start tracking ${title}`;
+                return `
                 <svg viewBox="0 0 ${svgW} ${svgH}" class="db-chart-svg">
                     <!-- Grids -->
                     <line x1="${padLeft}" y1="${padTop}" x2="${svgW - padRight}" y2="${padTop}" stroke="rgba(226, 232, 240, 0.4)" stroke-dasharray="4 4" />
@@ -1196,12 +1269,12 @@ class AppManager {
                     
                     <!-- Centered Message -->
                     <text x="${padLeft + chartW / 2}" y="${padTop + chartH / 2 + 4}" font-family="'Outfit', sans-serif" font-size="10" font-weight="600" fill="var(--text-muted)" text-anchor="middle">
-                        Practice exercises to start tracking ${title}
+                        ${msg}
                     </text>
                 </svg>
-            `;
-            cpiChartSvg = noDataTemplate("Cognitive Index (CPI)");
-            accChartSvg = noDataTemplate("accuracy progression");
+            `;};
+            cpiChartSvg = noDataTemplate('T158', "Cognitive Index (CPI)");
+            accChartSvg = noDataTemplate('T163', "accuracy progression");
         } else {
             const accPoints = [];
             const cpiPoints = [];
@@ -1310,25 +1383,25 @@ class AppManager {
             `;
         }
 
-        // Define cognitive domains structure including all 16 games
+        // Define cognitive domains structure including all 16 games with localization
         const domains = [
             {
-                name: "Memory & Recall",
-                desc: "Working memory, association, and retrieval speed",
+                name: window.t ? window.t('T167', "Memory & Recall") : "Memory & Recall",
+                desc: window.t ? window.t('T168', "Working memory, association, and retrieval speed") : "Working memory, association, and retrieval speed",
                 icon: "fa-solid fa-brain",
                 color: "domain-memory",
                 games: ["memory", "object_recall", "word_association", "turning_tables"]
             },
             {
-                name: "Focus & Attention",
-                desc: "Visual search, selection speed, and task switching",
+                name: window.t ? window.t('T169', "Focus & Attention") : "Focus & Attention",
+                desc: window.t ? window.t('T170', "Visual search, selection speed, and task switching") : "Visual search, selection speed, and task switching",
                 icon: "fa-solid fa-crosshairs",
                 color: "domain-focus",
                 games: ["tap_object", "task_switching", "sorting", "color_confusion", "quick_switch", "eagle_eye", "quick_count"]
             },
             {
-                name: "Motor & Logic",
-                desc: "Spatial tracking, coordination, and deductive logic",
+                name: window.t ? window.t('T171', "Motor & Logic") : "Motor & Logic",
+                desc: window.t ? window.t('T172', "Spatial tracking, coordination, and deductive logic") : "Spatial tracking, coordination, and deductive logic",
                 icon: "fa-solid fa-puzzle-piece",
                 color: "domain-motor",
                 games: ["trace_letter", "colour_fill", "odd_one_out", "falling_catcher", "turnabout"]
@@ -1370,19 +1443,23 @@ class AppManager {
                 const percent = Math.min(100, Math.round((highestLevel / 50) * 100));
                 
                 // Determine proficiency badge
-                let proficiency = "Not Practiced";
+                let proficiency = window.t ? window.t('T40', "Not Practiced") : "Not Practiced";
                 let proficiencyClass = "badge-muted";
                 if (highestLevel > 30) {
-                    proficiency = "Expert Trainer";
+                    proficiency = window.t ? window.t('T176', "Expert Trainer") : "Expert Trainer";
                     proficiencyClass = "badge-expert";
                 } else if (highestLevel > 15) {
-                    proficiency = "Proficient";
+                    proficiency = window.t ? window.t('T175', "Proficient") : "Proficient";
                     proficiencyClass = "badge-proficient";
                 } else if (highestLevel > 0) {
-                    proficiency = "Explorer";
+                    proficiency = window.t ? window.t('T174', "Explorer") : "Explorer";
                     proficiencyClass = "badge-explorer";
                 }
                 
+                const lvlLabel = window.t ? window.t('T173', `Lvl ${highestLevel || 0} / 50`, { level: highestLevel || 0 }) : `Lvl ${highestLevel || 0} / 50`;
+                const bestAccLabel = window.t ? window.t('T177', "Best Accuracy") : "Best Accuracy";
+                const practiceBtnText = window.t ? window.t('T178', "Practice") : "Practice";
+
                 gamesInDomainHtml += `
                     <div class="dashboard-game-row">
                         <div class="dash-game-info">
@@ -1396,7 +1473,7 @@ class AppManager {
                         </div>
                         <div class="dash-game-progress-section">
                             <div class="dash-game-progress-meta">
-                                <span class="dash-level-label">Lvl ${highestLevel || 0} / 50</span>
+                                <span class="dash-level-label">${lvlLabel}</span>
                                 <span class="dash-badge ${proficiencyClass}">${proficiency}</span>
                             </div>
                             <div class="dash-progress-bar">
@@ -1404,11 +1481,11 @@ class AppManager {
                             </div>
                         </div>
                         <div class="dash-game-stats">
-                            <span class="dash-stat-label">Best Accuracy</span>
+                            <span class="dash-stat-label">${bestAccLabel}</span>
                             <span class="dash-stat-val">${highestAccuracy}%</span>
                         </div>
                         <button class="secondary-btn dash-play-btn" data-id="${game.id}">
-                            Practice
+                            ${practiceBtnText}
                         </button>
                     </div>
                 `;
@@ -1434,6 +1511,18 @@ class AppManager {
             `;
         });
         
+        const avgAccTitle = window.t ? window.t('T146', "Average Accuracy") : "Average Accuracy";
+        const avgAccSub = window.t ? window.t('T147', "Target precision metric") : "Target precision metric";
+        const streakTitle = window.t ? window.t('T148', "Daily Training Streak") : "Daily Training Streak";
+        const dayUnit = streak !== 1 ? (window.t ? window.t('T150', "Days") : "Days") : (window.t ? window.t('T149', "Day") : "Day");
+        const streakSub = window.t ? window.t('T151', "Consistency builds connections") : "Consistency builds connections";
+        const exCompletedTitle = window.t ? window.t('T152', "Exercises Completed") : "Exercises Completed";
+        const exCompletedSub = window.t ? window.t('T153', "Total active rehab units") : "Total active rehab units";
+        const rehabProgTitle = window.t ? window.t('T154', "Rehab Progress") : "Rehab Progress";
+        const rehabProgSub = window.t ? window.t('T155', "Overall progression index") : "Overall progression index";
+        const cpiTitle = window.t ? window.t('T156', `Cognitive Performance Index (Total Sessions: ${totalSessions})`, { sessions: totalSessions }) : `Cognitive Performance Index (Total Sessions: ${totalSessions})`;
+        const accProgTitle = window.t ? window.t('T157', `Accuracy Progression (Total Sessions: ${totalSessions})`, { sessions: totalSessions }) : `Accuracy Progression (Total Sessions: ${totalSessions})`;
+
         container.innerHTML = `
             <div class="dashboard-grid">
                 <!-- Summary Widgets Row (Chips) -->
@@ -1443,9 +1532,9 @@ class AppManager {
                             <i class="fa-solid fa-bullseye"></i>
                         </div>
                         <div class="widget-content">
-                            <span class="widget-label">Average Accuracy</span>
+                            <span class="widget-label">${avgAccTitle}</span>
                             <span class="widget-val">${avgAccuracy}%</span>
-                            <span class="widget-sub">Target precision metric</span>
+                            <span class="widget-sub">${avgAccSub}</span>
                         </div>
                     </div>
                     <div class="dashboard-widget glassmorphism">
@@ -1453,9 +1542,9 @@ class AppManager {
                             <i class="fa-solid fa-fire"></i>
                         </div>
                         <div class="widget-content">
-                            <span class="widget-label">Daily Training Streak</span>
-                            <span class="widget-val">${streak} Day${streak !== 1 ? 's' : ''}</span>
-                            <span class="widget-sub">Consistency builds connections</span>
+                            <span class="widget-label">${streakTitle}</span>
+                            <span class="widget-val">${streak} ${dayUnit}</span>
+                            <span class="widget-sub">${streakSub}</span>
                         </div>
                     </div>
                     <div class="dashboard-widget glassmorphism">
@@ -1463,9 +1552,9 @@ class AppManager {
                             <i class="fa-solid fa-circle-check"></i>
                         </div>
                         <div class="widget-content">
-                            <span class="widget-label">Exercises Completed</span>
+                            <span class="widget-label">${exCompletedTitle}</span>
                             <span class="widget-val">${practicedGamesCount} / ${GAME_DEFS.length}</span>
-                            <span class="widget-sub">Total active rehab units</span>
+                            <span class="widget-sub">${exCompletedSub}</span>
                         </div>
                     </div>
                     <div class="dashboard-widget glassmorphism">
@@ -1473,9 +1562,9 @@ class AppManager {
                             <i class="fa-solid fa-chart-line"></i>
                         </div>
                         <div class="widget-content">
-                            <span class="widget-label">Rehab Progress</span>
+                            <span class="widget-label">${rehabProgTitle}</span>
                             <span class="widget-val">${masteryPercentage}%</span>
-                            <span class="widget-sub">Overall progression index</span>
+                            <span class="widget-sub">${rehabProgSub}</span>
                         </div>
                     </div>
                 </div>
@@ -1484,13 +1573,13 @@ class AppManager {
                 <div class="dashboard-charts-row">
                     <div class="dashboard-chart-card glassmorphism">
                         <div class="chart-header">
-                            <div class="chart-title">Cognitive Performance Index (Total Sessions: ${totalSessions})</div>
+                            <div class="chart-title">${cpiTitle}</div>
                             <div class="chart-info-trigger">
                                 <i class="fa-solid fa-circle-info"></i>
                                 <div class="chart-info-tooltip glassmorphism">
-                                    <h4>Cognitive Performance Index (CPI)</h4>
-                                    <p><strong>What is it:</strong> A clinical metric (0 - 1000) measuring overall performance across memory, attention, and logic domains.</p>
-                                    <p><strong>How calculated:</strong> Combines execution accuracy, level difficulty multipliers, and speed bonuses from cleared rounds.</p>
+                                    <h4>${window.t ? window.t('T158', "Cognitive Performance Index (CPI)") : "Cognitive Performance Index (CPI)"}</h4>
+                                    <p><strong>${window.t ? window.t('T159', "What is it:") : "What is it:"}</strong> ${window.t ? window.t('T160', "A clinical metric (0 - 1000) measuring overall performance across memory, attention, and logic domains.") : "A clinical metric (0 - 1000) measuring overall performance across memory, attention, and logic domains."}</p>
+                                    <p><strong>${window.t ? window.t('T161', "How calculated:") : "How calculated:"}</strong> ${window.t ? window.t('T162', "Combines execution accuracy, level difficulty multipliers, and speed bonuses from cleared rounds.") : "Combines execution accuracy, level difficulty multipliers, and speed bonuses from cleared rounds."}</p>
                                 </div>
                             </div>
                         </div>
@@ -1498,13 +1587,13 @@ class AppManager {
                     </div>
                     <div class="dashboard-chart-card glassmorphism">
                         <div class="chart-header">
-                            <div class="chart-title">Accuracy Progression (Total Sessions: ${totalSessions})</div>
+                            <div class="chart-title">${accProgTitle}</div>
                             <div class="chart-info-trigger">
                                 <i class="fa-solid fa-circle-info"></i>
                                 <div class="chart-info-tooltip glassmorphism">
-                                    <h4>Accuracy Progression</h4>
-                                    <p><strong>What is it:</strong> Tracks performance precision, correct selections, and mistake margins across your last 7 active sessions.</p>
-                                    <p><strong>How calculated:</strong> The average accuracy percentage (50% - 100%) recorded across all cleared training units.</p>
+                                    <h4>${window.t ? window.t('T163', "Accuracy Progression") : "Accuracy Progression"}</h4>
+                                    <p><strong>${window.t ? window.t('T159', "What is it:") : "What is it:"}</strong> ${window.t ? window.t('T164', "Tracks performance precision, correct selections, and mistake margins across your last 7 active sessions.") : "Tracks performance precision, correct selections, and mistake margins across your last 7 active sessions."}</p>
+                                    <p><strong>${window.t ? window.t('T161', "How calculated:") : "How calculated:"}</strong> ${window.t ? window.t('T165', "The average accuracy percentage (50% - 100%) recorded across all cleared training units.") : "The average accuracy percentage (50% - 100%) recorded across all cleared training units."}</p>
                                 </div>
                             </div>
                         </div>

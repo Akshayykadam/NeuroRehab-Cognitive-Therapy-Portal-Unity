@@ -58,7 +58,7 @@
             this.container.innerHTML = `
                 <div class="qs-container">
                     <div class="qs-prompt" id="qs-prompt">
-                        Tap elements in sequence: 1 → A → 2 → B...
+                        ${window.t('T394')}
                     </div>
                     
                     <div class="qs-field" id="qs-field">
@@ -289,7 +289,7 @@
             const nextItem = this.sequence[this.targetIdx];
             const promptEl = document.getElementById("qs-prompt");
             if (promptEl && nextItem) {
-                promptEl.innerHTML = `Connect: <span class="qs-target-highlight">${nextItem.label}</span>`;
+                promptEl.innerHTML = window.t('T395', { target: nextItem.label }).replace('{target}', `<span class="qs-target-highlight">${nextItem.label}</span>`);
             }
         }
     }

@@ -70,7 +70,7 @@
             this.container.innerHTML = `
                 <div class="recall-container" style="gap:1rem;">
                     <div class="recall-prompt" style="font-size:0.95rem; text-transform:uppercase; color:rgba(226,232,240,0.6);">
-                        Round ${this.round}/${this.maxRounds} - Select the Odd Item
+                        ${window.t('T254', { round: this.round, max: this.maxRounds })}
                     </div>
                     <div class="odd-board" id="odd-board" style="
                         grid-template-columns: repeat(${cols}, 1fr);

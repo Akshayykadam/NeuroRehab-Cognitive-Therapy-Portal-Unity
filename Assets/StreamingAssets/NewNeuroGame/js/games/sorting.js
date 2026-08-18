@@ -4,9 +4,9 @@
 (function() {
     const LEVEL_CATEGORIES = {
         1: {
-            name: "Even / Odd Numbers",
-            leftBin: "EVEN",
-            rightBin: "ODD",
+            name: window.t('T260'),
+            leftBin: window.t('T261'),
+            rightBin: window.t('T262'),
             items: [
                 { val: "12", match: "left" }, { val: "25", match: "right" },
                 { val: "8", match: "left" }, { val: "17", match: "right" },
@@ -19,9 +19,9 @@
             ]
         },
         2: {
-            name: "Vowels / Consonants",
-            leftBin: "VOWEL",
-            rightBin: "CONSONANT",
+            name: window.t('T263'),
+            leftBin: window.t('T264'),
+            rightBin: window.t('T265'),
             items: [
                 { val: "A", match: "left" }, { val: "B", match: "right" },
                 { val: "E", match: "left" }, { val: "C", match: "right" },
@@ -34,9 +34,9 @@
             ]
         },
         3: {
-            name: "Living / Non-Living",
-            leftBin: "LIVING",
-            rightBin: "NON-LIVING",
+            name: window.t('T266'),
+            leftBin: window.t('T267'),
+            rightBin: window.t('T268'),
             items: [
                 { val: "Dog 🐶", match: "left" }, { val: "Car 🚗", match: "right" },
                 { val: "Cat 🐱", match: "left" }, { val: "Rock 🪨", match: "right" },
@@ -49,9 +49,9 @@
             ]
         },
         4: {
-            name: "Prime / Composite",
-            leftBin: "PRIME",
-            rightBin: "COMPOSITE",
+            name: window.t('T269'),
+            leftBin: window.t('T270'),
+            rightBin: window.t('T271'),
             items: [
                 { val: "3", match: "left" }, { val: "4", match: "right" },
                 { val: "5", match: "left" }, { val: "6", match: "right" },
@@ -64,9 +64,9 @@
             ]
         },
         5: {
-            name: "Thermal: Hot / Cold Items",
-            leftBin: "HOT",
-            rightBin: "COLD",
+            name: window.t('T272'),
+            leftBin: window.t('T273'),
+            rightBin: window.t('T274'),
             items: [
                 { val: "Sun ☀️", match: "left" }, { val: "Ice 🧊", match: "right" },
                 { val: "Fire 🔥", match: "left" }, { val: "Snow ❄️", match: "right" },
@@ -128,7 +128,7 @@
                     <div id="bin-left" class="sorting-bin bin-left">
                         <span class="bin-label">${categoryData.leftBin}</span>
                         <i class="fa-solid fa-square-caret-left bin-graphic"></i>
-                        <span style="font-size:0.75rem; font-weight:600; color:rgba(30,41,59,0.45);">[Press Left Arrow]</span>
+                        <span style="font-size:0.75rem; font-weight:600; color:rgba(30,41,59,0.45);">${window.t('T275')}</span>
                     </div>
 
                     <div class="sorting-play-area">
@@ -143,7 +143,7 @@
                     <div id="bin-right" class="sorting-bin bin-right">
                         <span class="bin-label">${categoryData.rightBin}</span>
                         <i class="fa-solid fa-square-caret-right bin-graphic"></i>
-                        <span style="font-size:0.75rem; font-weight:600; color:rgba(30,41,59,0.45);">[Press Right Arrow]</span>
+                        <span style="font-size:0.75rem; font-weight:600; color:rgba(30,41,59,0.45);">${window.t('T276')}</span>
                     </div>
                 </div>
             `;
@@ -266,7 +266,7 @@
                 card.style.opacity = "0";
                 
                 label.innerText = item.val;
-                indicator.innerText = `${this.categoryName} (${this.currentItemIdx + 1}/${this.totalItems})`;
+                indicator.innerText = window.t('T277', { cat: this.categoryName, current: this.currentItemIdx + 1, total: this.totalItems });
 
                 setTimeout(() => {
                     if (card) {

@@ -51,7 +51,7 @@
 
         startRound() {
             this.phase = "study";
-            this.gameCtx.setTimer(`Round ${this.round}/${this.maxRounds}`);
+            this.gameCtx.setTimer(window.t('T253', { round: this.round, max: this.maxRounds }));
             
             let studyCount = 3;
             if (this.activeLevel === 2) studyCount = 4;
@@ -75,7 +75,7 @@
         renderStudyScreen() {
             this.container.innerHTML = `
                 <div class="recall-container">
-                    <div class="recall-prompt">MEMORIZE THESE SYMBOLS</div>
+                    <div class="recall-prompt">${window.t('T251')}</div>
                     <div class="recall-board" id="recall-board"></div>
                     <div class="recall-progress-container">
                         <div class="recall-progress-fill" id="recall-progress"></div>
@@ -116,7 +116,7 @@
 
             this.container.innerHTML = `
                 <div class="recall-container">
-                    <div class="recall-prompt" style="color: #60a5fa;">WHICH OBJECT WAS ADDED?</div>
+                    <div class="recall-prompt" style="color: #60a5fa;">${window.t('T252')}</div>
                     <div class="recall-board interactive" id="recall-board"></div>
                     <div style="height:6px;"></div>
                 </div>

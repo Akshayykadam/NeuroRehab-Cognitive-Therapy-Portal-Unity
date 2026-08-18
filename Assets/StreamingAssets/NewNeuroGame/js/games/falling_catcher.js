@@ -110,13 +110,13 @@
                         const windBanner = document.getElementById("wind-banner");
                         if (windBanner) {
                             if (this.windForce < 0) {
-                                windBanner.innerText = "WIND: << GENTLE LEFT";
+                                windBanner.innerText = window.t('T392');
                                 windBanner.style.color = "#60a5fa";
                             } else if (this.windForce > 0) {
-                                windBanner.innerText = "WIND: GENTLE RIGHT >>";
+                                windBanner.innerText = window.t('T393');
                                 windBanner.style.color = "#2dd4bf";
                             } else {
-                                windBanner.innerText = "WIND: CALM";
+                                windBanner.innerText = window.t('T391');
                                 windBanner.style.color = "rgba(226,232,240,0.6)";
                             }
                         }

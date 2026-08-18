@@ -42,7 +42,7 @@
             this.container.innerHTML = `
                 <div class="ee-container">
                     <div class="ee-prompt" id="ee-prompt">
-                        Find and tap in ascending order: <span id="ee-next-target" class="ee-target-highlight">1</span>
+                        ${window.t('T396', { target: '' }).replace('{target}', '')}<span id="ee-next-target" class="ee-target-highlight">1</span>
                     </div>
                     
                     <div class="ee-field" id="ee-field">
