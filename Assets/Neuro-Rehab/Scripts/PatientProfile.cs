@@ -21,10 +21,9 @@ namespace NeuroRehab
         public string highAccuraciesJson = "{}";
 
         /// <summary>
-        /// The patient's preferred UI language. Must match a column header in localization.csv
-        /// e.g. "English", "Arabic", "French". Defaults to "Arabic".
+        /// The patient's preferred UI language.
         /// </summary>
-        public string language = "Arabic";
+        public string language = "";
 
         public PatientProfile()
         {
@@ -34,7 +33,7 @@ namespace NeuroRehab
             totalCompletedExercises = 0;
             averageAccuracy = 100;
             totalSessions = 0;
-            language = "Arabic";
+            language = NeuroRehabLauncher.instance != null ? NeuroRehabLauncher.instance.AppLanguage : "";
             lastActiveDate = DateTime.Now.ToString("yyyy-MM-dd");
             updatedAtIso = DateTime.UtcNow.ToString("o");
         }
@@ -47,7 +46,7 @@ namespace NeuroRehab
             totalCompletedExercises = 0;
             averageAccuracy = 100;
             totalSessions = 0;
-            language = "Arabic";
+            language = NeuroRehabLauncher.instance != null ? NeuroRehabLauncher.instance.AppLanguage : "";
             lastActiveDate = DateTime.Now.ToString("yyyy-MM-dd");
             updatedAtIso = DateTime.UtcNow.ToString("o");
         }

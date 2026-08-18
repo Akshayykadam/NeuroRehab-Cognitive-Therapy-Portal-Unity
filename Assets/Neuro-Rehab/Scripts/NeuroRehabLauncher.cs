@@ -7,10 +7,10 @@ namespace NeuroRehab
     {
         [Header("Patient Profile Configuration")]
         [Tooltip("Patient's full name")]
-        public string targetUserName = "Patient Name";
+        public string targetUserName = "";
 
         [Tooltip("Patient's unique ID")]
-        public string targetUserId = "1001";
+        public string targetUserId = "";
 
         // Property backwards-compatibility getters/setters
         public string userName { get => targetUserName; set => targetUserName = value; }
@@ -19,8 +19,15 @@ namespace NeuroRehab
         [Tooltip("Initial Score / XP")]
         public int initialXP = 0;
 
-        [Tooltip("Patient's preferred UI Language (e.g., 'Arabic', 'English')")]
-        public string targetLanguage = "Arabic";
+        public static NeuroRehabLauncher instance;
+        public static NeuroRehabLauncher Instance => instance;
+
+        [Header("Language Configuration")]
+        [Tooltip("App UI Language — Single master variable for the entire app")]
+        public string AppLanguage = "";
+
+        // Backwards compatibility alias for targetLanguage
+        public string targetLanguage { get => AppLanguage; set => AppLanguage = value; }
 
         [Header("Unity Native UI References (Drag & Drop)")]
         [Tooltip("Drag & drop your Play Button here")]
@@ -49,11 +56,19 @@ namespace NeuroRehab
 
         private NeuroRehabWebViewManager webViewManager;
 
+        private void Awake()
+        {
+            if (instance != null && instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
         private void Start()
         {
-            if (string.IsNullOrEmpty(targetUserName)) targetUserName = "Patient Name";
-            if (string.IsNullOrEmpty(targetUserId)) targetUserId = "1001";
-
             // 1. Ensure Managers exist
             if (PatientDataManager.Instance == null)
             {
@@ -87,9 +102,6 @@ namespace NeuroRehab
 
         public void UpdateUI()
         {
-            if (string.IsNullOrEmpty(targetUserName)) targetUserName = "Patient Name";
-            if (string.IsNullOrEmpty(targetUserId)) targetUserId = "1001";
-
             // Load active profile set by previous scene/login, or fallback to Inspector settings
             PatientProfile profile = null;
             if (PatientDataManager.Instance != null)
@@ -145,10 +157,6 @@ namespace NeuroRehab
 
         public void LaunchSession()
         {
-            if (string.IsNullOrEmpty(targetUserName)) targetUserName = "Patient Name";
-            if (string.IsNullOrEmpty(targetUserId)) targetUserId = "1001";
-            if (string.IsNullOrEmpty(targetLanguage)) targetLanguage = "Arabic";
-
             PatientProfile profile = null;
             if (PatientDataManager.Instance != null)
             {
@@ -160,7 +168,7 @@ namespace NeuroRehab
                 }
 
                 // Explicitly set language on profile before launching
-                profile.language = targetLanguage;
+                profile.language = AppLanguage;
 
                 // Automatically save / create JSON on disk at Application.persistentDataPath/PatientData/<userId>.json
                 PatientDataManager.Instance.SaveProfile(profile);
@@ -168,7 +176,7 @@ namespace NeuroRehab
             else
             {
                 profile = new PatientProfile(targetUserId, targetUserName, initialXP);
-                profile.language = targetLanguage;
+                profile.language = AppLanguage;
             }
 
             Debug.Log($"[NeuroRehabLauncher] Launching Session for {profile.patientName} (ID: {profile.userId}, Language: {profile.language})...");
@@ -188,22 +196,15 @@ namespace NeuroRehab
             }
         }
 
-        /// <summary>
-        /// Call this directly from Unity UI button OnClick event to set language and launch immediately.
-        /// E.g. Arabic button -> SetLanguageAndLaunch("Arabic")
-        /// </summary>
         public void SetLanguageAndLaunch(string lang)
         {
-            targetLanguage = lang;
+            AppLanguage = lang;
             LaunchSession();
         }
 
-        /// <summary>
-        /// Change the target language dynamically from Unity UI dropdown or buttons.
-        /// </summary>
         public void SetLanguage(string lang)
         {
-            targetLanguage = lang;
+            AppLanguage = lang;
             if (PatientDataManager.Instance != null)
             {
                 PatientProfile profile = PatientDataManager.Instance.GetActiveProfile();
@@ -214,6 +215,7 @@ namespace NeuroRehab
                 }
             }
         }
+
 
 
         private void OnDestroy()

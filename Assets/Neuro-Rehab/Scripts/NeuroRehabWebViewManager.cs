@@ -33,10 +33,10 @@ namespace NeuroRehab
 
         [Header("Localisation")]
         /// <summary>
-        /// Language name matching a column header in "Cognitive games localization CSV.csv" (e.g. "English", "Arabic").
-        /// Unity can change this at runtime and call SendLanguage() to update the active WebView.
+        /// Optional override language name matching a column header in the localization CSV.
+        /// If left empty, uses NeuroRehabLauncher.AppLanguage automatically.
         /// </summary>
-        public string language = "Arabic";
+        public string language = "";
 
         /// <summary>
         /// Optional: absolute path to a CSV file downloaded from Google Sheets into persistent storage.
@@ -70,8 +70,8 @@ namespace NeuroRehab
             else
             {
                 PatientProfile active = PatientDataManager.Instance != null ? PatientDataManager.Instance.GetActiveProfile() : null;
-                string uid = active != null ? active.userId : "1001";
-                string name = active != null ? active.patientName : "Patient Name";
+                string uid = active != null ? active.userId : "";
+                string name = active != null ? active.patientName : "";
                 int xp = active != null ? active.totalXP : 0;
                 string lang = active != null && !string.IsNullOrEmpty(active.language) ? active.language : language;
                 OpenWebView(uid, name, xp, lang);
@@ -81,8 +81,8 @@ namespace NeuroRehab
         public void OpenWebView()
         {
             PatientProfile active = PatientDataManager.Instance != null ? PatientDataManager.Instance.GetActiveProfile() : null;
-            string uid = active != null ? active.userId : "1001";
-            string name = active != null ? active.patientName : "Patient Name";
+            string uid = active != null ? active.userId : "";
+            string name = active != null ? active.patientName : "";
             int xp = active != null ? active.totalXP : 0;
             string lang = active != null && !string.IsNullOrEmpty(active.language) ? active.language : language;
             OpenWebView(uid, name, xp, lang);
@@ -90,23 +90,24 @@ namespace NeuroRehab
 
         public void OpenWebView(string userId, string patientName, int initialXp, string userLanguage = null)
         {
-            if (string.IsNullOrEmpty(userId)) userId = "1001";
-            if (string.IsNullOrEmpty(patientName)) patientName = "Patient Name";
-
             PatientProfile profile = PatientDataManager.Instance != null 
                 ? PatientDataManager.Instance.GetOrCreateProfile(userId, patientName, initialXp)
                 : null;
 
             int xpToPass = profile != null ? profile.totalXP : initialXp;
 
-            // Priority: explicitly passed userLanguage > profile field > inspector field > "Arabic"
+            string defaultLang = NeuroRehabLauncher.instance != null ? NeuroRehabLauncher.instance.AppLanguage : "";
+
+            // Priority: explicitly passed userLanguage > profile field > inspector field > NeuroRehabLauncher.instance.AppLanguage
             string resolvedLanguage = !string.IsNullOrEmpty(userLanguage) 
                 ? userLanguage 
-                : (profile != null && !string.IsNullOrEmpty(profile.language) ? profile.language : language);
+                : (profile != null && !string.IsNullOrEmpty(profile.language) 
+                    ? profile.language 
+                    : (!string.IsNullOrEmpty(language) ? language : defaultLang));
 
             if (string.IsNullOrEmpty(resolvedLanguage))
             {
-                resolvedLanguage = "Arabic";
+                resolvedLanguage = defaultLang;
             }
 
             // Sync the inspector field so it stays consistent

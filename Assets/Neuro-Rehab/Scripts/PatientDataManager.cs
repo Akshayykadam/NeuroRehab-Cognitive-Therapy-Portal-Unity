@@ -56,9 +56,6 @@ namespace NeuroRehab
 
         public PatientProfile GetOrCreateProfile(string userId, string userName, int defaultXp = 0)
         {
-            if (string.IsNullOrEmpty(userId)) userId = "1001";
-            if (string.IsNullOrEmpty(userName)) userName = "Patient Name";
-
             string filePath = GetPatientJsonPath(userId);
             PatientProfile profile = patientProfiles.Find(p => p.userId == userId);
 
@@ -91,18 +88,18 @@ namespace NeuroRehab
                                 profile.totalCompletedExercises = loadedDisk.totalCompletedExercises;
                                 profile.averageAccuracy = loadedDisk.averageAccuracy;
                                 profile.totalSessions = loadedDisk.totalSessions;
-                                profile.lastActiveDate = loadedDisk.lastActiveDate;
                                 profile.highScoresJson = loadedDisk.highScoresJson;
                                 profile.progressJson = loadedDisk.progressJson;
                                 profile.highAccuraciesJson = loadedDisk.highAccuraciesJson;
-                                profile.language = !string.IsNullOrEmpty(loadedDisk.language) ? loadedDisk.language : "Arabic";
+                                string defaultLang = NeuroRehabLauncher.instance != null ? NeuroRehabLauncher.instance.AppLanguage : "";
+                                profile.language = !string.IsNullOrEmpty(loadedDisk.language) ? loadedDisk.language : defaultLang;
                             }
                             else
                             {
                                 profile = loadedDisk;
                                 if (string.IsNullOrEmpty(profile.language))
                                 {
-                                    profile.language = "Arabic";
+                                    profile.language = NeuroRehabLauncher.instance != null ? NeuroRehabLauncher.instance.AppLanguage : "";
                                 }
                                 patientProfiles.Add(profile);
                             }
@@ -186,7 +183,7 @@ namespace NeuroRehab
             return activeProfile;
         }
 
-        public void SetActivePatient(string userId, string userName = "Patient Name")
+        public void SetActivePatient(string userId, string userName = "")
         {
             activeProfile = GetOrCreateProfile(userId, userName);
             Debug.Log($"[PatientDataManager] Active Patient set to: {activeProfile.patientName} (ID: {activeProfile.userId})");
