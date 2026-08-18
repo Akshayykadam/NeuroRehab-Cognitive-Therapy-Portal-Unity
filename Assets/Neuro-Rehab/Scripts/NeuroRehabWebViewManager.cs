@@ -36,7 +36,7 @@ namespace NeuroRehab
         /// Language name matching a column header in "Cognitive games localization CSV.csv" (e.g. "English", "Arabic").
         /// Unity can change this at runtime and call SendLanguage() to update the active WebView.
         /// </summary>
-        public string language = "English";
+        public string language = "Arabic";
 
         /// <summary>
         /// Optional: absolute path to a CSV file downloaded from Google Sheets into persistent storage.
@@ -264,7 +264,7 @@ namespace NeuroRehab
             {
                 string js = $"window.UnityBridge && window.UnityBridge.dispatchEvent('set_language', {{ lang: '{langName}' }});";
                 webView.EvaluateJavaScript(js, (result) => {
-                    Debug.Log($"[NeuroRehab] SendLanguage '{langName}' result: {result.Data}");
+                    Debug.Log($"[NeuroRehab] SendLanguage '{langName}' result: {result.data}");
                 });
             }
 #endif
@@ -322,7 +322,7 @@ namespace NeuroRehab
                         string js = $"window.UnityBridge && window.UnityBridge.dispatchEvent('load_csv', {{ csv: `{escaped}`, lang: '{language}' }});";
                         webView.EvaluateJavaScript(js, (result) =>
                         {
-                            Debug.Log($"[NeuroRehab] Bundled CSV loaded, result: {result.Data}");
+                            Debug.Log($"[NeuroRehab] Bundled CSV loaded, result: {result.data}");
                         });
                     }
 #else
@@ -363,7 +363,7 @@ namespace NeuroRehab
                 string js = $"window.UnityBridge && window.UnityBridge.dispatchEvent('load_csv', {{ csv: `{escaped}`, lang: '{language}' }});";
                 webView.EvaluateJavaScript(js, (result) =>
                 {
-                    Debug.Log($"[NeuroRehab] Persistent CSV pushed to WebView: {result.Data}");
+                    Debug.Log($"[NeuroRehab] Persistent CSV pushed to WebView: {result.data}");
                 });
             }
 #endif

@@ -32,12 +32,16 @@
 body {
     background-color: #d1d8e0;
     color: var(--text-main);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Cairo', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
+}
+
+body.rtl-mode, [dir="rtl"] {
+    font-family: 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
 }
 
 
