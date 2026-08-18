@@ -19,6 +19,9 @@ namespace NeuroRehab
         [Tooltip("Initial Score / XP")]
         public int initialXP = 0;
 
+        [Tooltip("Patient's preferred UI Language (e.g., 'Arabic', 'English')")]
+        public string targetLanguage = "Arabic";
+
         [Header("Unity Native UI References (Drag & Drop)")]
         [Tooltip("Drag & drop your Play Button here")]
         public Button playButton;
@@ -144,6 +147,7 @@ namespace NeuroRehab
         {
             if (string.IsNullOrEmpty(targetUserName)) targetUserName = "Patient Name";
             if (string.IsNullOrEmpty(targetUserId)) targetUserId = "1001";
+            if (string.IsNullOrEmpty(targetLanguage)) targetLanguage = "Arabic";
 
             PatientProfile profile = null;
             if (PatientDataManager.Instance != null)
@@ -155,17 +159,21 @@ namespace NeuroRehab
                     PatientDataManager.Instance.SetActiveProfile(profile);
                 }
 
+                // Explicitly set language on profile before launching
+                profile.language = targetLanguage;
+
                 // Automatically save / create JSON on disk at Application.persistentDataPath/PatientData/<userId>.json
                 PatientDataManager.Instance.SaveProfile(profile);
             }
             else
             {
                 profile = new PatientProfile(targetUserId, targetUserName, initialXP);
+                profile.language = targetLanguage;
             }
 
-            Debug.Log($"[NeuroRehabLauncher] Launching Session for {profile.patientName} (ID: {profile.userId})...");
+            Debug.Log($"[NeuroRehabLauncher] Launching Session for {profile.patientName} (ID: {profile.userId}, Language: {profile.language})...");
 
-            // Launch Web Portal with User ID and Name
+            // Launch Web Portal with User ID, Name, and Language
             if (webViewManager != null)
             {
                 webViewManager.OpenWebView(profile);
@@ -179,6 +187,34 @@ namespace NeuroRehab
                 }
             }
         }
+
+        /// <summary>
+        /// Call this directly from Unity UI button OnClick event to set language and launch immediately.
+        /// E.g. Arabic button -> SetLanguageAndLaunch("Arabic")
+        /// </summary>
+        public void SetLanguageAndLaunch(string lang)
+        {
+            targetLanguage = lang;
+            LaunchSession();
+        }
+
+        /// <summary>
+        /// Change the target language dynamically from Unity UI dropdown or buttons.
+        /// </summary>
+        public void SetLanguage(string lang)
+        {
+            targetLanguage = lang;
+            if (PatientDataManager.Instance != null)
+            {
+                PatientProfile profile = PatientDataManager.Instance.GetActiveProfile();
+                if (profile != null)
+                {
+                    profile.language = lang;
+                    PatientDataManager.Instance.SaveProfile(profile);
+                }
+            }
+        }
+
 
         private void OnDestroy()
         {

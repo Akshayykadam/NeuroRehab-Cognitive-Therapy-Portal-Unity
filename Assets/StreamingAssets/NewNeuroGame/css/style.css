@@ -319,6 +319,51 @@ body.rtl-mode, [dir="rtl"] {
     box-shadow: 0 6px 12px rgba(37, 99, 235, 0.1);
 }
 
+.hud-exit-btn {
+    background: #fef2f2;
+    border: 1.5px solid #fecaca;
+    color: #dc2626;
+    height: 40px;
+    padding: 0 1.2rem;
+    border-radius: 9px;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 6px rgba(220, 38, 38, 0.08);
+}
+
+.hud-exit-btn i {
+    font-size: 1rem;
+    transition: transform 0.2s ease;
+}
+
+.hud-exit-btn:hover {
+    background: #fee2e2;
+    border-color: #f87171;
+    color: #b91c1c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.18);
+}
+
+.hud-exit-btn:active {
+    transform: translateY(1px) scale(0.98);
+}
+
+[dir="rtl"] .hud-exit-btn i.fa-right-from-bracket {
+    transform: scaleX(-1);
+}
+
+[dir="rtl"] .hud-exit-btn:hover i.fa-right-from-bracket {
+    transform: scaleX(-1) translateX(2px);
+}
+
 /* Lobby Main Content */
 .lobby-main {
     flex: 1;

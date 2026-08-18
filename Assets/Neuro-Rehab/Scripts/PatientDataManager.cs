@@ -95,10 +95,15 @@ namespace NeuroRehab
                                 profile.highScoresJson = loadedDisk.highScoresJson;
                                 profile.progressJson = loadedDisk.progressJson;
                                 profile.highAccuraciesJson = loadedDisk.highAccuraciesJson;
+                                profile.language = !string.IsNullOrEmpty(loadedDisk.language) ? loadedDisk.language : "Arabic";
                             }
                             else
                             {
                                 profile = loadedDisk;
+                                if (string.IsNullOrEmpty(profile.language))
+                                {
+                                    profile.language = "Arabic";
+                                }
                                 patientProfiles.Add(profile);
                             }
 
