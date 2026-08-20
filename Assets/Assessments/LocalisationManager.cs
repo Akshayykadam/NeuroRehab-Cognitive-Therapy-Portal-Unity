@@ -3,18 +3,20 @@ using UnityEngine;
 
 /// <summary>
 /// Loads localisation CSVs from Resources and resolves text keys at runtime.
+/// Supports English, Hindi, Marathi, Arabic and dynamic switching.
 /// 
 /// CSV files must be placed at:
 ///   Assets/Resources/Localisation/MiniBest.csv
 ///   Assets/Resources/Localisation/FMAUE.csv
 ///
 /// Usage:
+///   LocalisationManager.SetLanguage("Hindi"); // or "English", "Marathi", "Arabic", "hi", "mr", "ar", "en"
 ///   string text = LocalisationManager.Get("MB_Q1_Title");
 /// </summary>
 public static class LocalisationManager
 {
-    // Column index of the language to use (0 = Key, 1 = English, 2 = Arabic, etc.)
-    private const int LanguageColumn = 1;
+    private static string _currentLanguage = "English";
+    public static string CurrentLanguage => _currentLanguage;
 
     private static readonly Dictionary<string, string> _table = new Dictionary<string, string>();
     private static bool _loaded = false;
@@ -22,6 +24,22 @@ public static class LocalisationManager
     // ---------------------------------------------------------------
     // Public API
     // ---------------------------------------------------------------
+
+    /// <summary>
+    /// Sets the active language (e.g. "English", "Hindi", "Marathi", "Arabic")
+    /// and reloads the localized dictionary.
+    /// </summary>
+    public static void SetLanguage(string languageName)
+    {
+        if (string.IsNullOrEmpty(languageName))
+            languageName = "English";
+
+        if (_currentLanguage != languageName || !_loaded)
+        {
+            _currentLanguage = languageName;
+            Reload();
+        }
+    }
 
     /// <summary>
     /// Returns the localised string for the given key.
@@ -33,12 +51,12 @@ public static class LocalisationManager
         if (_table.TryGetValue(key, out string value))
             return value;
 
-        Debug.LogWarning($"[LocalisationManager] Key not found: '{key}'");
+        Debug.LogWarning($"[LocalisationManager] Key not found: '{key}' for language '{_currentLanguage}'");
         return key;
     }
 
     /// <summary>
-    /// Force-reload all CSV files (useful if language is changed at runtime).
+    /// Force-reload all CSV files for the current language.
     /// </summary>
     public static void Reload()
     {
@@ -59,7 +77,7 @@ public static class LocalisationManager
         LoadCSV("Localisation/FMAUE");
 
         _loaded = true;
-        Debug.Log($"[LocalisationManager] Loaded {_table.Count} keys.");
+        Debug.Log($"[LocalisationManager] Loaded {_table.Count} keys for language '{_currentLanguage}'.");
     }
 
     private static void LoadCSV(string resourcePath)
@@ -67,11 +85,26 @@ public static class LocalisationManager
         TextAsset csv = Resources.Load<TextAsset>(resourcePath);
         if (csv == null)
         {
+            // Fallback for nested or alternative paths
+            csv = Resources.Load<TextAsset>($"Localisation/{resourcePath}");
+        }
+        if (csv == null && resourcePath.Contains("/"))
+        {
+            string filenameOnly = resourcePath.Substring(resourcePath.LastIndexOf('/') + 1);
+            csv = Resources.Load<TextAsset>(filenameOnly);
+        }
+        if (csv == null)
+        {
             Debug.LogError($"[LocalisationManager] CSV not found at Resources/{resourcePath}");
             return;
         }
 
         string[] lines = csv.text.Split('\n');
+        if (lines.Length < 2) return;
+
+        // Parse header row to find language column
+        string[] headers = SplitCSVLine(lines[0].Trim());
+        int langCol = FindLanguageColumn(headers, _currentLanguage);
 
         for (int i = 1; i < lines.Length; i++) // skip header row
         {
@@ -79,14 +112,60 @@ public static class LocalisationManager
             if (string.IsNullOrEmpty(line)) continue;
 
             string[] columns = SplitCSVLine(line);
-            if (columns.Length < LanguageColumn + 1) continue;
+            if (columns.Length == 0) continue;
 
-            string key   = columns[0].Trim();
-            string value = columns[LanguageColumn].Trim();
+            string key = columns[0].Trim();
+            if (string.IsNullOrEmpty(key)) continue;
 
-            if (!string.IsNullOrEmpty(key))
-                _table[key] = value;
+            string value = "";
+
+            if (langCol < columns.Length)
+            {
+                value = columns[langCol].Trim();
+            }
+
+            // If empty in selected language, fallback to English (column 1)
+            if (string.IsNullOrEmpty(value) && columns.Length > 1)
+            {
+                value = columns[1].Trim();
+            }
+
+            // If still empty, use key
+            if (string.IsNullOrEmpty(value))
+            {
+                value = key;
+            }
+
+            _table[key] = value;
         }
+    }
+
+    private static int FindLanguageColumn(string[] headers, string lang)
+    {
+        if (headers == null || headers.Length <= 1) return 1;
+
+        string search = lang.Trim().ToLowerInvariant();
+
+        // 1. Direct name / prefix matching (English, Hindi, Marathi, Arabic)
+        for (int i = 1; i < headers.Length; i++)
+        {
+            string header = headers[i].Trim().ToLowerInvariant();
+            if (header == search || header.StartsWith(search) || search.StartsWith(header))
+                return i;
+        }
+
+        // 2. Short language codes (en, hi, mr, ar)
+        for (int i = 1; i < headers.Length; i++)
+        {
+            string h = headers[i].Trim().ToLowerInvariant();
+            if (search == "en" && h.Contains("eng")) return i;
+            if (search == "hi" && h.Contains("hin")) return i;
+            if (search == "mr" && h.Contains("mar")) return i;
+            if (search == "ar" && h.Contains("ara")) return i;
+        }
+
+        // Default to English (column 1)
+        return 1;
     }
 
     /// <summary>
